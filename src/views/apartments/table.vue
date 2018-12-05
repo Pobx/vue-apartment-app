@@ -7,6 +7,12 @@ import { getApartments } from "@/shared/apartments-services";
 export default {
   data: () => {
     return {
+      fields: [
+        // A column that needs custom formatting
+        { key: 'index', label: 'No' },
+        { key: 'name', label: 'Apartments' },
+        { key: 'status', label: 'แก้ไข' }
+      ],
       items: []
     };
   },
