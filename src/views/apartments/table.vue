@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { getApartments } from "@/shared/apartments-services";
+import { getApartments, addApartments, updateApartments } from "@/shared/apartments-services";
 export default {
   data: () => {
     return {
