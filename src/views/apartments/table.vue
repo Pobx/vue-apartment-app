@@ -89,7 +89,12 @@ export default {
 
     onSubmit(evt) {
       evt.preventDefault();
-      alert(JSON.stringify(this.form));
+      // alert(JSON.stringify(this.form));
+      if (this.form.id == 0) {
+        addApartments(this.form);
+      }else {
+        updateApartments(this.form);
+      }
     }
   }
 };
