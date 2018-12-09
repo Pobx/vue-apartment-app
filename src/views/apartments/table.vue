@@ -3,11 +3,12 @@
     <b-card header="รายการ Apartments">
       <b-row>
         <b-col md="12">
-          <b-form inline v-on:submit="onSubmit">
+          <b-form inline v-on:submit.prevent="onSubmit">
             <label class="mr-sm-2" for="inlineFormApartmentsName">Apartment</label>
             <b-form-input
               class="col-md-4"
               v-model="form.name"
+              v-bind:state="state"
               type="text"
               id="inlineFormApartmentsName"
               placeholder="พิมพ์ชื่อ Apartment"
@@ -49,6 +50,7 @@ export default {
         id: 0,
         name: null
       },
+      state: null,
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "No", sortable: true, class: "text-center" },
@@ -76,9 +78,7 @@ export default {
           this.total_rows = this.items.length;
           // console.log(this.items);
         })
-        .catch(e => {
-          console.log(e);
-        });
+        .catch(e => console.log(e));
     },
 
     setDataToForm(data) {
@@ -87,10 +87,30 @@ export default {
       this.form.name = data.item.name;
     },
 
-    onSubmit(evt) {
-      evt.preventDefault();
-      // alert(JSON.stringify(this.form));
-      setApartments(this.form);
+    onSubmit() {
+      
+      if (this.form.name == null) {
+        this.state = false;
+        return false;
+      }
+
+      setApartments(this.form)
+        .then(response => {
+          // console.log(response);
+          this.getApartments();
+          this.onReset();
+        })
+        .catch(e => {
+          this.onReset();
+          console.log(e);
+        });
+    },
+
+    onReset() {
+      this.form = {
+        id: 0,
+        name: null
+      };
     }
   }
 };
