@@ -3,17 +3,16 @@
     <b-card header="รายการ Apartments">
       <b-row>
         <b-col md="12">
-          <b-form inline v-on:submit.prevent="onSubmit">
+          <b-form inline v-on:submit.prevent="onSubmit" autocomplete="off">
             <label class="mr-sm-2" for="inlineFormApartmentsName">Apartment</label>
             <b-form-input
               class="col-md-4"
               v-model="form.name"
-              v-bind:state="state"
               type="text"
               id="inlineFormApartmentsName"
               placeholder="พิมพ์ชื่อ Apartment"
             />&nbsp;
-            <b-form-input type="text" v-model="form.id"/>
+            <input type="hidden" v-model="form.id"/>
             <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button>
           </b-form>
         </b-col>
@@ -50,7 +49,6 @@ export default {
         id: 0,
         name: null
       },
-      state: null,
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "No", sortable: true, class: "text-center" },
@@ -90,7 +88,7 @@ export default {
     onSubmit() {
       
       if (this.form.name == null) {
-        this.state = false;
+        alert('พิมพ์ชื่อ Apartment ด้วยค่ะ');
         return false;
       }
 
@@ -111,8 +109,8 @@ export default {
         id: 0,
         name: null
       };
-      this.state = null;
     }
+
   }
 };
 </script>
