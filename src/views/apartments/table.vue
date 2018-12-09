@@ -2,7 +2,7 @@
   <div class="animated fadeIn">
     <b-row>
       <b-col md="12">
-        <b-card header="Traffic &amp; Sales">
+        <b-card header="รายการ Apartments">
           <b-table bordered hover responsive :items="items" :fields="fields">
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
             <template slot="edit" slot-scope="data">
@@ -50,7 +50,7 @@ export default {
     },
 
     setDataToForm(data) {
-      console.log(data);
+      console.log(data.item);
     }
     
   }
