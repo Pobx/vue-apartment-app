@@ -7,6 +7,7 @@ const DefaultContainer = () => import('@/containers/DefaultContainer')
 // Views
 const Dashboard = () => import('@/views/Dashboard')
 const ApartmentsTable = () => import('@/views/apartments/table')
+const RoomCategoriesTable = () => import('@/views/room-categories/table')
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
               path: 'apartments',
               name: 'Apartments',
               component: ApartmentsTable
+            },
+            {
+              path: 'room-categories',
+              name: 'RoomCategories',
+              component: RoomCategoriesTable
             }
           ]
         }

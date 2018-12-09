@@ -27,6 +27,11 @@ export default {
           name: "ข้อมูล Apartments",
           url: "/setting/apartments",
           icon: "fa fa-building"
+        },
+        {
+          name: "ข้อมูล ประเภทห้อง",
+          url: "/setting/room-categories",
+          icon: "fa fa-building"
         }
       ]
     }
