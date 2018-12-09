@@ -6,9 +6,9 @@ export function getApartments() {
 }
 
 export function addApartments(data) {
-  return axios.post(`${API}/apartments/create`);
+  return axios.post(`${API}/apartments/create`, data);
 }
 
 export function updateApartments(data) {
-  return axios.post(`${API}/apartments/update`);
+  return axios.post(`${API}/apartments/update`, data);
 }
