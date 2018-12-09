@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { getApartments, addApartments, updateApartments } from "@/shared/apartments-services";
+import { getApartments, setApartments } from "@/shared/apartments-services";
 export default {
   data: () => {
     return {
@@ -90,11 +90,7 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       // alert(JSON.stringify(this.form));
-      if (this.form.id == 0) {
-        addApartments(this.form);
-      }else {
-        updateApartments(this.form);
-      }
+      setApartments(this.form);
     }
   }
 };

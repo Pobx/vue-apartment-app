@@ -5,10 +5,10 @@ export function getApartments() {
   return axios.get(`${API}/apartments`);
 }
 
-export function addApartments(data) {
-  return axios.post(`${API}/apartments/create`, data);
-}
-
-export function updateApartments(data) {
-  return axios.post(`${API}/apartments/update`, data);
+export function setApartments(data) {
+  if (data.id ==0) {
+    return axios.post(`${API}/apartments/create`, data);
+  }else {
+    return axios.put(`${API}/apartments/update`, data);
+  }
 }
