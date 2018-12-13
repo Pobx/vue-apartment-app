@@ -22,7 +22,14 @@
 
       <b-row>
         <b-col md="12">
-          <b-table bordered hover responsive :items="items" :fields="fields">
+          <b-table 
+            bordered 
+            hover 
+            responsive=true
+            :current-page="currentPage"
+            :per-page="perPage"  
+            :items="items" 
+            :fields="fields">
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
             <template slot="edit" slot-scope="data">
               <b-btn
@@ -33,7 +40,7 @@
             </template>
           </b-table>
 
-          <b-pagination size="md" :total-rows="total_rows" v-model="currentPage" :per-page="10"></b-pagination>
+          <b-pagination size="md" :total-rows="totalRows" v-model="currentPage" :per-page="perPage"></b-pagination>
         </b-col>
       </b-row>
     </b-card>
@@ -62,7 +69,8 @@ export default {
       ],
       items: [],
       currentPage: 1,
-      total_rows: 0
+      totalRows: 0,
+      perPage: 10
     };
   },
   created() {
@@ -73,7 +81,7 @@ export default {
       getApartments()
         .then(response => {
           this.items = response.data;
-          this.total_rows = this.items.length;
+          this.totalRows = this.items.length;
           // console.log(this.items);
         })
         .catch(e => console.log(e));
