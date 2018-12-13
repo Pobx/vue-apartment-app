@@ -6,9 +6,9 @@ export function getRoomCategories() {
 }
 
 export function setRoomCategories(data) {
-  if (data.id ==0) {
+  if (data.id == 0) {
     return axios.post(`${API}/room-categories/create`, data);
-  }else {
+  } else {
     return axios.put(`${API}/room-categories/update`, data);
   }
 }
