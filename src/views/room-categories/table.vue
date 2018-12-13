@@ -28,7 +28,7 @@
             hover 
             responsive=true
             :current-page="currentPage"
-            :per-page="perPage" 
+            :per-page="perPage"
             :items="items" 
             :fields="fields">
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
