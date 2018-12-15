@@ -1,9 +1,25 @@
 <template>
   <div class="animated fadeIn">
     <b-row>
-      <b-col sm="12" md="4">
+      <b-col sm="12" md="6">
         <b-card :header="header_form">
           <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
+            <b-form-group
+              id="inline_facilities_categories"
+              horizontal
+              :label-cols="4"
+              :label="inline_facilities_categories"
+              label-for="inline_facilities_categories"
+            >
+              <b-col sm="8">
+                <b-form-radio-group
+                  id="inline_facilities_categories"
+                  v-model="form.facilities_categories"
+                  :options="facilities_categories_options"
+                ></b-form-radio-group>
+              </b-col>
+            </b-form-group>
+
             <b-form-group
               id="inline_facilities_name"
               horizontal
@@ -12,39 +28,69 @@
               label-for="inline_facilities_name"
             >
               <b-col sm="8">
-                <b-form-input id="inline_facilities_name" required v-model="form.room_numbers"></b-form-input>
+                <b-form-input id="inline_facilities_name" required v-model="form.facilities_name"></b-form-input>
               </b-col>
             </b-form-group>
 
             <b-form-group
-              id="inline_room_categories"
+              id="inline_facilities_cost_per_unit"
               horizontal
               :label-cols="4"
-              :label="inline_room_categories"
-              label-for="inline_room_categories"
+              :label="inline_facilities_cost_per_unit"
+              label-for="inline_facilities_cost_per_unit"
             >
               <b-col sm="8">
-                <b-form-radio-group
-                  id="inline_room_categories"
-                  v-model="form.room_categories"
-                  :options="room_categories_options"
-                ></b-form-radio-group>
+                <b-form-input id="inline_facilities_cost_per_unit" required v-model="form.facilities_cost_per_unit"></b-form-input>
               </b-col>
             </b-form-group>
 
             <b-form-group
-              id="inline_room_price"
+              id="inline_facilities_price_per_unit"
               horizontal
               :label-cols="4"
-              :label="inline_room_price"
-              label-for="inline_room_price"
+              :label="inline_facilities_price_per_unit"
+              label-for="inline_facilities_price_per_unit"
             >
               <b-col sm="8">
                 <b-form-input
-                  id="inline_room_price"
+                  id="inline_facilities_price_per_unit"
                   type="number"
                   required
-                  v-model="form.room_price"
+                  v-model="form.facilities_price_per_unit"
+                ></b-form-input>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_facilities_min_per_unit"
+              horizontal
+              :label-cols="4"
+              :label="inline_facilities_min_per_unit"
+              label-for="inline_facilities_min_per_unit"
+            >
+              <b-col sm="8">
+                <b-form-input
+                  id="inline_facilities_min_per_unit"
+                  type="number"
+                  required
+                  v-model="form.facilities_min_per_unit"
+                ></b-form-input>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_facilities_min_cost"
+              horizontal
+              :label-cols="4"
+              :label="inline_facilities_min_cost"
+              label-for="inline_facilities_min_cost"
+            >
+              <b-col sm="8">
+                <b-form-input
+                  id="inline_facilities_min_cost"
+                  type="number"
+                  required
+                  v-model="form.facilities_min_cost"
                 ></b-form-input>
               </b-col>
             </b-form-group>
@@ -59,7 +105,7 @@
         </b-card>
       </b-col>
 
-      <b-col sm="12" md="8">
+      <b-col sm="12" md="6">
         <b-card :header="header_table">
           <b-row>
             <b-col md="12">
@@ -97,19 +143,23 @@
 </template>
 
 <script>
-import { getFacilities, setFacilities } from "@/shared/rooms-services";
+import { getFacilities, setFacilities } from "@/shared/facilities-services";
 export default {
   data: () => {
     return {
       form: {
         id: 0,
-        room_numbers: null,
-        room_categories: 1,
-        room_price: null
+        facilities_name: null,
+        facilities_categories: 1,
+        facilities_price: null,
+        facilities_cost_per_unit: null,
+        facilities_price_per_unit: null,
+        facilities_min_per_unit: null,
+        facilities_min_cost: null
       },
-      room_categories_options: [
-        { text: "ห้องรายวัน", value: 1 },
-        { text: "ห้องรายเดือ", value: 2 }
+      facilities_categories_options: [
+        { text: "คิดหน่วย", value: 1 },
+        { text: "รายเดือน", value: 2 }
       ],
       fields: [
         // A column that needs custom formatting
@@ -147,8 +197,12 @@ export default {
       header_form: "ข้อมูลห้องพัก",
       header_table: "รายการ ห้องพัก",
       inline_facilities_name: "ชื่อ",
-      inline_room_categories: "ประเภท",
-      inline_room_price: "ราคา"
+      inline_facilities_categories: "ประเภท",
+      inline_facilities_price: "ราคา",
+      inline_facilities_cost_per_unit: 'ต้นทุนต่อหน่วย',
+      inline_facilities_price_per_unit: 'ราคาต่อหน่วย',
+      inline_facilities_min_per_unit: 'หน่วยขั้นต่ำ',
+      inline_facilities_min_cost: 'ราคาขั้นต่ำ',
     };
   },
   created() {
@@ -192,7 +246,7 @@ export default {
     onReset() {
       this.form = {
         id: 0,
-        room_numbers: null
+        facilities_numbers: null
       };
     }
   }
