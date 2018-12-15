@@ -40,7 +40,12 @@
               label-for="inline_room_price"
             >
               <b-col sm="8">
-                <b-form-input id="inline_room_price" type="number" required v-model="form.room_price"></b-form-input>
+                <b-form-input
+                  id="inline_room_price"
+                  type="number"
+                  required
+                  v-model="form.room_price"
+                ></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -51,35 +56,39 @@
       </b-col>
 
       <b-col sm="12" md="8">
-        <b-card :header="header_table"></b-card>
+        <b-card :header="header_table">
+          <b-row>
+            <b-col md="12">
+              <b-table
+                bordered
+                hover
+                responsive="true"
+                :current-page="currentPage"
+                :per-page="perPage"
+                :items="items"
+                :fields="fields"
+              >
+                <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
+                <template slot="edit" slot-scope="data">
+                  <b-btn
+                    size="sm"
+                    variant="warning"
+                    v-on:click="setDataToForm(data)"
+                  >{{ data.field.label }}</b-btn>
+                </template>
+              </b-table>
+
+              <b-pagination
+                size="md"
+                :total-rows="totalRows"
+                v-model="currentPage"
+                :per-page="perPage"
+              ></b-pagination>
+            </b-col>
+          </b-row>
+        </b-card>
       </b-col>
     </b-row>
-
-    <br>
-
-    <!-- <b-row>inline_room_categories inline_room_price
-        <b-col md="12">
-          <b-table 
-            bordered 
-            hover 
-            responsive=true
-            :current-page="currentPage"
-            :per-page="perPage"  
-            :items="items" 
-            :fields="fields">
-            <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-            <template slot="edit" slot-scope="data">
-              <b-btn
-                size="sm"
-                variant="warning"
-                v-on:click="setDataToForm(data)"
-              >{{ data.field.label }}</b-btn>
-            </template>
-          </b-table>
-
-          <b-pagination size="md" :total-rows="totalRows" v-model="currentPage" :per-page="perPage"></b-pagination>
-        </b-col>
-    </b-row>-->
   </div>
 </template>
 
@@ -100,7 +109,7 @@ export default {
       ],
       fields: [
         // A column that needs custom formatting
-        { key: "index", label: "No", class: "text-center" },
+        { key: "index", label: "#", class: "text-center" },
         {
           key: "name",
           label: "หมายเลขห้อง",
@@ -108,7 +117,13 @@ export default {
           class: "text-center"
         },
         {
-          key: "name",
+          key: "categories_name",
+          label: "ประเภท",
+          sortable: true,
+          class: "text-center"
+        },
+        {
+          key: "price",
           label: "ราคา",
           sortable: true,
           class: "text-right"
@@ -147,9 +162,9 @@ export default {
     },
 
     setDataToForm(data) {
-      // console.log(data.item);
-      this.form.id = data.item.id;
-      this.form.name = data.item.name;
+      console.log(data.item);
+      // this.form.id = data.item.id;
+      // this.form.name = data.item.name;
     },
 
     onSubmit() {

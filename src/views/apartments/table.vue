@@ -58,7 +58,7 @@ export default {
       },
       fields: [
         // A column that needs custom formatting
-        { key: "index", label: "No", class: "text-center" },
+        { key: "index", label: "#", class: "text-center" },
         {
           key: "name",
           label: "Apartments",
