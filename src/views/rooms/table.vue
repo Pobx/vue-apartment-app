@@ -1,14 +1,63 @@
 <template>
   <div class="animated fadeIn">
     <b-row>
-      <b-col md="6">
-        <b-card header="perPage"></b-card>
+      <b-col sm="12" md="4">
+        <b-card :header="header_form">
+          <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
+            <b-form-group
+              id="inline_room_numbers"
+              horizontal
+              :label-cols="4"
+              :label="inline_room_numbers"
+              label-for="inline_room_numbers"
+            >
+              <b-col sm="8">
+                <b-form-input id="inline_room_numbers" required v-model="form.room_numbers"></b-form-input>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_room_categories"
+              horizontal
+              :label-cols="4"
+              :label="inline_room_categories"
+              label-for="inline_room_categories"
+            >
+              <b-col sm="8">
+                <b-form-radio-group
+                  id="inline_room_categories"
+                  v-model="form.room_categories"
+                  :options="room_categories_options"
+                ></b-form-radio-group>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_room_price"
+              horizontal
+              :label-cols="4"
+              :label="inline_room_price"
+              label-for="inline_room_price"
+            >
+              <b-col sm="8">
+                <b-form-input id="inline_room_price" type="number" required v-model="form.room_price"></b-form-input>
+              </b-col>
+            </b-form-group>
+
+            <!-- <input type="hidden" v-model="form.id"> -->
+            <!-- <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button> -->
+          </b-form>
+        </b-card>
+      </b-col>
+
+      <b-col sm="12" md="8">
+        <b-card :header="header_table"></b-card>
       </b-col>
     </b-row>
 
     <br>
 
-    <!-- <b-row>
+    <!-- <b-row>inline_room_categories inline_room_price
         <b-col md="12">
           <b-table 
             bordered 
@@ -41,8 +90,14 @@ export default {
     return {
       form: {
         id: 0,
-        name: null
+        room_numbers: null,
+        room_categories: 1,
+        room_price: null
       },
+      room_categories_options: [
+        { text: "ห้องรายวัน", value: 1 },
+        { text: "ห้องรายเดือ", value: 2 }
+      ],
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "No", class: "text-center" },
@@ -69,7 +124,12 @@ export default {
       items: [],
       currentPage: 1,
       totalRows: 0,
-      perPage: 10
+      perPage: 10,
+      header_form: "ข้อมูลห้องพัก",
+      header_table: "รายการ ห้องพัก",
+      inline_room_numbers: "หมายเลขห้อง",
+      inline_room_categories: "ประเภท",
+      inline_room_price: "ราคา"
     };
   },
   created() {
@@ -113,7 +173,7 @@ export default {
     onReset() {
       this.form = {
         id: 0,
-        name: null
+        room_numbers: null
       };
     }
   }
