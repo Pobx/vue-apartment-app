@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getApartments, setApartments } from "@/shared/rooms-services";
+import { getRooms, setRooms } from "@/shared/rooms-services";
 export default {
   data: () => {
     return {
@@ -61,7 +61,19 @@ export default {
         { key: "index", label: "No", class: "text-center" },
         {
           key: "name",
-          label: "Apartments",
+          label: "หมายเลขห้อง",
+          sortable: true,
+          class: "text-center"
+        },
+        {
+          key: "name",
+          label: "ราคา",
+          sortable: true,
+          class: "text-right"
+        },
+        {
+          key: "status",
+          label: "สถานะ",
           sortable: true,
           class: "text-center"
         },
@@ -74,11 +86,11 @@ export default {
     };
   },
   created() {
-    // this.getApartments();
+    // this.getRooms();
   },
   methods: {
-    getApartments() {
-      getApartments()
+    getRooms() {
+      getRooms()
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
@@ -100,10 +112,10 @@ export default {
         return false;
       }
 
-      setApartments(this.form)
+      setRooms(this.form)
         .then(response => {
           // console.log(response);
-          this.getApartments();
+          this.getRooms();
           this.onReset();
         })
         .catch(e => {
