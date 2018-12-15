@@ -49,8 +49,13 @@
               </b-col>
             </b-form-group>
 
-            <!-- <input type="hidden" v-model="form.id"> -->
-            <!-- <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button> -->
+            <b-row>
+              <b-col sm="12" class="text-right">
+                <input type="hidden" v-model="form.id">
+                <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button>
+              </b-col>
+            </b-row>
+            
           </b-form>
         </b-card>
       </b-col>
