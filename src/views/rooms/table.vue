@@ -1,26 +1,14 @@
 <template>
   <div class="animated fadeIn">
-    <b-card header="รายการ Apartments">
-      <b-row>
-        <b-col md="12">
-          <b-form inline v-on:submit.prevent="onSubmit" autocomplete="off">
-            <label class="mr-sm-2" for="inlineFormApartmentsName">Apartment</label>
-            <b-form-input
-              class="col-md-4"
-              v-model="form.name"
-              type="text"
-              id="inlineFormApartmentsName"
-              placeholder="พิมพ์ชื่อ Apartment"
-            />&nbsp;
-            <input type="hidden" v-model="form.id"/>
-            <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button>
-          </b-form>
-        </b-col>
-      </b-row>
+    <b-row>
+      <b-col md="6">
+        <b-card header="perPage"></b-card>
+      </b-col>
+    </b-row>
 
-      <br>
+    <br>
 
-      <b-row>
+    <!-- <b-row>
         <b-col md="12">
           <b-table 
             bordered 
@@ -42,8 +30,7 @@
 
           <b-pagination size="md" :total-rows="totalRows" v-model="currentPage" :per-page="perPage"></b-pagination>
         </b-col>
-      </b-row>
-    </b-card>
+    </b-row>-->
   </div>
 </template>
 
@@ -106,9 +93,8 @@ export default {
     },
 
     onSubmit() {
-      
       if (this.form.name == null) {
-        alert('พิมพ์ชื่อ Apartment ด้วยค่ะ');
+        alert("พิมพ์ชื่อ Apartment ด้วยค่ะ");
         return false;
       }
 
@@ -130,7 +116,6 @@ export default {
         name: null
       };
     }
-
   }
 };
 </script>

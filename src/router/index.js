@@ -47,7 +47,7 @@ export default new Router({
               component: RoomCategoriesTable
             },
             {
-              path: 'roomrooms',
+              path: 'rooms',
               name: 'Rooms',
               component: RoomsTable
             }
