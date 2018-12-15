@@ -29,8 +29,13 @@ export default {
           icon: "fa fa-building"
         },
         {
-          name: "ข้อมูล ประเภทห้อง",
+          name: "ข้อมูล ประเภทห้องพัก",
           url: "/setting/room-categories",
+          icon: "fa fa-building"
+        },
+        {
+          name: "ข้อมูล ห้องพัก",
+          url: "/setting/rooms",
           icon: "fa fa-building"
         }
       ]
