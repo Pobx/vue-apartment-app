@@ -165,20 +165,26 @@ export default {
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
         {
-          key: "name",
-          label: "หมายเลขห้อง",
-          sortable: true,
-          class: "text-center"
-        },
-        {
           key: "categories_name",
           label: "ประเภท",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "price",
-          label: "ราคา",
+          key: "name",
+          label: "ชื่อ",
+          sortable: true,
+          class: "text-center"
+        },
+        {
+          key: "cost",
+          label: "ราคาต้นทุน",
+          sortable: true,
+          class: "text-right"
+        },
+        {
+          key: "price_per_unit",
+          label: "ราคาต่อหน่วย",
           sortable: true,
           class: "text-right"
         },
