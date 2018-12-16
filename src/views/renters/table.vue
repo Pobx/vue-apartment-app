@@ -1,20 +1,9 @@
 <template>
   <div class="animated fadeIn">
-    <b-card header="รายการ Apartments">
+    <b-card header="รายการ ผู้เช่า">
       <b-row>
         <b-col md="12">
-          <b-form inline v-on:submit.prevent="onSubmit" autocomplete="off">
-            <label class="mr-sm-2" for="inlineFormApartmentsName">Apartment</label>
-            <b-form-input
-              class="col-md-4"
-              v-model="form.name"
-              type="text"
-              id="inlineFormApartmentsName"
-              placeholder="พิมพ์ชื่อ Apartment"
-            />&nbsp;
-            <input type="hidden" v-model="form.id"/>
-            <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button>
-          </b-form>
+          
         </b-col>
       </b-row>
 
@@ -48,7 +37,7 @@
 </template>
 
 <script>
-import { getApartments, setApartments } from "@/shared/apartments-services";
+import { getRenters, setRenters } from "@/shared/renters-services";
 export default {
   data: () => {
     return {
@@ -61,10 +50,12 @@ export default {
         { key: "index", label: "#", class: "text-center" },
         {
           key: "name",
-          label: "Apartments",
+          label: "ชื่อ - สกุล",
           sortable: true,
           class: "text-center"
         },
+        { key: "room_numbers", label: "หมายเลขห้อง", class: "text-center" },
+        { key: "link_file", label: "ไฟล์เอกสาร", class: "text-center" },
         { key: "edit", label: "แก้ไข", class: "text-center" }
       ],
       items: [],
@@ -74,11 +65,11 @@ export default {
     };
   },
   created() {
-    this.getApartments();
+    this.getRenters();
   },
   methods: {
-    getApartments() {
-      getApartments()
+    getRenters() {
+      getRenters()
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
@@ -100,10 +91,10 @@ export default {
         return false;
       }
 
-      setApartments(this.form)
+      setRenters(this.form)
         .then(response => {
           // console.log(response);
-          this.getApartments();
+          this.getRenters();
           this.onReset();
         })
         .catch(e => {
