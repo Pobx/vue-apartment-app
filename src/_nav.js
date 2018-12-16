@@ -42,6 +42,11 @@ export default {
           name: "ข้อมูล สิ่งอำนวยความสะดวก",
           url: "/setting/facilities",
           icon: "fa fa-building"
+        },
+        {
+          name: "ข้อมูล ผู้เช่า",
+          url: "/setting/renters",
+          icon: "fa fa-building"
         }
       ]
     }
