@@ -1,7 +1,7 @@
 <template>
   <div class="animated fadeIn">
-    <b-card header="ข้อมูล ผู้เช่า">
-      <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
+    <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
+      <b-card header="ข้อมูล ผู้เช่า">
         <b-row>
           <b-col md="12" class="text-right">
             <b-link :to="link_to_table" class="btn btn-danger mr-sm-2">{{ link_to_table_label }}</b-link>
@@ -10,6 +10,7 @@
         </b-row>
 
         <br>
+
         <b-row>
           <b-col md="3">
             <b-img
@@ -125,6 +126,18 @@
             </b-form-group>
           </b-col>
         </b-row>
+      </b-card>
+
+      <b-card header="ข้อมูลติดต่อฉุกเฉิน">
+        <b-form inline>
+          <label for="inline_contact_mobile">{{ inline_contact_mobile }}</label>
+          <b-input class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4" id="inline_contact_mobile"/>
+
+          <label for="inline_contact_fullname">{{ inline_contact_fullname }}</label>
+          <b-input class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4" id="inline_contact_fullname"/>
+         
+          <b-button variant="success">{{ button_add_new_contact_label }}</b-button>
+        </b-form>
 
         <b-row>
           <b-col md="12" class="text-right">
@@ -132,8 +145,8 @@
             <b-button class="btn btn-success">{{ submit_form_label }}</b-button>
           </b-col>
         </b-row>
-      </b-form>
-    </b-card>
+      </b-card>
+    </b-form>
   </div>
 </template>
 
@@ -187,7 +200,10 @@ export default {
       inline_document_file: "ไฟล์เอกสาร",
       inline_address: "ที่อยู่",
       inline_mobile: "เบอร์มือถือ",
-      inline_email: "อีเมล์"
+      inline_email: "อีเมล์",
+      inline_contact_mobile: 'เบอร์มือถือ',
+      inline_contact_fullname: "ชื่อ - สกุล",
+      button_add_new_contact_label: 'บันทึก'
     };
   },
   created() {
