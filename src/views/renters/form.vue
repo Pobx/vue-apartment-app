@@ -131,12 +131,12 @@
       <b-card header="ข้อมูลติดต่อฉุกเฉิน">
         <b-form inline>
           <label for="inline_contact_mobile">{{ inline_contact_mobile }}</label>
-          <b-input class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4" id="inline_contact_mobile"/>
+          <b-input class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4" id="inline_contact_mobile" v-model="form_contact.mobile"/>
 
           <label for="inline_contact_fullname">{{ inline_contact_fullname }}</label>
-          <b-input class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4" id="inline_contact_fullname"/>
+          <b-input class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4" id="inline_contact_fullname" v-model="form_contact.fullname"/>
          
-          <b-button variant="success">{{ button_add_new_contact_label }}</b-button>
+          <b-button variant="primary">{{ button_add_new_contact_label }}</b-button>
         </b-form>
 
         <b-row>
@@ -167,6 +167,10 @@ export default {
         address: null,
         mobile: null,
         email: null
+      },
+      form_contact: {
+        mobile: null,
+        fullname: null,
       },
       prefix_categories_options: [
         { text: "นาย", value: "male" },
@@ -203,7 +207,7 @@ export default {
       inline_email: "อีเมล์",
       inline_contact_mobile: 'เบอร์มือถือ',
       inline_contact_fullname: "ชื่อ - สกุล",
-      button_add_new_contact_label: 'บันทึก'
+      button_add_new_contact_label: 'เพิ่มข้อมูล'
     };
   },
   created() {
