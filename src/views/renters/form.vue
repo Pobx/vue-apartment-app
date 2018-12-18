@@ -21,12 +21,28 @@
             <b-form-group
               id="inline_id_card"
               horizontal
-              :label-cols="2"
+              :label-cols="1"
               :label="inline_id_card"
               label-for="inline_id_card"
             >
-              <b-col sm="10">
+              <b-col sm="4">
                 <b-form-input id="inline_id_card" required v-model="form.id_card"></b-form-input>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_prefix_categories"
+              horizontal
+              :label-cols="1"
+              :label="inline_prefix_categories"
+              label-for="inline_prefix_categories"
+            >
+              <b-col sm="4">
+                <b-form-select
+                  id="inline_prefix_categories"
+                  v-model="form.prefix"
+                  :options="prefix_categories_options"
+                ></b-form-select>
               </b-col>
             </b-form-group>
           </b-col>
@@ -52,8 +68,14 @@ export default {
       form: {
         id: 0,
         id_card: null,
-        image: null
+        image: null,
+        prefix: null
       },
+      prefix_categories_options: [
+        { text: "นาย", value: 'male' },
+        { text: "นาง", value: 'female' },
+        { text: "นางสาว", value: 'female' }
+      ],
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
@@ -74,7 +96,8 @@ export default {
       link_to_table_label: "ยกเลิก",
       link_to_table: "setting/renters",
       submit_form_label: "บันทึก",
-      inline_id_card: "บัตรประชาชน"
+      inline_id_card: "บัตรประชาชน",
+      inline_prefix_categories: 'คำนำหน้า'
     };
   },
   created() {
