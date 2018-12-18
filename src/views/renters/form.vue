@@ -14,7 +14,7 @@
           <b-col md="3">
             <b-img
               thumbnail
-              fluid-grow=""
+              fluid-grow
               src="https://picsum.photos/250/250/?image=54"
               alt="Thumbnail"
               class="mb-sm-3"
