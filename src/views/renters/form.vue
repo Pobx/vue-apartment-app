@@ -96,12 +96,31 @@
               label-for="inline_address"
             >
               <b-col sm="4">
-                <b-form-textarea
-                  id="inline_address"
-                  v-model="form.address"
-                  :rows="3"
-                  :max-rows="6"
-                ></b-form-textarea>
+                <b-form-textarea id="inline_address" v-model="form.address" :rows="3" :max-rows="6"></b-form-textarea>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_mobile"
+              horizontal
+              :label-cols="1"
+              :label="inline_mobile"
+              label-for="inline_mobile"
+            >
+              <b-col sm="4">
+                <b-form-input id="inline_mobile" required v-model="form.mobile"></b-form-input>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_email"
+              horizontal
+              :label-cols="1"
+              :label="inline_email"
+              label-for="inline_email"
+            >
+              <b-col sm="4">
+                <b-form-input id="inline_email" required v-model="form.email"></b-form-input>
               </b-col>
             </b-form-group>
           </b-col>
@@ -132,7 +151,9 @@ export default {
         fullname: null,
         birthday: null,
         document: null,
-        address: null
+        address: null,
+        mobile: null,
+        email: null
       },
       prefix_categories_options: [
         { text: "นาย", value: "male" },
@@ -164,7 +185,9 @@ export default {
       inline_fullname: "ชื่อ - สกุล",
       inline_birthday: "วันเกิด",
       inline_document_file: "ไฟล์เอกสาร",
-      inline_address: "ที่อยู่"
+      inline_address: "ที่อยู่",
+      inline_mobile: "เบอร์มือถือ",
+      inline_email: "อีเมล์"
     };
   },
   created() {
