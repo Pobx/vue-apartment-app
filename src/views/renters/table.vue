@@ -2,8 +2,8 @@
   <div class="animated fadeIn">
     <b-card header="รายการ ผู้เช่า">
       <b-row>
-        <b-col md="12">
-          
+        <b-col md="12" class="text-right">
+          <b-link :to="link_to_form" class="btn btn-primary">{{ link_to_form_label }}</b-link>
         </b-col>
       </b-row>
 
@@ -11,14 +11,15 @@
 
       <b-row>
         <b-col md="12">
-          <b-table 
-            bordered 
-            hover 
-            responsive=true
+          <b-table
+            bordered
+            hover
+            responsive="true"
             :current-page="currentPage"
-            :per-page="perPage"  
-            :items="items" 
-            :fields="fields">
+            :per-page="perPage"
+            :items="items"
+            :fields="fields"
+          >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
             <template slot="edit" slot-scope="data">
               <b-btn
@@ -61,11 +62,13 @@ export default {
       items: [],
       currentPage: 1,
       totalRows: 0,
-      perPage: 10
+      perPage: 10,
+      link_to_form_label: 'เพิ่มใหม่',
+      link_to_form: 'setting/renters-form'
     };
   },
   created() {
-    this.getRenters();
+    // this.getRenters();
   },
   methods: {
     getRenters() {
@@ -85,9 +88,8 @@ export default {
     },
 
     onSubmit() {
-      
       if (this.form.name == null) {
-        alert('พิมพ์ชื่อ Apartment ด้วยค่ะ');
+        alert("พิมพ์ชื่อ Apartment ด้วยค่ะ");
         return false;
       }
 
@@ -109,7 +111,6 @@ export default {
         name: null
       };
     }
-
   }
 };
 </script>
