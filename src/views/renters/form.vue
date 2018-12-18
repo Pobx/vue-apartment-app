@@ -11,19 +11,19 @@
 
         <br>
         <b-row>
-          <b-col md="2">
+          <b-col md="3">
             <b-img
               thumbnail
-              fluid
+              fluid-grow=""
               src="https://picsum.photos/250/250/?image=54"
               alt="Thumbnail"
-              class="mb-sm-2"
+              class="mb-sm-3"
             />
 
             <b-form-file v-model="form.image" placeholder="เลือกไฟล์..."></b-form-file>
           </b-col>
 
-          <b-col md="10">
+          <b-col md="9">
             <b-form-group
               id="inline_id_card"
               horizontal
