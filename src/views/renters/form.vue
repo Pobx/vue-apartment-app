@@ -1,15 +1,44 @@
 <template>
   <div class="animated fadeIn">
     <b-card header="ข้อมูล ผู้เช่า">
-      <b-row>
-        <b-col md="12" class="text-right">
-          <b-link :to="link_to_form" class="btn btn-primary">{{ link_to_form_label }}</b-link>
-        </b-col>
-      </b-row>
+      <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
+        <b-row>
+          <b-col md="12" class="text-right">
+            <b-link :to="link_to_table" class="btn btn-danger mr-sm-2">{{ link_to_table_label }}</b-link>
+            <b-button class="btn btn-success">{{ submit_form_label }}</b-button>
+          </b-col>
+        </b-row>
 
-      <br>
+        <br>
+        <b-row>
+          <b-col md="2">
+            <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54" alt="Thumbnail" class="mb-sm-2" />
+            
+            <b-form-file v-model="form.image" placeholder="เลือกไฟล์..."></b-form-file>
+          </b-col>
 
-      
+          <b-col md="10">
+            <b-form-group
+              id="inline_id_card"
+              horizontal
+              :label-cols="2"
+              :label="inline_id_card"
+              label-for="inline_id_card"
+            >
+              <b-col sm="10">
+                <b-form-input id="inline_id_card" required v-model="form.id_card"></b-form-input>
+              </b-col>
+            </b-form-group>
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col md="12" class="text-right">
+            <b-link :to="link_to_table" class="btn btn-danger mr-sm-2">{{ link_to_table_label }}</b-link>
+            <b-button class="btn btn-success">{{ submit_form_label }}</b-button>
+          </b-col>
+        </b-row>
+      </b-form>
     </b-card>
   </div>
 </template>
@@ -22,7 +51,8 @@ export default {
     return {
       form: {
         id: 0,
-        name: null
+        id_card: null,
+        image: null
       },
       fields: [
         // A column that needs custom formatting
@@ -41,8 +71,10 @@ export default {
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
-      link_to_form_label: 'เพิ่มใหม่',
-      link_to_form: 'setting/renters-form'
+      link_to_table_label: "ยกเลิก",
+      link_to_table: "setting/renters",
+      submit_form_label: "บันทึก",
+      inline_id_card: "บัตรประชาชน"
     };
   },
   created() {
