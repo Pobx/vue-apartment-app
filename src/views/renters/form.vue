@@ -12,8 +12,14 @@
         <br>
         <b-row>
           <b-col md="2">
-            <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54" alt="Thumbnail" class="mb-sm-2" />
-            
+            <b-img
+              thumbnail
+              fluid
+              src="https://picsum.photos/250/250/?image=54"
+              alt="Thumbnail"
+              class="mb-sm-2"
+            />
+
             <b-form-file v-model="form.image" placeholder="เลือกไฟล์..."></b-form-file>
           </b-col>
 
@@ -45,6 +51,20 @@
                 ></b-form-select>
               </b-col>
             </b-form-group>
+
+            <b-form-group
+              id="inline_fullname"
+              horizontal
+              :label-cols="1"
+              :label="inline_fullname"
+              label-for="inline_fullname"
+            >
+              <b-col sm="4">
+                <b-form-input id="inline_fullname" required v-model="form.fullname"></b-form-input>
+              </b-col>
+            </b-form-group>
+
+
           </b-col>
         </b-row>
 
@@ -69,12 +89,13 @@ export default {
         id: 0,
         id_card: null,
         image: null,
-        prefix: null
+        prefix: null,
+        fullname: null
       },
       prefix_categories_options: [
-        { text: "นาย", value: 'male' },
-        { text: "นาง", value: 'female' },
-        { text: "นางสาว", value: 'female' }
+        { text: "นาย", value: "male" },
+        { text: "นาง", value: "female" },
+        { text: "นางสาว", value: "female" }
       ],
       fields: [
         // A column that needs custom formatting
@@ -97,7 +118,8 @@ export default {
       link_to_table: "setting/renters",
       submit_form_label: "บันทึก",
       inline_id_card: "บัตรประชาชน",
-      inline_prefix_categories: 'คำนำหน้า'
+      inline_prefix_categories: "คำนำหน้า",
+      inline_fullname: 'ชื่อ - สกุล'
     };
   },
   created() {
