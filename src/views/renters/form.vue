@@ -131,13 +131,46 @@
       <b-card header="ข้อมูลติดต่อฉุกเฉิน">
         <b-form inline>
           <label for="inline_contact_mobile">{{ inline_contact_mobile }}</label>
-          <b-input class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4" id="inline_contact_mobile" v-model="form_contact.mobile"/>
+          <b-input
+            class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4"
+            id="inline_contact_mobile"
+            v-model="form_contact.mobile"
+          />
 
           <label for="inline_contact_fullname">{{ inline_contact_fullname }}</label>
-          <b-input class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4" id="inline_contact_fullname" v-model="form_contact.fullname"/>
-         
+          <b-input
+            class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4"
+            id="inline_contact_fullname"
+            v-model="form_contact.fullname"
+          />
+
           <b-button variant="primary">{{ button_add_new_contact_label }}</b-button>
         </b-form>
+
+        <br>
+
+        <b-row>
+          <b-col md="12">
+            <b-table
+              bordered
+              hover
+              responsive="true"
+              :items="items"
+              :fields="fields"
+            >
+              <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
+              <template slot="remove" slot-scope="data">
+                <b-btn
+                  size="sm"
+                  variant="danger"
+                  v-on:click="setDataToForm(data)"
+                >{{ data.field.label }}</b-btn>
+              </template>
+            </b-table>
+          </b-col>
+        </b-row>
+
+        <br>
 
         <b-row>
           <b-col md="12" class="text-right">
@@ -170,7 +203,7 @@ export default {
       },
       form_contact: {
         mobile: null,
-        fullname: null,
+        fullname: null
       },
       prefix_categories_options: [
         { text: "นาย", value: "male" },
@@ -186,16 +219,15 @@ export default {
           sortable: true,
           class: "text-center"
         },
-        { key: "room_numbers", label: "หมายเลขห้อง", class: "text-center" },
-        { key: "link_file", label: "ไฟล์เอกสาร", class: "text-center" },
-        { key: "edit", label: "แก้ไข", class: "text-center" }
+        { key: "mobile", label: "เบอร์ติดต่อ", class: "text-center" },
+        { key: "remove", label: "ลบ", class: "text-center" }
       ],
       items: [],
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
       link_to_table_label: "ยกเลิก",
-      link_to_table: "setting/renters",
+      link_to_table: "renters",
       submit_form_label: "บันทึก",
       inline_id_card: "บัตรประชาชน",
       inline_prefix_categories: "คำนำหน้า",
@@ -205,9 +237,9 @@ export default {
       inline_address: "ที่อยู่",
       inline_mobile: "เบอร์มือถือ",
       inline_email: "อีเมล์",
-      inline_contact_mobile: 'เบอร์มือถือ',
+      inline_contact_mobile: "เบอร์มือถือ",
       inline_contact_fullname: "ชื่อ - สกุล",
-      button_add_new_contact_label: 'เพิ่มข้อมูล'
+      button_add_new_contact_label: "เพิ่มข้อมูล"
     };
   },
   created() {
