@@ -64,7 +64,46 @@
               </b-col>
             </b-form-group>
 
+            <b-form-group
+              id="inline_birthday"
+              horizontal
+              :label-cols="1"
+              :label="inline_birthday"
+              label-for="inline_birthday"
+            >
+              <b-col sm="4">
+                <b-form-input id="inline_birthday" required v-model="form.birthday"></b-form-input>
+              </b-col>
+            </b-form-group>
 
+            <b-form-group
+              id="inline_document_file"
+              horizontal
+              :label-cols="1"
+              :label="inline_document_file"
+              label-for="inline_document_file"
+            >
+              <b-col sm="4">
+                <b-form-file v-model="form.document" placeholder="เลือกไฟล์..."></b-form-file>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_address"
+              horizontal
+              :label-cols="1"
+              :label="inline_address"
+              label-for="inline_address"
+            >
+              <b-col sm="4">
+                <b-form-textarea
+                  id="inline_address"
+                  v-model="form.address"
+                  :rows="3"
+                  :max-rows="6"
+                ></b-form-textarea>
+              </b-col>
+            </b-form-group>
           </b-col>
         </b-row>
 
@@ -90,7 +129,10 @@ export default {
         id_card: null,
         image: null,
         prefix: null,
-        fullname: null
+        fullname: null,
+        birthday: null,
+        document: null,
+        address: null
       },
       prefix_categories_options: [
         { text: "นาย", value: "male" },
@@ -119,7 +161,10 @@ export default {
       submit_form_label: "บันทึก",
       inline_id_card: "บัตรประชาชน",
       inline_prefix_categories: "คำนำหน้า",
-      inline_fullname: 'ชื่อ - สกุล'
+      inline_fullname: "ชื่อ - สกุล",
+      inline_birthday: "วันเกิด",
+      inline_document_file: "ไฟล์เอกสาร",
+      inline_address: "ที่อยู่"
     };
   },
   created() {
