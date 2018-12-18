@@ -64,7 +64,7 @@ export default {
       totalRows: 0,
       perPage: 10,
       link_to_form_label: 'เพิ่มใหม่',
-      link_to_form: 'setting/renters-form'
+      link_to_form: 'renters-form'
     };
   },
   created() {

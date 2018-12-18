@@ -11,7 +11,7 @@ const RoomCategoriesTable = () => import('@/views/room-categories/table')
 const RoomsTable = () => import('@/views/rooms/table')
 const FacilitiesTable = () => import('@/views/facilities/table');
 const RentersTable = () => import('@/views/renters/table');
-
+const RentersForm = () => import('@/views/renters/form');
 
 Vue.use(Router)
 
@@ -63,7 +63,13 @@ export default new Router({
               path: 'renters',
               name: 'Renters',
               component: RentersTable
+            },
+            {
+              path: 'renters-form',
+              name: 'Renter Profile',
+              component: RentersForm
             }
+
           ]
         }
       ]

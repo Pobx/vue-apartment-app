@@ -1,6 +1,6 @@
 <template>
   <div class="animated fadeIn">
-    <b-card header="รายการ ผู้เช่า">
+    <b-card header="ข้อมูล ผู้เช่า">
       <b-row>
         <b-col md="12" class="text-right">
           <b-link :to="link_to_form" class="btn btn-primary">{{ link_to_form_label }}</b-link>
@@ -9,36 +9,14 @@
 
       <br>
 
-      <b-row>
-        <b-col md="12">
-          <b-table
-            bordered
-            hover
-            responsive="true"
-            :current-page="currentPage"
-            :per-page="perPage"
-            :items="items"
-            :fields="fields"
-          >
-            <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-            <template slot="edit" slot-scope="data">
-              <b-btn
-                size="sm"
-                variant="warning"
-                v-on:click="setDataToForm(data)"
-              >{{ data.field.label }}</b-btn>
-            </template>
-          </b-table>
-
-          <b-pagination size="md" :total-rows="totalRows" v-model="currentPage" :per-page="perPage"></b-pagination>
-        </b-col>
-      </b-row>
+      
     </b-card>
   </div>
 </template>
 
 <script>
 import { getRenters, setRenters } from "@/shared/renters-services";
+
 export default {
   data: () => {
     return {
