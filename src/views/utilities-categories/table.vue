@@ -165,7 +165,7 @@ export default {
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
         {
-          key: "categories_name",
+          key: "type",
           label: "ประเภท",
           sortable: true,
           class: "text-center"
@@ -177,7 +177,7 @@ export default {
           class: "text-center"
         },
         {
-          key: "cost",
+          key: "price_per_unit_cost",
           label: "ราคาต้นทุน",
           sortable: true,
           class: "text-right"
@@ -212,7 +212,7 @@ export default {
     };
   },
   created() {
-    // this.getUtilitiesCategories();
+    this.getUtilitiesCategories();
   },
   methods: {
     getUtilitiesCategories() {
@@ -220,7 +220,7 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
-          // console.log(this.items);
+          console.log(this.items);
         })
         .catch(e => console.log(e));
     },
