@@ -40,7 +40,7 @@ export default {
         },
         {
           name: "ข้อมูล สิ่งอำนวยความสะดวก",
-          url: "/setting/facilities",
+          url: "/setting/utilities-categories",
           icon: "fa fa-building"
         },
         {

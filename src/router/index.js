@@ -9,7 +9,7 @@ const Dashboard = () => import('@/views/Dashboard')
 const ApartmentsTable = () => import('@/views/apartments/table')
 const RoomCategoriesTable = () => import('@/views/room-categories/table')
 const RoomsTable = () => import('@/views/rooms/table')
-const FacilitiesTable = () => import('@/views/facilities/table');
+const UtilitiesCategoriesTable = () => import('@/views/utilities-categories/table');
 const RentersTable = () => import('@/views/renters/table');
 const RentersForm = () => import('@/views/renters/form');
 
@@ -55,9 +55,9 @@ export default new Router({
               component: RoomsTable
             },
             {
-              path: 'facilities',
-              name: 'Facilities',
-              component: FacilitiesTable
+              path: 'utilities-categories',
+              name: 'UtilitiesCategories',
+              component: UtilitiesCategoriesTable
             },
             {
               path: 'renters',
