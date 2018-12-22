@@ -5,17 +5,17 @@
         <b-card :header="header_form">
           <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
             <b-form-group
-              id="inline_utitilies_categories"
+              id="inline_utitilies_type"
               horizontal
               :label-cols="4"
-              :label="inline_utitilies_categories"
-              label-for="inline_utitilies_categories"
+              :label="inline_utitilies_type"
+              label-for="inline_utitilies_type"
             >
               <b-col sm="8">
                 <b-form-radio-group
-                  id="inline_utitilies_categories"
-                  v-model="form.utitilies_categories"
-                  :options="utitilies_categories_options"
+                  id="inline_utitilies_type"
+                  v-model="form.type"
+                  :options="utitilies_type_options"
                 ></b-form-radio-group>
               </b-col>
             </b-form-group>
@@ -28,19 +28,23 @@
               label-for="inline_utitilies_name"
             >
               <b-col sm="8">
-                <b-form-input id="inline_utitilies_name" required v-model="form.utitilies_name"></b-form-input>
+                <b-form-input id="inline_utitilies_name" required v-model="form.name"></b-form-input>
               </b-col>
             </b-form-group>
 
             <b-form-group
-              id="inline_utitilies_cost_per_unit"
+              id="inline_utitilies_price_per_unit_cost"
               horizontal
               :label-cols="4"
-              :label="inline_utitilies_cost_per_unit"
-              label-for="inline_utitilies_cost_per_unit"
+              :label="inline_utitilies_price_per_unit_cost"
+              label-for="inline_utitilies_price_per_unit_cost"
             >
               <b-col sm="8">
-                <b-form-input id="inline_utitilies_cost_per_unit" required v-model="form.utitilies_cost_per_unit"></b-form-input>
+                <b-form-input
+                  id="inline_utitilies_price_per_unit_cost"
+                  required
+                  v-model="form.price_per_unit_cost"
+                ></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -56,41 +60,41 @@
                   id="inline_utitilies_price_per_unit"
                   type="number"
                   required
-                  v-model="form.utitilies_price_per_unit"
+                  v-model="form.price_per_unit"
                 ></b-form-input>
               </b-col>
             </b-form-group>
 
             <b-form-group
-              id="inline_utitilies_min_per_unit"
+              id="inline_utitilies_unit_min_rate"
               horizontal
               :label-cols="4"
-              :label="inline_utitilies_min_per_unit"
-              label-for="inline_utitilies_min_per_unit"
+              :label="inline_utitilies_unit_min_rate"
+              label-for="inline_utitilies_unit_min_rate"
             >
               <b-col sm="8">
                 <b-form-input
-                  id="inline_utitilies_min_per_unit"
+                  id="inline_utitilies_unit_min_rate"
                   type="number"
                   required
-                  v-model="form.utitilies_min_per_unit"
+                  v-model="form.unit_min_rate"
                 ></b-form-input>
               </b-col>
             </b-form-group>
 
             <b-form-group
-              id="inline_utitilies_min_cost"
+              id="inline_utitilies_unit_min_price"
               horizontal
               :label-cols="4"
-              :label="inline_utitilies_min_cost"
-              label-for="inline_utitilies_min_cost"
+              :label="inline_utitilies_unit_min_price"
+              label-for="inline_utitilies_unit_min_price"
             >
               <b-col sm="8">
                 <b-form-input
-                  id="inline_utitilies_min_cost"
+                  id="inline_utitilies_unit_min_price"
                   type="number"
                   required
-                  v-model="form.utitilies_min_cost"
+                  v-model="form.unit_min_price"
                 ></b-form-input>
               </b-col>
             </b-form-group>
@@ -143,23 +147,25 @@
 </template>
 
 <script>
-import { getUtilitiesCategories, setUtilitiesCategories } from "@/shared/utilities-categories-services";
+import {
+  getUtilitiesCategories,
+  setUtilitiesCategories
+} from "@/shared/utilities-categories-services";
 export default {
   data: () => {
     return {
       form: {
         id: 0,
-        utitilies_name: null,
-        utitilies_categories: 1,
-        utitilies_price: null,
-        utitilies_cost_per_unit: null,
-        utitilies_price_per_unit: null,
-        utitilies_min_per_unit: null,
-        utitilies_min_cost: null
+        name: null,
+        type: 1,
+        price_per_unit_cost: null,
+        price_per_unit: null,
+        unit_min_rate: null,
+        unit_min_price: null
       },
-      utitilies_categories_options: [
-        { text: "คิดหน่วย", value: 1 },
-        { text: "รายเดือน", value: 2 }
+      utitilies_type_options: [
+        { text: "หน่วย", value: "unit" },
+        { text: "รายเดือน", value: "monthly" }
       ],
       fields: [
         // A column that needs custom formatting
@@ -203,12 +209,11 @@ export default {
       header_form: "ข้อมูลห้องพัก",
       header_table: "รายการ ห้องพัก",
       inline_utitilies_name: "ชื่อ",
-      inline_utitilies_categories: "ประเภท",
-      inline_utitilies_price: "ราคา",
-      inline_utitilies_cost_per_unit: 'ต้นทุนต่อหน่วย',
-      inline_utitilies_price_per_unit: 'ราคาต่อหน่วย',
-      inline_utitilies_min_per_unit: 'หน่วยขั้นต่ำ',
-      inline_utitilies_min_cost: 'ราคาขั้นต่ำ',
+      inline_utitilies_type: "ประเภท",
+      inline_utitilies_price_per_unit_cost: "ต้นทุนต่อหน่วย",
+      inline_utitilies_price_per_unit: "ราคาต่อหน่วย",
+      inline_utitilies_unit_min_rate: "หน่วยขั้นต่ำ",
+      inline_utitilies_unit_min_price: "ราคาขั้นต่ำ"
     };
   },
   created() {
@@ -227,12 +232,16 @@ export default {
 
     setDataToForm(data) {
       console.log(data.item);
-      // this.form.id = data.item.id;
-      // this.form.name = data.item.name;
+      this.form.id = data.item.id;
+      this.form.name = data.item.name;
+      this.type = data.item.type;
+      this.price_per_unit_cost = data.item.price_per_unit_cost;
+      this.price_per_unit = data.item.price_per_unit;
+      this.unit_min_rate = data.item.unit_min_rate;
+      this.unit_min_price = data.item.unit_min_price;
     },
 
     onSubmit() {
-
       setUtilitiesCategories(this.form)
         .then(response => {
           // console.log(response);
