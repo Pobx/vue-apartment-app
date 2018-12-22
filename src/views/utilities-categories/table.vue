@@ -157,7 +157,7 @@ export default {
       form: {
         id: 0,
         name: null,
-        type: 1,
+        type: 'unit',
         price_per_unit_cost: null,
         price_per_unit: null,
         unit_min_rate: null,
@@ -234,11 +234,11 @@ export default {
       console.log(data.item);
       this.form.id = data.item.id;
       this.form.name = data.item.name;
-      this.type = data.item.type;
-      this.price_per_unit_cost = data.item.price_per_unit_cost;
-      this.price_per_unit = data.item.price_per_unit;
-      this.unit_min_rate = data.item.unit_min_rate;
-      this.unit_min_price = data.item.unit_min_price;
+      this.form.type = data.item.type;
+      this.form.price_per_unit_cost = data.item.price_per_unit_cost;
+      this.form.price_per_unit = data.item.price_per_unit;
+      this.form.unit_min_rate = data.item.unit_min_rate;
+      this.form.unit_min_price = data.item.unit_min_price;
     },
 
     onSubmit() {
