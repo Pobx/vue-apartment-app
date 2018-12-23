@@ -35,11 +35,6 @@
             
             <template slot="edit" slot-scope="data">
               <router-link :to="{ path: 'renters-form/' + data.item.id}">{{ data.field.label }}</router-link>
-              <!-- <b-btn
-                size="sm"
-                variant="warning"
-                v-on:click="setDataToForm(data)"
-              >{{ data.field.label }}</b-btn> -->
             </template>
           </b-table>
 

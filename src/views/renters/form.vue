@@ -21,7 +21,7 @@
               class="mb-sm-3"
             />
 
-            <b-form-file v-model="form.image" placeholder="เลือกไฟล์..."></b-form-file>
+            <b-form-file v-model="form.new_file" placeholder="เลือกไฟล์..."></b-form-file>
           </b-col>
 
           <b-col md="9">
@@ -54,26 +54,38 @@
             </b-form-group>
 
             <b-form-group
-              id="inline_fullname"
+              id="inline_first_name"
               horizontal
               :label-cols="1"
-              :label="inline_fullname"
-              label-for="inline_fullname"
+              :label="inline_first_name"
+              label-for="inline_first_name"
             >
               <b-col sm="4">
-                <b-form-input id="inline_fullname" required v-model="form.fullname"></b-form-input>
+                <b-form-input id="inline_first_name" required v-model="form.first_name"></b-form-input>
               </b-col>
             </b-form-group>
 
             <b-form-group
-              id="inline_birthday"
+              id="inline_last_name"
               horizontal
               :label-cols="1"
-              :label="inline_birthday"
-              label-for="inline_birthday"
+              :label="inline_last_name"
+              label-for="inline_last_name"
             >
               <b-col sm="4">
-                <b-form-input id="inline_birthday" required v-model="form.birthday"></b-form-input>
+                <b-form-input id="inline_last_name" required v-model="form.last_name"></b-form-input>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_date_of_birth"
+              horizontal
+              :label-cols="1"
+              :label="inline_date_of_birth"
+              label-for="inline_date_of_birth"
+            >
+              <b-col sm="4">
+                <b-form-input id="inline_date_of_birth" required v-model="form.date_of_birth"></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -184,7 +196,7 @@
 </template>
 
 <script>
-import { getRenters, setRenters } from "@/shared/renters-services";
+import { getRenterProfileById, setRenters } from "@/shared/renters-services";
 
 export default {
   data: () => {
@@ -192,10 +204,13 @@ export default {
       form: {
         id: 0,
         id_card: null,
-        image: null,
+        first_name: null,
+        last_name: null,
+
+        new_file: null,
+        old_file: null,
         prefix: null,
-        fullname: null,
-        birthday: null,
+        date_of_birth: null,
         document: null,
         address: null,
         mobile: null,
@@ -231,8 +246,9 @@ export default {
       submit_form_label: "บันทึก",
       inline_id_card: "บัตรประชาชน",
       inline_prefix_categories: "คำนำหน้า",
-      inline_fullname: "ชื่อ - สกุล",
-      inline_birthday: "วันเกิด",
+      inline_first_name: "ชื่อ",
+      inline_last_name: 'สกุล',
+      inline_date_of_birth: "วันเกิด",
       inline_document_file: "ไฟล์เอกสาร",
       inline_address: "ที่อยู่",
       inline_mobile: "เบอร์มือถือ",
@@ -243,24 +259,18 @@ export default {
     };
   },
   created() {
-    // this.getRenters();
-    console.log(this.$route.params.id);
+    this.getRenterProfileById();
   },
   methods: {
-    getRenters() {
-      getRenters()
+    getRenterProfileById() {
+      this.form.id = this.$route.params.id || 0;
+      getRenterProfileById(this.form.id)
         .then(response => {
-          this.items = response.data;
-          this.totalRows = this.items.length;
-          // console.log(this.items);
+          this.form = response.data
+          this.form.old_file = response.data.attached_file_image;
+          console.log(this.form);
         })
         .catch(e => console.log(e));
-    },
-
-    setDataToForm(data) {
-      // console.log(data.item);
-      this.form.id = data.item.id;
-      this.form.name = data.item.name;
     },
 
     onSubmit() {
