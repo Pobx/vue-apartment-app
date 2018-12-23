@@ -90,6 +90,8 @@
                 :fields="fields"
               >
                 <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
+                <template slot="apartments_id" slot-scope="data">{{ data.item.apartments.name }}</template>
+                <template slot="room_categories_id" slot-scope="data">{{ data.item.room_categories.name }}</template>
                 <template slot="edit" slot-scope="data">
                   <b-btn
                     size="sm"
@@ -139,6 +141,12 @@ export default {
         {
           key: "name",
           label: "หมายเลขห้อง",
+          sortable: true,
+          class: "text-center"
+        },
+        {
+          key: "apartments_id",
+          label: "Apartments",
           sortable: true,
           class: "text-center"
         },
