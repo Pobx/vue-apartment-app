@@ -123,6 +123,8 @@
                 :fields="fields"
               >
                 <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
+
+                <template slot="type" slot-scope="data">{{ data.item.type | unit_label }}</template>
                 <template slot="edit" slot-scope="data">
                   <b-btn
                     size="sm"
@@ -153,6 +155,24 @@ import {
 } from "@/shared/utilities-categories-services";
 
 export default {
+  filters: {
+    unit_label: function(unit) {
+      const units = [
+        { id: "unit", label: "หน่วย" },
+        { id: "monthly", label: "รายเดือน" }
+      ];
+
+      let label = '';
+      units.filter(value => {
+        if (value.id == unit) {
+          label = value.label;
+        }
+      });
+      
+      return label;
+    }
+  },
+
   data: () => {
     return {
       form: {
@@ -165,6 +185,7 @@ export default {
         unit_min_price: null,
         status: "active"
       },
+
       utitilies_type_options: [
         { text: "หน่วย", value: "unit" },
         { text: "รายเดือน", value: "monthly" }
