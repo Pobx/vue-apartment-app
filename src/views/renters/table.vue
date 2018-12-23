@@ -21,6 +21,9 @@
             :fields="fields"
           >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
+            <template slot="name" slot-scope="data">{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
+            <template slot="room_numbers" slot-scope="data">{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
+            <template slot="link_file" slot-scope="data">NO FILE</template>
             <template slot="edit" slot-scope="data">
               <b-btn
                 size="sm"
@@ -68,7 +71,7 @@ export default {
     };
   },
   created() {
-    // this.getRenters();
+    this.getRenters();
   },
   methods: {
     getRenters() {
@@ -76,7 +79,7 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
-          // console.log(this.items);
+          console.log(this.items);
         })
         .catch(e => console.log(e));
     },
