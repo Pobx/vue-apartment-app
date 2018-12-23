@@ -187,7 +187,7 @@
         <b-row>
           <b-col md="12" class="text-right">
             <b-link :to="link_to_table" class="btn btn-danger mr-sm-2">{{ link_to_table_label }}</b-link>
-            <b-button class="btn btn-success">{{ submit_form_label }}</b-button>
+            <b-button type="submit" class="btn btn-success">{{ submit_form_label }}</b-button>
           </b-col>
         </b-row>
       </b-card>
@@ -206,7 +206,6 @@ export default {
         id_card: null,
         first_name: null,
         last_name: null,
-
         new_file: null,
         old_file: null,
         prefix: null,
@@ -274,15 +273,9 @@ export default {
     },
 
     onSubmit() {
-      if (this.form.name == null) {
-        alert("พิมพ์ชื่อ Apartment ด้วยค่ะ");
-        return false;
-      }
-
       setRenters(this.form)
         .then(response => {
-          // console.log(response);
-          this.getRenters();
+          console.log(response);
           this.onReset();
         })
         .catch(e => {
@@ -294,7 +287,7 @@ export default {
     onReset() {
       this.form = {
         id: 0,
-        name: null
+        status: 'active'
       };
     }
   }
