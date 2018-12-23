@@ -5,7 +5,7 @@
         <b-row>
           <b-col md="12" class="text-right">
             <b-link :to="link_to_table" class="btn btn-danger mr-sm-2">{{ link_to_table_label }}</b-link>
-            <b-button class="btn btn-success">{{ submit_form_label }}</b-button>
+            <b-button type="submit" class="btn btn-success">{{ submit_form_label }}</b-button>
           </b-col>
         </b-row>
 
@@ -213,7 +213,8 @@ export default {
         document: null,
         address: null,
         mobile: null,
-        email: null
+        email: null,
+        status: 'active'
       },
       form_contact: {
         mobile: null,
@@ -258,16 +259,17 @@ export default {
     };
   },
   created() {
-    this.getRenterProfileById();
+    this.form.id = this.$route.params.id || 0;
+    if (this.form.id != 0) {
+      this.getRenterProfileById();
+    }
   },
   methods: {
     getRenterProfileById() {
-      this.form.id = this.$route.params.id || 0;
       getRenterProfileById(this.form.id)
         .then(response => {
           this.form = response.data
           this.form.old_file = response.data.attached_file_image;
-          console.log(this.form);
         })
         .catch(e => console.log(e));
     },
@@ -277,6 +279,7 @@ export default {
         .then(response => {
           console.log(response);
           this.onReset();
+          this.$router.go(-1);
         })
         .catch(e => {
           this.onReset();
