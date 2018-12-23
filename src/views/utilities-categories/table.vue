@@ -162,14 +162,14 @@ export default {
         { id: "monthly", label: "รายเดือน" }
       ];
 
-      let label = '';
+      let results = '';
       units.filter(value => {
         if (value.id == unit) {
-          label = value.label;
+          results = value.label;
         }
       });
       
-      return label;
+      return results;
     }
   },
 
