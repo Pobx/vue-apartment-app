@@ -161,7 +161,8 @@ export default {
         price_per_unit_cost: null,
         price_per_unit: null,
         unit_min_rate: null,
-        unit_min_price: null
+        unit_min_price: null,
+        status: 'active'
       },
       utitilies_type_options: [
         { text: "หน่วย", value: "unit" },
@@ -225,13 +226,13 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
-          console.log(this.items);
+          // console.log(this.items);
         })
         .catch(e => console.log(e));
     },
 
     setDataToForm(data) {
-      console.log(data.item);
+      // console.log(data.item);
       this.form.id = data.item.id;
       this.form.name = data.item.name;
       this.form.type = data.item.type;
@@ -244,7 +245,6 @@ export default {
     onSubmit() {
       setUtilitiesCategories(this.form)
         .then(response => {
-          // console.log(response);
           this.getUtilitiesCategories();
           this.onReset();
         })
@@ -256,8 +256,7 @@ export default {
 
     onReset() {
       this.form = {
-        id: 0,
-        utitilies_numbers: null
+        status: 'active'
       };
     }
   }
