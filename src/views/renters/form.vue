@@ -244,7 +244,7 @@ export default {
   },
   created() {
     // this.getRenters();
-    console.log(this.$router);
+    console.log(this.$route.params.id);
   },
   methods: {
     getRenters() {
