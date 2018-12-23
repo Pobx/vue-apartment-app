@@ -62,12 +62,7 @@
               label-for="inline_room_price"
             >
               <b-col sm="8">
-                <b-form-input
-                  id="inline_room_price"
-                  type="number"
-                  required
-                  v-model="form.room_price"
-                ></b-form-input>
+                <b-form-input id="inline_room_price" type="number" required v-model="form.price"></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -212,15 +207,16 @@ export default {
     },
 
     setDataToForm(data) {
-      console.log(data.item);
-      // this.form.id = data.item.id;
-      // this.form.name = data.item.name;
+      this.form.id = data.item.id;
+      this.form.name = data.item.name;
+      this.form.apartments_id = data.item.apartments_id;
+      this.form.room_categories_id = data.item.room_categories_id;
+      this.form.price = data.item.price;
     },
 
     onSubmit() {
       setRooms(this.form)
         .then(response => {
-          // console.log(response);
           this.getRooms();
           this.onReset();
         })
@@ -233,7 +229,7 @@ export default {
     onReset() {
       this.form = {
         id: 0,
-        name: null
+        status: "active"
       };
     }
   }
