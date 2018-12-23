@@ -21,15 +21,25 @@
             :fields="fields"
           >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-            <template slot="name" slot-scope="data">{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
-            <template slot="room_numbers" slot-scope="data">{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
-            <template slot="link_file" slot-scope="data">NO FILE</template>
+            <template
+              slot="room_numbers"
+              slot-scope="data"
+            >{{ data.item.rooms | room_numbers }}</template>
+            <template slot="id_card" slot-scope="data">{{ data.item.id_card }}</template>
+            <template
+              slot="name"
+              slot-scope="data"
+            >{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
+            <template slot="mobile" slot-scope="data">{{ data.item.mobile }}</template>
+            <template slot="email" slot-scope="data">{{ data.item.email }}</template>
+            
             <template slot="edit" slot-scope="data">
-              <b-btn
+              <router-link :to="{ path: 'renters-form/' + data.item.id}">{{ data.field.label }}</router-link>
+              <!-- <b-btn
                 size="sm"
                 variant="warning"
                 v-on:click="setDataToForm(data)"
-              >{{ data.field.label }}</b-btn>
+              >{{ data.field.label }}</b-btn> -->
             </template>
           </b-table>
 
@@ -43,6 +53,14 @@
 <script>
 import { getRenters, setRenters } from "@/shared/renters-services";
 export default {
+  filters: {
+    room_numbers: function(data) {
+      // if (typeof data.name != null && typeof data.name !='undefined') {
+      //   return data.name;
+      // }
+      // return typeof data.name;
+    }
+  },
   data: () => {
     return {
       form: {
@@ -52,22 +70,24 @@ export default {
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
+        { key: "room_numbers", label: "หมายเลขห้อง", class: "text-center" },
+        { key: "id_card", label: "เลขบัตรประชาชน", class: "text-center" },
         {
           key: "name",
           label: "ชื่อ - สกุล",
           sortable: true,
           class: "text-center"
         },
-        { key: "room_numbers", label: "หมายเลขห้อง", class: "text-center" },
-        { key: "link_file", label: "ไฟล์เอกสาร", class: "text-center" },
+        { key: "mobile", label: "เบอร์มือถือ", class: "text-center" },
+        { key: "email", label: "อีเมล์", class: "text-center" },
         { key: "edit", label: "แก้ไข", class: "text-center" }
       ],
       items: [],
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
-      link_to_form_label: 'เพิ่มใหม่',
-      link_to_form: 'renters-form'
+      link_to_form_label: "เพิ่มใหม่",
+      link_to_form: "renters-form"
     };
   },
   created() {

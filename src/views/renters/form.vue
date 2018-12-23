@@ -227,7 +227,7 @@ export default {
       totalRows: 0,
       perPage: 10,
       link_to_table_label: "ยกเลิก",
-      link_to_table: "renters",
+      link_to_table: "/setting/renters",
       submit_form_label: "บันทึก",
       inline_id_card: "บัตรประชาชน",
       inline_prefix_categories: "คำนำหน้า",
@@ -244,6 +244,7 @@ export default {
   },
   created() {
     // this.getRenters();
+    console.log(this.$router);
   },
   methods: {
     getRenters() {
