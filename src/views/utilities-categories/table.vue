@@ -151,18 +151,19 @@ import {
   getUtilitiesCategories,
   setUtilitiesCategories
 } from "@/shared/utilities-categories-services";
+
 export default {
   data: () => {
     return {
       form: {
         id: 0,
         name: null,
-        type: 'unit',
+        type: "unit",
         price_per_unit_cost: null,
         price_per_unit: null,
         unit_min_rate: null,
         unit_min_price: null,
-        status: 'active'
+        status: "active"
       },
       utitilies_type_options: [
         { text: "หน่วย", value: "unit" },
@@ -256,7 +257,7 @@ export default {
 
     onReset() {
       this.form = {
-        status: 'active'
+        status: "active"
       };
     }
   }

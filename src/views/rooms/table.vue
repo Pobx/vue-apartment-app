@@ -4,6 +4,25 @@
       <b-col sm="12" md="4">
         <b-card :header="header_form">
           <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
+
+            <b-form-group
+              id="inline_room_apartments"
+              horizontal
+              :label-cols="4"
+              :label="inline_room_apartments"
+              label-for="inline_room_apartments"
+            >
+              <b-col sm="8">
+                <b-form-select
+                  id="inline_room_apartments"
+                  v-model="form.apartments_id"
+                >
+                  <option :value="null">{{ inline_room_apartments }}</option>
+                  <option v-for="item in apartments" :key="item.index" :value="item.id">{{ item.name }}</option>
+                </b-form-select>
+              </b-col>
+            </b-form-group>
+
             <b-form-group
               id="inline_room_numbers"
               horizontal
@@ -55,7 +74,6 @@
                 <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button>
               </b-col>
             </b-row>
-            
           </b-form>
         </b-card>
       </b-col>
@@ -99,6 +117,8 @@
 
 <script>
 import { getRooms, setRooms } from "@/shared/rooms-services";
+import { getApartments } from "@/shared/apartments-services";
+
 export default {
   data: () => {
     return {
@@ -106,12 +126,14 @@ export default {
         id: 0,
         room_numbers: null,
         room_categories: 1,
-        room_price: null
+        room_price: null,
+        apartments_id: null
       },
       room_categories_options: [
         { text: "ห้องรายวัน", value: 1 },
         { text: "ห้องรายเดือ", value: 2 }
       ],
+      apartments: [],
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
@@ -149,13 +171,25 @@ export default {
       header_table: "รายการ ห้องพัก",
       inline_room_numbers: "หมายเลขห้อง",
       inline_room_categories: "ประเภท",
-      inline_room_price: "ราคา"
+      inline_room_price: "ราคา",
+      inline_room_apartments: 'Apartments'
     };
   },
   created() {
     // this.getRooms();
+    this.getApartments();
   },
   methods: {
+    getApartments() {
+      getApartments()
+        .then(response => {
+          this.apartments = response.data;
+          console.log(this.apartments)
+          
+        })
+        .catch(e => console.log(e));
+    },
+
     getRooms() {
       getRooms()
         .then(response => {
