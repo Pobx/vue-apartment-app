@@ -4,7 +4,6 @@
       <b-col sm="12" md="4">
         <b-card :header="header_form">
           <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
-
             <b-form-group
               id="inline_room_apartments"
               horizontal
@@ -13,25 +12,14 @@
               label-for="inline_room_apartments"
             >
               <b-col sm="8">
-                <b-form-select
-                  id="inline_room_apartments"
-                  v-model="form.apartments_id"
-                >
+                <b-form-select id="inline_room_apartments" v-model="form.apartments_id">
                   <option :value="null">{{ inline_room_apartments }}</option>
-                  <option v-for="item in apartments" :key="item.index" :value="item.id">{{ item.name }}</option>
+                  <option
+                    v-for="item in apartments"
+                    :key="item.index"
+                    :value="item.id"
+                  >{{ item.name }}</option>
                 </b-form-select>
-              </b-col>
-            </b-form-group>
-
-            <b-form-group
-              id="inline_room_numbers"
-              horizontal
-              :label-cols="4"
-              :label="inline_room_numbers"
-              label-for="inline_room_numbers"
-            >
-              <b-col sm="8">
-                <b-form-input id="inline_room_numbers" required v-model="form.room_numbers"></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -43,11 +31,26 @@
               label-for="inline_room_categories"
             >
               <b-col sm="8">
-                <b-form-radio-group
-                  id="inline_room_categories"
-                  v-model="form.room_categories"
-                  :options="room_categories_options"
-                ></b-form-radio-group>
+                <b-form-select id="inline_room_categories" v-model="form.room_categories_id">
+                  <option :value="null">{{ inline_room_categories }}</option>
+                  <option
+                    v-for="item in room_categories"
+                    :key="item.index"
+                    :value="item.id"
+                  >{{ item.name }}</option>
+                </b-form-select>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
+              id="inline_name"
+              horizontal
+              :label-cols="4"
+              :label="inline_name"
+              label-for="inline_name"
+            >
+              <b-col sm="8">
+                <b-form-input id="inline_name" required v-model="form.name"></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -118,21 +121,22 @@
 <script>
 import { getRooms, setRooms } from "@/shared/rooms-services";
 import { getApartments } from "@/shared/apartments-services";
+import { getRoomCategories } from "@/shared/room-categories-services";
 
 export default {
   data: () => {
     return {
       form: {
         id: 0,
-        room_numbers: null,
-        room_categories: 1,
-        room_price: null,
-        apartments_id: null
+        name: null,
+        apartments_id: null,
+        room_categories_id: null,
+        price: null,
+        status: "active",
+        utilities_packages_id: null,
+        renters_id: null
       },
-      room_categories_options: [
-        { text: "ห้องรายวัน", value: 1 },
-        { text: "ห้องรายเดือ", value: 2 }
-      ],
+      room_categories: [],
       apartments: [],
       fields: [
         // A column that needs custom formatting
@@ -144,7 +148,7 @@ export default {
           class: "text-center"
         },
         {
-          key: "categories_name",
+          key: "room_categories_id",
           label: "ประเภท",
           sortable: true,
           class: "text-center"
@@ -169,23 +173,30 @@ export default {
       perPage: 10,
       header_form: "ข้อมูลห้องพัก",
       header_table: "รายการ ห้องพัก",
-      inline_room_numbers: "หมายเลขห้อง",
+      inline_name: "หมายเลขห้อง",
       inline_room_categories: "ประเภท",
       inline_room_price: "ราคา",
-      inline_room_apartments: 'Apartments'
+      inline_room_apartments: "Apartments"
     };
   },
   created() {
-    // this.getRooms();
+    this.getRooms();
     this.getApartments();
+    this.getRoomCategories();
   },
   methods: {
+    getRoomCategories() {
+      getRoomCategories()
+        .then(response => {
+          this.room_categories = response.data;
+        })
+        .catch(e => console.log(e));
+    },
+
     getApartments() {
       getApartments()
         .then(response => {
           this.apartments = response.data;
-          console.log(this.apartments)
-          
         })
         .catch(e => console.log(e));
     },
@@ -207,11 +218,6 @@ export default {
     },
 
     onSubmit() {
-      if (this.form.name == null) {
-        alert("พิมพ์ชื่อ Apartment ด้วยค่ะ");
-        return false;
-      }
-
       setRooms(this.form)
         .then(response => {
           // console.log(response);
@@ -227,7 +233,7 @@ export default {
     onReset() {
       this.form = {
         id: 0,
-        room_numbers: null
+        name: null
       };
     }
   }
