@@ -141,36 +141,19 @@
       </b-card>
 
       <b-card header="ข้อมูลติดต่อฉุกเฉิน">
-        <b-form inline>
-          <label for="inline_contact_mobile">{{ inline_contact_mobile }}</label>
-          <b-input
-            class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4"
-            id="inline_contact_mobile"
-            v-model="form_contact.mobile"
-          />
-
-          <label for="inline_contact_fullname">{{ inline_contact_fullname }}</label>
-          <b-input
-            class="mb-2 mr-sm-2 ml-sm-2 mb-sm-0 col-sm-4"
-            id="inline_contact_fullname"
-            v-model="form_contact.fullname"
-          />
-
-          <b-button variant="primary">{{ button_add_new_contact_label }}</b-button>
-        </b-form>
+        <b-row>
+          <b-col md="12" class="text-right">
+            <b-btn v-b-modal.modalPrevent variant="primary">{{ button_modal_partners_label }}</b-btn>
+          </b-col>
+        </b-row>
 
         <br>
 
         <b-row>
           <b-col md="12">
-            <b-table
-              bordered
-              hover
-              responsive="true"
-              :items="items"
-              :fields="fields"
-            >
+            <b-table bordered hover responsive="true" :items="partners" :fields="fields">
               <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
+              <template slot="name" slot-scope="data">{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
               <template slot="remove" slot-scope="data">
                 <b-btn
                   size="sm"
@@ -192,11 +175,18 @@
         </b-row>
       </b-card>
     </b-form>
+
+    <b-modal id="modalPrevent" ref="modal" title="Submit your name">
+      <form @submit.stop.prevent="onSbumitPartner">
+        <b-form-input type="text" placeholder="Enter your name" v-model="form_contact.first_name"></b-form-input>
+      </form>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { getRenterProfileById, setRenters } from "@/shared/renters-services";
+import { getPartnersByRentersId } from "@/shared/partners-services";
 
 export default {
   data: () => {
@@ -214,11 +204,12 @@ export default {
         address: null,
         mobile: null,
         email: null,
-        status: 'active'
+        status: "active"
       },
       form_contact: {
         mobile: null,
-        fullname: null
+        first_name: null,
+        last_name: null
       },
       prefix_categories_options: [
         { text: "นาย", value: "mister" },
@@ -237,7 +228,7 @@ export default {
         { key: "mobile", label: "เบอร์ติดต่อ", class: "text-center" },
         { key: "remove", label: "ลบ", class: "text-center" }
       ],
-      items: [],
+      partners: [],
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
@@ -247,7 +238,7 @@ export default {
       inline_id_card: "บัตรประชาชน",
       inline_prefix_categories: "คำนำหน้า",
       inline_first_name: "ชื่อ",
-      inline_last_name: 'สกุล',
+      inline_last_name: "สกุล",
       inline_date_of_birth: "วันเกิด",
       inline_document_file: "ไฟล์เอกสาร",
       inline_address: "ที่อยู่",
@@ -255,20 +246,22 @@ export default {
       inline_email: "อีเมล์",
       inline_contact_mobile: "เบอร์มือถือ",
       inline_contact_fullname: "ชื่อ - สกุล",
-      button_add_new_contact_label: "เพิ่มข้อมูล"
+      button_add_new_contact_label: "เพิ่มข้อมูล",
+      button_modal_partners_label: "เพิ่มข้อมูล"
     };
   },
   created() {
     this.form.id = this.$route.params.id || 0;
     if (this.form.id != 0) {
       this.getRenterProfileById();
+      this.getPartnersByRentersId();
     }
   },
   methods: {
     getRenterProfileById() {
       getRenterProfileById(this.form.id)
         .then(response => {
-          this.form = response.data
+          this.form = response.data;
           this.form.old_file = response.data.attached_file_image;
         })
         .catch(e => console.log(e));
@@ -290,8 +283,18 @@ export default {
     onReset() {
       this.form = {
         id: 0,
-        status: 'active'
+        status: "active"
       };
+    },
+
+    onSbumitPartner() {},
+
+    getPartnersByRentersId() {
+      getPartnersByRentersId(this.form.id)
+        .then(response => {
+          this.partners = response.data;
+        })
+        .catch(e => console.log(e));
     }
   }
 };
