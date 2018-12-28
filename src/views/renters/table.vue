@@ -21,10 +21,10 @@
             :fields="fields"
           >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-            <template
-              slot="room_numbers"
-              slot-scope="data"
-            >{{ data.item.rooms | room_numbers }}</template>
+            <template slot="rooms" slot-scope="data">
+
+              <span v-for="(room, index) in data.item.rooms" :key="index"><span v-if="index > 0">,</span>{{ room.name }}</span>
+            </template>
             <template slot="id_card" slot-scope="data">{{ data.item.id_card }}</template>
             <template
               slot="name"
@@ -32,9 +32,12 @@
             >{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
             <template slot="mobile" slot-scope="data">{{ data.item.mobile }}</template>
             <template slot="email" slot-scope="data">{{ data.item.email }}</template>
-            
+
             <template slot="edit" slot-scope="data">
-              <router-link :to="{ path: 'renters-form/' + data.item.id}">{{ data.field.label }}</router-link>
+              <router-link
+                :to="{ path: 'renters-form/' + data.item.id}"
+                class="btn btn-warning btn-sm"
+              >{{ data.field.label }}</router-link>
             </template>
           </b-table>
 
@@ -65,7 +68,7 @@ export default {
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
-        { key: "room_numbers", label: "หมายเลขห้อง", class: "text-center" },
+        { key: "rooms", label: "หมายเลขห้อง", class: "text-center" },
         { key: "id_card", label: "เลขบัตรประชาชน", class: "text-center" },
         {
           key: "name",
@@ -94,15 +97,10 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
+
           console.log(this.items);
         })
         .catch(e => console.log(e));
-    },
-
-    setDataToForm(data) {
-      // console.log(data.item);
-      this.form.id = data.item.id;
-      this.form.name = data.item.name;
     },
 
     onSubmit() {
