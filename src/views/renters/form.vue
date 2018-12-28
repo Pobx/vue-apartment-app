@@ -221,9 +221,9 @@ export default {
         fullname: null
       },
       prefix_categories_options: [
-        { text: "นาย", value: "male" },
-        { text: "นาง", value: "female" },
-        { text: "นางสาว", value: "female" }
+        { text: "นาย", value: "mister" },
+        { text: "นาง", value: "miss" },
+        { text: "นางสาว", value: "mrs" }
       ],
       fields: [
         // A column that needs custom formatting
