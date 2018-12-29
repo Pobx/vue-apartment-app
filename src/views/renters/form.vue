@@ -316,7 +316,7 @@ export default {
       button_modal_partners_label: "เพิ่มข้อมูล",
       header_modal_form_label: "ข้อมูลติดต่อฉุกเฉิน",
       button_modal_hide_label: "ปิด",
-      image_path: null
+      image_path: "default_image/no-image.png"
     };
   },
   created() {
@@ -411,7 +411,8 @@ export default {
       uploadImage(fd).then(response => {
         console.log(response);
         if (response.status == 200) {
-          this.image_path = response.data.link_name;
+          this.form.attached_file_image = response.data.link_name;
+          this.image_path = response.data.link_path;
         }
       });
     }
