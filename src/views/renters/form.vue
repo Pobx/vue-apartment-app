@@ -406,10 +406,7 @@ export default {
       let fd = new FormData();
       fd.append("image", image, image.name);
 
-      console.log(fd);
-
       uploadImage(fd).then(response => {
-        console.log(response);
         if (response.status == 200) {
           this.form.attached_file_image = response.data.link_name;
           this.image_path = response.data.link_path;
