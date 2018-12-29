@@ -21,7 +21,8 @@
               class="mb-sm-3"
             />
 
-            <b-form-file v-model="form.new_file" placeholder="เลือกไฟล์..."></b-form-file>
+            <b-form-file @change="onSelectedImage" placeholder="เลือกไฟล์..."></b-form-file>
+            <input type="text" v-model="form.attached_file_image">
           </b-col>
 
           <b-col md="9">
@@ -245,6 +246,7 @@
 
 <script>
 import { getRenterProfileById, setRenters } from "@/shared/renters-services";
+import { uploadImage } from "@/shared/uploads-services";
 import {
   getPartnersByRentersId,
   removePartnersById,
@@ -259,8 +261,7 @@ export default {
         id_card: null,
         first_name: null,
         last_name: null,
-        new_file: null,
-        old_file: null,
+        attached_file_image: null,
         prefix: null,
         date_of_birth: null,
         document: null,
@@ -328,7 +329,6 @@ export default {
       getRenterProfileById(this.form.id)
         .then(response => {
           this.form = response.data;
-          this.form.old_file = response.data.attached_file_image;
         })
         .catch(e => console.log(e));
     },
@@ -396,6 +396,19 @@ export default {
           }
         })
         .catch(e => console.log(e));
+    },
+
+    onSelectedImage(event) {
+      let image = event.target.files[0];
+      let fd = new FormData();
+      fd.append('image', image, image.name);
+
+      console.log(fd)
+      uploadImage(fd)
+      .then(response => {
+        console.log(response);
+      })
+
     }
   }
 };
