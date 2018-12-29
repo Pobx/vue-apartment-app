@@ -229,7 +229,7 @@
 
         <b-row>
           <b-col md="12" class="text-right">
-            <input type="text" v-model="form_partners.id">
+            <input type="hidden" v-model="form_partners.id">
             <b-button
               type="button"
               @click="hideModal"
@@ -355,6 +355,9 @@ export default {
 
     onAddPartners() {
       this.partners.push(this.form_partners);
+      this.form_partners = {
+        id: 0
+      }
     },
 
     getPartnersByRentersId() {
@@ -385,8 +388,6 @@ export default {
       this.partners.map(value => {
         (value.renters_id = renters_id), (value.status = "active");
       });
-
-      this.partners.filter(value => value.id == 0);
 
       setPartners(this.partners)
         .then(response => {
