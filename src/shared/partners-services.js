@@ -9,3 +9,7 @@ export function removePartnersById(id) {
   let data = { id: id, status: "disabled" };
   return axios.put(`${API}/renters-partners/remove-partner`, data);
 }
+
+export function setPartners(data) {
+  return axios.put(`${API}/renters-partners/create`, data);
+}

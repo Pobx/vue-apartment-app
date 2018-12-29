@@ -188,7 +188,7 @@
       :title="header_modal_form_label"
       :hide-footer="true"
     >
-      <b-form v-on:submit.prevent="onSbumitPartner" autocomplete="off">
+      <b-form v-on:submit.prevent="onAddPartners" autocomplete="off">
         <b-form-group
           id="inline_first_name"
           horizontal
@@ -352,7 +352,7 @@ export default {
       };
     },
 
-    onSbumitPartner() {
+    onAddPartners() {
       console.log(this.form_partners);
       this.partners.push(this.form_partners);
     },
