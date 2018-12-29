@@ -13,16 +13,17 @@
 
         <b-row>
           <b-col md="3">
-            <b-img
+            <b-img-lazy
               thumbnail
               fluid-grow
-              src="https://picsum.photos/250/250/?image=54"
+              :src="image_path"
               alt="Thumbnail"
               class="mb-sm-3"
+              v-if="image_path != null"
             />
 
             <b-form-file @change="onSelectedImage" placeholder="เลือกไฟล์..."></b-form-file>
-            <input type="text" v-model="form.attached_file_image">
+            <input type="hidden" v-model="form.attached_file_image">
           </b-col>
 
           <b-col md="9">
@@ -314,7 +315,8 @@ export default {
       button_add_new_contact_label: "เพิ่มข้อมูล",
       button_modal_partners_label: "เพิ่มข้อมูล",
       header_modal_form_label: "ข้อมูลติดต่อฉุกเฉิน",
-      button_modal_hide_label: "ปิด"
+      button_modal_hide_label: "ปิด",
+      image_path: null
     };
   },
   created() {
@@ -329,6 +331,7 @@ export default {
       getRenterProfileById(this.form.id)
         .then(response => {
           this.form = response.data;
+          this.image_path = response.data.image_path;
         })
         .catch(e => console.log(e));
     },
@@ -357,7 +360,7 @@ export default {
       this.partners.push(this.form_partners);
       this.form_partners = {
         id: 0
-      }
+      };
     },
 
     getPartnersByRentersId() {
@@ -401,14 +404,16 @@ export default {
     onSelectedImage(event) {
       let image = event.target.files[0];
       let fd = new FormData();
-      fd.append('image', image, image.name);
+      fd.append("image", image, image.name);
 
-      console.log(fd)
-      uploadImage(fd)
-      .then(response => {
+      console.log(fd);
+
+      uploadImage(fd).then(response => {
         console.log(response);
-      })
-
+        if (response.status == 200) {
+          this.image_path = response.data.link_name;
+        }
+      });
     }
   }
 };
