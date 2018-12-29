@@ -51,14 +51,6 @@
 <script>
 import { getRenters, setRenters } from "@/shared/renters-services";
 export default {
-  filters: {
-    room_numbers: function(data) {
-      // if (typeof data.name != null && typeof data.name !='undefined') {
-      //   return data.name;
-      // }
-      // return typeof data.name;
-    }
-  },
   data: () => {
     return {
       form: {
@@ -97,8 +89,6 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
-
-          console.log(this.items);
         })
         .catch(e => console.log(e));
     },
