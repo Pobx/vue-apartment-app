@@ -143,7 +143,10 @@
       <b-card header="ข้อมูลติดต่อฉุกเฉิน">
         <b-row>
           <b-col md="12" class="text-right">
-            <b-btn v-b-modal.modalPrevent variant="primary">{{ button_modal_partners_label }}</b-btn>
+            <b-btn
+              v-b-modal.modalEmergencyContacts
+              variant="primary"
+            >{{ button_modal_partners_label }}</b-btn>
           </b-col>
         </b-row>
 
@@ -153,12 +156,15 @@
           <b-col md="12">
             <b-table bordered hover responsive="true" :items="partners" :fields="fields">
               <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-              <template slot="name" slot-scope="data">{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
+              <template
+                slot="name"
+                slot-scope="data"
+              >{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
               <template slot="remove" slot-scope="data">
                 <b-btn
                   size="sm"
                   variant="danger"
-                  v-on:click="setDataToForm(data)"
+                  v-on:click="removeContact(data.item, data.index)"
                 >{{ data.field.label }}</b-btn>
               </template>
             </b-table>
@@ -176,10 +182,63 @@
       </b-card>
     </b-form>
 
-    <b-modal id="modalPrevent" ref="modal" title="Submit your name">
-      <form @submit.stop.prevent="onSbumitPartner">
-        <b-form-input type="text" placeholder="Enter your name" v-model="form_contact.first_name"></b-form-input>
-      </form>
+    <b-modal
+      id="modalEmergencyContacts"
+      ref="modalEmergencyContacts"
+      :title="header_modal_form_label"
+      :hide-footer="true"
+    >
+      <b-form v-on:submit.prevent="onSbumitPartner" autocomplete="off">
+        <b-form-group
+          id="inline_first_name"
+          horizontal
+          :label-cols="2"
+          :label="inline_first_name"
+          label-for="inline_first_name"
+        >
+          <b-col sm="10">
+            <b-form-input id="inline_first_name" required v-model="form_partners.first_name"></b-form-input>
+          </b-col>
+        </b-form-group>
+
+        <b-form-group
+          id="inline_last_name"
+          horizontal
+          :label-cols="2"
+          :label="inline_last_name"
+          label-for="inline_last_name"
+        >
+          <b-col sm="10">
+            <b-form-input id="inline_last_name" required v-model="form_partners.last_name"></b-form-input>
+          </b-col>
+        </b-form-group>
+
+        <b-form-group
+          id="inline_mobile"
+          horizontal
+          :label-cols="2"
+          :label="inline_mobile"
+          label-for="inline_mobile"
+        >
+          <b-col sm="10">
+            <b-form-input id="inline_mobile" required v-model="form_partners.mobile"></b-form-input>
+          </b-col>
+        </b-form-group>
+
+        <br>
+
+        <b-row>
+          <b-col md="12" class="text-right">
+            <input type="text" v-model="form_partners.id">
+            <b-button
+              type="button"
+              @click="hideModal"
+              class="btn btn-danger mr-sm-2"
+            >{{ button_modal_hide_label }}</b-button>
+            <b-button type="submit" class="btn btn-success">{{ submit_form_label }}</b-button>
+          </b-col>
+        </b-row>
+      </b-form>
     </b-modal>
   </div>
 </template>
@@ -206,7 +265,8 @@ export default {
         email: null,
         status: "active"
       },
-      form_contact: {
+      form_partners: {
+        id:0,
         mobile: null,
         first_name: null,
         last_name: null
@@ -247,7 +307,9 @@ export default {
       inline_contact_mobile: "เบอร์มือถือ",
       inline_contact_fullname: "ชื่อ - สกุล",
       button_add_new_contact_label: "เพิ่มข้อมูล",
-      button_modal_partners_label: "เพิ่มข้อมูล"
+      button_modal_partners_label: "เพิ่มข้อมูล",
+      header_modal_form_label: "ข้อมูลติดต่อฉุกเฉิน",
+      button_modal_hide_label: 'ปิด'
     };
   },
   created() {
@@ -287,7 +349,11 @@ export default {
       };
     },
 
-    onSbumitPartner() {},
+    onSbumitPartner() {
+      console.log(this.form_partners)
+      this.partners.push(this.form_partners);
+      
+    },
 
     getPartnersByRentersId() {
       getPartnersByRentersId(this.form.id)
@@ -295,6 +361,16 @@ export default {
           this.partners = response.data;
         })
         .catch(e => console.log(e));
+    },
+    hideModal() {
+      this.$refs.modalEmergencyContacts.hide();
+    },
+    removeContact(data, index) {
+      // console.log(data)
+      console.log(index)
+      if (data.id == 0) {
+        this.partners.splice(index, 1);
+      }
     }
   }
 };
