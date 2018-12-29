@@ -336,11 +336,9 @@ export default {
     onSubmit() {
       setRenters(this.form)
         .then(response => {
-          console.log(response);
           let renters_id = response.data.id;
           this.onSbumitPartners(renters_id);
           this.onReset();
-          // this.$router.go(-1);
         })
         .catch(e => {
           this.onReset();
@@ -356,7 +354,6 @@ export default {
     },
 
     onAddPartners() {
-      console.log(this.form_partners);
       this.partners.push(this.form_partners);
     },
 
@@ -391,11 +388,11 @@ export default {
 
       this.partners.filter(value => value.id == 0);
 
-      console.log(this.partners);
-
       setPartners(this.partners)
         .then(response => {
-          console.log(response);
+          if (response.status == 201) {
+            this.$router.go(-1);
+          }
         })
         .catch(e => console.log(e));
     }
