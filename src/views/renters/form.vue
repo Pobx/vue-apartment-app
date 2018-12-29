@@ -245,7 +245,10 @@
 
 <script>
 import { getRenterProfileById, setRenters } from "@/shared/renters-services";
-import { getPartnersByRentersId } from "@/shared/partners-services";
+import {
+  getPartnersByRentersId,
+  removePartnersById
+} from "@/shared/partners-services";
 
 export default {
   data: () => {
@@ -266,7 +269,7 @@ export default {
         status: "active"
       },
       form_partners: {
-        id:0,
+        id: 0,
         mobile: null,
         first_name: null,
         last_name: null
@@ -309,7 +312,7 @@ export default {
       button_add_new_contact_label: "เพิ่มข้อมูล",
       button_modal_partners_label: "เพิ่มข้อมูล",
       header_modal_form_label: "ข้อมูลติดต่อฉุกเฉิน",
-      button_modal_hide_label: 'ปิด'
+      button_modal_hide_label: "ปิด"
     };
   },
   created() {
@@ -350,9 +353,8 @@ export default {
     },
 
     onSbumitPartner() {
-      console.log(this.form_partners)
+      console.log(this.form_partners);
       this.partners.push(this.form_partners);
-      
     },
 
     getPartnersByRentersId() {
@@ -366,10 +368,16 @@ export default {
       this.$refs.modalEmergencyContacts.hide();
     },
     removeContact(data, index) {
-      // console.log(data)
-      console.log(index)
       if (data.id == 0) {
         this.partners.splice(index, 1);
+      } else {
+        removePartnersById(data.id)
+          .then(response => {
+            if (response.status) {
+              this.getPartnersByRentersId();
+            }
+          })
+          .catch(e => console.log(e));
       }
     }
   }
