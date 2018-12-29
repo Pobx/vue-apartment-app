@@ -247,7 +247,8 @@
 import { getRenterProfileById, setRenters } from "@/shared/renters-services";
 import {
   getPartnersByRentersId,
-  removePartnersById
+  removePartnersById,
+  setPartners
 } from "@/shared/partners-services";
 
 export default {
@@ -336,8 +337,10 @@ export default {
       setRenters(this.form)
         .then(response => {
           console.log(response);
+          let renters_id = response.data.id;
+          this.onSbumitPartners(renters_id);
           this.onReset();
-          this.$router.go(-1);
+          // this.$router.go(-1);
         })
         .catch(e => {
           this.onReset();
@@ -379,6 +382,22 @@ export default {
           })
           .catch(e => console.log(e));
       }
+    },
+
+    onSbumitPartners(renters_id) {
+      this.partners.map(value => {
+        (value.renters_id = renters_id), (value.status = "active");
+      });
+
+      this.partners.filter(value => value.id == 0);
+
+      console.log(this.partners);
+
+      setPartners(this.partners)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(e => console.log(e));
     }
   }
 };
