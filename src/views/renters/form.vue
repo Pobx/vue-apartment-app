@@ -122,7 +122,7 @@
                   placeholder="เลือกไฟล์..."
                   v-show="uploadPercentageFile == 0"
                 ></b-form-file>
-                <input type="hidden" v-model="attached_file">
+                <input type="text" v-model="attached_file">
                 <b-progress
                   :value="uploadPercentageFile"
                   variant="success"
@@ -133,7 +133,11 @@
                 ></b-progress>
               </b-col>
 
-              <b-col sm="4">{{file_path}}</b-col>
+              <b-col sm="2" v-if="file_path !=null">
+                <a :href="file_path" target="_blank">
+                  <i class="fa fa-file fa-2x" aria-hidden="true"></i>
+                </a>
+              </b-col>
             </b-form-group>
 
             <b-form-group
