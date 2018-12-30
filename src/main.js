@@ -6,16 +6,14 @@ import "core-js/es7/array";
 // import cssVars from 'css-vars-ponyfill'
 import Vue from "vue";
 import BootstrapVue from "bootstrap-vue";
-import VCalendar from "v-calendar";
-import "v-calendar/lib/v-calendar.min.css";
-
+import MaskedInput from "vue-text-mask";
 import App from "./App";
 import router from "./router";
 
 // todo
 // cssVars()
-
-Vue.use(BootstrapVue, VCalendar);
+Vue.use(BootstrapVue);
+Vue.component("masked-input", MaskedInput);
 
 /* eslint-disable no-new */
 new Vue({

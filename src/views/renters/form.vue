@@ -99,7 +99,14 @@
               label-for="inline_date_of_birth"
             >
               <b-col sm="4">
-                <b-form-input id="inline_date_of_birth" required v-model="form.date_of_birth"></b-form-input>
+                <masked-input
+                  type="text"
+                  class="form-control"
+                  v-model="example_date_of_birth"
+                  :mask="[/\d/, /\d/, '/', '/', /\d/, /\d/,'/', /\d/, /\d/, /\d/, /\d/]"
+                  :guide="false"
+                  placeholderChar="#"
+                ></masked-input>
               </b-col>
             </b-form-group>
 
@@ -331,7 +338,8 @@ export default {
       image_path: "default_image/no-image.png",
       uploadPercentage: 0,
       animate: true,
-      uploadPercentageFile: 0
+      uploadPercentageFile: 0,
+      example_date_of_birth: "16/05/2530"
     };
   },
   created() {
@@ -467,7 +475,6 @@ export default {
           this.image_path = "default_image/no-image.png";
         });
     }
-
   }
 };
 </script>
