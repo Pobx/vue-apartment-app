@@ -117,8 +117,23 @@
               label-for="inline_document_file"
             >
               <b-col sm="4">
-                <b-form-file v-model="form.document" placeholder="เลือกไฟล์..."></b-form-file>
+                <b-form-file
+                  @change="onSelectedFile"
+                  placeholder="เลือกไฟล์..."
+                  v-show="uploadPercentageFile == 0"
+                ></b-form-file>
+                <input type="hidden" v-model="attached_file">
+                <b-progress
+                  :value="uploadPercentageFile"
+                  variant="success"
+                  striped
+                  :animated="animate"
+                  class="mt-1"
+                  v-show="uploadPercentageFile != 0"
+                ></b-progress>
               </b-col>
+
+              <b-col sm="4">{{file_path}}</b-col>
             </b-form-group>
 
             <b-form-group
@@ -277,7 +292,7 @@
 
 <script>
 import { getRenterProfileById, setRenters } from "@/shared/renters-services";
-import { uploadImages } from "@/shared/uploads-services";
+import { uploadImages, uploadFiles } from "@/shared/uploads-services";
 import {
   getPartnersByRentersId,
   removePartnersById,
@@ -295,7 +310,6 @@ export default {
         attached_file_image: null,
         prefix: null,
         date_of_birth: null,
-        document: null,
         address: null,
         mobile: null,
         email: null,
@@ -350,6 +364,8 @@ export default {
       uploadPercentage: 0,
       animate: true,
       uploadPercentageFile: 0,
+      attached_file: null,
+      file_path: null
     };
   },
   created() {
@@ -474,14 +490,14 @@ export default {
       uploadFiles(fd, config)
         .then(response => {
           if (response.status == 200) {
-            this.form.attached_file_image = response.data.link_name;
+            this.attached_file = response.data.link_name;
             this.file_path = response.data.link_path;
-            this.uploadPercentage = 0;
+            this.uploadPercentageFile = 0;
           }
         })
         .catch(e => {
           console.log(e);
-          this.uploadPercentage = 0;
+          this.uploadPercentageFile = 0;
           this.image_path = "default_image/no-image.png";
         });
     }
