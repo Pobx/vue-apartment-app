@@ -102,8 +102,8 @@
                 <masked-input
                   type="text"
                   class="form-control"
-                  v-model="example_date_of_birth"
-                  :mask="[/\d/, /\d/, '/', '/', /\d/, /\d/,'/', /\d/, /\d/, /\d/, /\d/]"
+                  v-model="form.date_of_birth"
+                  :mask="[/\d/, /\d/, '/', /\d/, /\d/,'/', /\d/, /\d/, /\d/, /\d/]"
                   :guide="false"
                 ></masked-input>
               </b-col>
@@ -350,7 +350,6 @@ export default {
       uploadPercentage: 0,
       animate: true,
       uploadPercentageFile: 0,
-      example_date_of_birth: "16/05/2530"
     };
   },
   created() {
