@@ -105,7 +105,6 @@
                   v-model="example_date_of_birth"
                   :mask="[/\d/, /\d/, '/', '/', /\d/, /\d/,'/', /\d/, /\d/, /\d/, /\d/]"
                   :guide="false"
-                  placeholderChar="#"
                 ></masked-input>
               </b-col>
             </b-form-group>
@@ -142,7 +141,14 @@
               label-for="inline_mobile"
             >
               <b-col sm="4">
-                <b-form-input id="inline_mobile" required v-model="form.mobile"></b-form-input>
+                <!-- <b-form-input id="inline_mobile" required v-model="form.mobile"></b-form-input> -->
+                <masked-input
+                  type="text"
+                  class="form-control"
+                  v-model="form.mobile"
+                  :mask="[/\d/, /\d/,/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]"
+                  :guide="false"
+                ></masked-input>
               </b-col>
             </b-form-group>
 
