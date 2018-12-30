@@ -247,7 +247,13 @@
           label-for="inline_mobile"
         >
           <b-col sm="10">
-            <b-form-input id="inline_mobile" required v-model="form_partners.mobile"></b-form-input>
+            <masked-input
+              type="text"
+              class="form-control"
+              v-model="form_partners.mobile"
+              :mask="[/\d/, /\d/,/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]"
+              :guide="false"
+            ></masked-input>
           </b-col>
         </b-form-group>
 
