@@ -22,8 +22,20 @@
               v-if="image_path != null"
             />
 
-            <b-form-file @change="onSelectedImage" placeholder="เลือกไฟล์..."></b-form-file>
+            <b-form-file
+              @change="onSelectedImage"
+              placeholder="เลือกไฟล์..."
+              v-show="uploadPercentage == 0"
+            ></b-form-file>
             <input type="hidden" v-model="form.attached_file_image">
+            <b-progress
+              :value="uploadPercentage"
+              variant="success"
+              striped
+              :animated="animate"
+              class="mt-1"
+              v-show="uploadPercentage != 0"
+            ></b-progress>
           </b-col>
 
           <b-col md="9">
@@ -316,7 +328,9 @@ export default {
       button_modal_partners_label: "เพิ่มข้อมูล",
       header_modal_form_label: "ข้อมูลติดต่อฉุกเฉิน",
       button_modal_hide_label: "ปิด",
-      image_path: "default_image/no-image.png"
+      image_path: "default_image/no-image.png",
+      uploadPercentage: 0,
+      animate: true
     };
   },
   created() {
@@ -402,16 +416,29 @@ export default {
     },
 
     onSelectedImage(event) {
+      const config = {
+        onUploadProgress: progressEvent =>
+          (this.uploadPercentage =
+            Math.round(progressEvent.loaded / progressEvent.total) * 100)
+      };
+
       let image = event.target.files[0];
       let fd = new FormData();
       fd.append("image", image, image.name);
 
-      uploadImage(fd).then(response => {
-        if (response.status == 200) {
-          this.form.attached_file_image = response.data.link_name;
-          this.image_path = response.data.link_path;
-        }
-      });
+      uploadImage(fd, config)
+        .then(response => {
+          if (response.status == 200) {
+            this.form.attached_file_image = response.data.link_name;
+            this.image_path = response.data.link_path;
+            this.uploadPercentage = 0;
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          this.uploadPercentage = 0;
+          this.image_path = "default_image/no-image.png";
+        });
     }
   }
 };
