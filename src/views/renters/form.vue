@@ -122,7 +122,7 @@
                   placeholder="เลือกไฟล์..."
                   v-show="uploadPercentageFile == 0"
                 ></b-form-file>
-                <input type="text" v-model="attached_file">
+                <input type="text" v-model="attached_name">
                 <b-progress
                   :value="uploadPercentageFile"
                   variant="success"
@@ -302,6 +302,7 @@ import {
   removePartnersById,
   setPartners
 } from "@/shared/partners-services";
+import { setAttachedFile } from "@/shared/attached_files-services";
 
 export default {
   data: () => {
@@ -368,7 +369,7 @@ export default {
       uploadPercentage: 0,
       animate: true,
       uploadPercentageFile: 0,
-      attached_file: null,
+      attached_name: null,
       file_path: null
     };
   },
@@ -494,7 +495,7 @@ export default {
       uploadFiles(fd, config)
         .then(response => {
           if (response.status == 200) {
-            this.attached_file = response.data.link_name;
+            this.attached_name = response.data.link_name;
             this.file_path = response.data.link_path;
             this.uploadPercentageFile = 0;
           }
