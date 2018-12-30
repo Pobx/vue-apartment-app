@@ -259,7 +259,7 @@
 
 <script>
 import { getRenterProfileById, setRenters } from "@/shared/renters-services";
-import { uploadImage } from "@/shared/uploads-services";
+import { uploadImages } from "@/shared/uploads-services";
 import {
   getPartnersByRentersId,
   removePartnersById,
@@ -330,7 +330,8 @@ export default {
       button_modal_hide_label: "ปิด",
       image_path: "default_image/no-image.png",
       uploadPercentage: 0,
-      animate: true
+      animate: true,
+      uploadPercentageFile: 0
     };
   },
   created() {
@@ -426,7 +427,7 @@ export default {
       let fd = new FormData();
       fd.append("image", image, image.name);
 
-      uploadImage(fd, config)
+      uploadImages(fd, config)
         .then(response => {
           if (response.status == 200) {
             this.form.attached_file_image = response.data.link_name;
@@ -439,7 +440,34 @@ export default {
           this.uploadPercentage = 0;
           this.image_path = "default_image/no-image.png";
         });
+    },
+
+    onSelectedFile(event) {
+      const config = {
+        onUploadProgress: progressEvent =>
+          (this.uploadPercentageFile =
+            Math.round(progressEvent.loaded / progressEvent.total) * 100)
+      };
+
+      let file = event.target.files[0];
+      let fd = new FormData();
+      fd.append("file", file, file.name);
+
+      uploadFiles(fd, config)
+        .then(response => {
+          if (response.status == 200) {
+            this.form.attached_file_image = response.data.link_name;
+            this.file_path = response.data.link_path;
+            this.uploadPercentage = 0;
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          this.uploadPercentage = 0;
+          this.image_path = "default_image/no-image.png";
+        });
     }
+
   }
 };
 </script>
