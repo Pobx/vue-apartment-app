@@ -141,7 +141,6 @@
               label-for="inline_mobile"
             >
               <b-col sm="4">
-                <!-- <b-form-input id="inline_mobile" required v-model="form.mobile"></b-form-input> -->
                 <masked-input
                   type="text"
                   class="form-control"
