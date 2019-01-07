@@ -382,7 +382,6 @@ export default {
       this.getRenterProfileById();
       this.getPartnersByRentersId();
     }
-    this.showLoginError();
   },
   methods: {
     getRenterProfileById() {
@@ -397,7 +396,7 @@ export default {
             this.attached_file_id = response.data.attached_file_id;
           }
         })
-        .catch(e => console.log(e));
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     onSubmit() {
@@ -407,10 +406,14 @@ export default {
           this.onSubmitAttachedFile(renters_id);
           this.onSubmitPartners(renters_id);
           this.onReset();
+          this.showNotifications({
+            message: "บันทึกข้อมูลสำเร็จ",
+            type: "success"
+          });
         })
         .catch(e => {
           this.onReset();
-          console.log(e);
+          this.showNotifications({ message: e });
         });
     },
 
@@ -433,7 +436,7 @@ export default {
         .then(response => {
           this.partners = response.data;
         })
-        .catch(e => console.log(e));
+        .catch(e => this.showNotifications({ message: e }));
     },
     hideModal() {
       this.$refs.modalEmergencyContacts.hide();
@@ -449,7 +452,7 @@ export default {
               this.getPartnersByRentersId();
             }
           })
-          .catch(e => console.log(e));
+          .catch(e => this.showNotifications({ message: e }));
       }
     },
 
@@ -464,12 +467,12 @@ export default {
             this.$router.go(-1);
           }
         })
-        .catch(e => console.log(e));
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     onSubmitAttachedFile(renters_id) {
       let data = {
-        id: attached_file_id,
+        id: this.attached_file_id,
         renters_id: renters_id,
         attached_name: this.attached_name,
         status: "active"
@@ -533,11 +536,10 @@ export default {
     }
   },
   notifications: {
-    showLoginError: {
-      // You can have any name you want instead of 'showLoginError'
-      title: "Login Failed",
-      message: "Failed to authenticate",
-      type: "error" // You also can use 'VueNotifications.types.error' instead of 'error'
+    showNotifications: {
+      title: "ระบบแจ้งเตือน",
+      message: "Please override props !",
+      type: "error"
     }
   }
 };
