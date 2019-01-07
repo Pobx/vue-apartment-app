@@ -538,7 +538,7 @@ export default {
   notifications: {
     showNotifications: {
       title: "ระบบแจ้งเตือน",
-      message: "Please override props !",
+      message: "เกิดข้อผิดพลาด...โปรดติดต่อผู้ดูแลระบบ",
       type: "error"
     }
   }

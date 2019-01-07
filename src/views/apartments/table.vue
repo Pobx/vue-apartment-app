@@ -12,7 +12,7 @@
               id="inlineFormApartmentsName"
               placeholder="พิมพ์ชื่อ Apartment"
             />&nbsp;
-            <input type="hidden" v-model="form.id"/>
+            <input type="hidden" v-model="form.id">
             <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button>
           </b-form>
         </b-col>
@@ -22,14 +22,15 @@
 
       <b-row>
         <b-col md="12">
-          <b-table 
-            bordered 
-            hover 
-            responsive=true
+          <b-table
+            bordered
+            hover
+            responsive="true"
             :current-page="currentPage"
-            :per-page="perPage"  
-            :items="items" 
-            :fields="fields">
+            :per-page="perPage"
+            :items="items"
+            :fields="fields"
+          >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
             <template slot="edit" slot-scope="data">
               <b-btn
@@ -82,33 +83,37 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
-          // console.log(this.items);
         })
-        .catch(e => console.log(e));
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     setDataToForm(data) {
-      // console.log(data.item);
       this.form.id = data.item.id;
       this.form.name = data.item.name;
     },
 
     onSubmit() {
-      
       if (this.form.name == null) {
-        alert('พิมพ์ชื่อ Apartment ด้วยค่ะ');
+        this.showNotifications({
+          message: "พิมพ์ชื่อ Apartment ด้วยค่ะ",
+          type: "warn"
+        });
+
         return false;
       }
 
       setApartments(this.form)
         .then(response => {
-          // console.log(response);
           this.getApartments();
           this.onReset();
+          this.showNotifications({
+            message: "บันทึกข้อมูลสำเร็จ",
+            type: "success"
+          });
         })
         .catch(e => {
           this.onReset();
-          console.log(e);
+          this.showNotifications({ message: e });
         });
     },
 
@@ -118,7 +123,13 @@ export default {
         name: null
       };
     }
-
+  },
+  notifications: {
+    showNotifications: {
+      title: "ระบบแจ้งเตือน",
+      message: "เกิดข้อผิดพลาด...โปรดติดต่อผู้ดูแลระบบ",
+      type: "error"
+    }
   }
 };
 </script>

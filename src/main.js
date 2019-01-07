@@ -15,17 +15,17 @@ import router from "./router";
 // todo
 // cssVars()
 const toastTypes = {
-  success: 'success',
-  error: 'error',
-  info: 'info',
-  warn: 'warn'
-}
+  success: "success",
+  error: "error",
+  info: "info",
+  warn: "warn"
+};
 
 // This step requires only for mini-toastr, just an initialization
-miniToastr.init({types: toastTypes})
+miniToastr.init({ types: toastTypes });
 
-function toast ({title, message, type, timeout, cb}) {
-  return miniToastr[type](message, title, timeout, cb)
+function toast({ title, message, type, timeout, cb }) {
+  return miniToastr[type](message, title, timeout, cb);
 }
 
 const options = {
@@ -33,7 +33,7 @@ const options = {
   error: toast,
   info: toast,
   warn: toast
-}
+};
 
 Vue.use(BootstrapVue);
 Vue.use(VueNotifications, options);
