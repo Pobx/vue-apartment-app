@@ -123,7 +123,7 @@
                   v-show="uploadPercentageFile == 0"
                 ></b-form-file>
                 <input type="hidden" v-model="attached_name">
-                <input type="text" v-model="attached_file_id">
+                <input type="hidden" v-model="attached_file_id">
                 
                 <b-progress
                   :value="uploadPercentageFile"
