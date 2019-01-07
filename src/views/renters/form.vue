@@ -122,7 +122,7 @@
                   placeholder="เลือกไฟล์..."
                   v-show="uploadPercentageFile == 0"
                 ></b-form-file>
-                <input type="text" v-model="attached_name">
+                <input type="hidden" v-model="attached_name">
                 <b-progress
                   :value="uploadPercentageFile"
                   variant="success"
@@ -386,6 +386,12 @@ export default {
         .then(response => {
           this.form = response.data;
           this.image_path = response.data.image_path;
+          this.attached_name = response.data.attached_name;
+
+          if (this.attached_name != null) {
+            this.file_path = response.data.file_path;
+          }
+
         })
         .catch(e => console.log(e));
     },
@@ -394,7 +400,8 @@ export default {
       setRenters(this.form)
         .then(response => {
           let renters_id = response.data.id;
-          this.onSbumitPartners(renters_id);
+          this.onSubmitAttachedFile(renters_id);
+          this.onSubmitPartners(renters_id);
           this.onReset();
         })
         .catch(e => {
@@ -441,7 +448,7 @@ export default {
       }
     },
 
-    onSbumitPartners(renters_id) {
+    onSubmitPartners(renters_id) {
       this.partners.map(value => {
         (value.renters_id = renters_id), (value.status = "active");
       });
@@ -453,6 +460,18 @@ export default {
           }
         })
         .catch(e => console.log(e));
+    },
+
+    onSubmitAttachedFile(renters_id) {
+      let data = {
+        renters_id: renters_id,
+        attached_name: this.attached_name,
+        status: "active"
+      };
+
+      if (this.attached_name != null) {
+        setAttachedFile(data);
+      }
     },
 
     onSelectedImage(event) {
