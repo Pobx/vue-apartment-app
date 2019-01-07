@@ -124,7 +124,7 @@
                 ></b-form-file>
                 <input type="hidden" v-model="attached_name">
                 <input type="hidden" v-model="attached_file_id">
-                
+
                 <b-progress
                   :value="uploadPercentageFile"
                   variant="success"
@@ -382,6 +382,7 @@ export default {
       this.getRenterProfileById();
       this.getPartnersByRentersId();
     }
+    this.showLoginError();
   },
   methods: {
     getRenterProfileById() {
@@ -395,7 +396,6 @@ export default {
             this.file_path = response.data.attached_file_path;
             this.attached_file_id = response.data.attached_file_id;
           }
-
         })
         .catch(e => console.log(e));
     },
@@ -438,6 +438,7 @@ export default {
     hideModal() {
       this.$refs.modalEmergencyContacts.hide();
     },
+
     removeContact(data, index) {
       if (data.id == 0) {
         this.partners.splice(index, 1);
@@ -529,6 +530,14 @@ export default {
           this.uploadPercentageFile = 0;
           this.image_path = "default_image/no-image.png";
         });
+    }
+  },
+  notifications: {
+    showLoginError: {
+      // You can have any name you want instead of 'showLoginError'
+      title: "Login Failed",
+      message: "Failed to authenticate",
+      type: "error" // You also can use 'VueNotifications.types.error' instead of 'error'
     }
   }
 };
