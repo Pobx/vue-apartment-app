@@ -229,7 +229,7 @@ export default {
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
-      header_form: "ข้อมูลห้องพัก",
+      header_form: "ข้อมูล สิ่งอำนวยความสะดวก",
       header_table: "รายการ ห้องพัก",
       inline_utitilies_name: "ชื่อ",
       inline_utitilies_type: "ประเภท",

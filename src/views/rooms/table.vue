@@ -174,7 +174,7 @@ export default {
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
-      header_form: "ข้อมูลห้องพัก",
+      header_form: "ข้อมูล ห้องพัก",
       header_table: "รายการ ห้องพัก",
       inline_name: "หมายเลขห้อง",
       inline_room_categories: "ประเภท",
