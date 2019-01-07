@@ -123,6 +123,8 @@
                   v-show="uploadPercentageFile == 0"
                 ></b-form-file>
                 <input type="hidden" v-model="attached_name">
+                <input type="text" v-model="attached_file_id">
+                
                 <b-progress
                   :value="uploadPercentageFile"
                   variant="success"
@@ -302,7 +304,7 @@ import {
   removePartnersById,
   setPartners
 } from "@/shared/partners-services";
-import { setAttachedFile } from "@/shared/attached_files-services";
+import { setAttachedFile } from "@/shared/attached-files-services";
 
 export default {
   data: () => {
@@ -369,6 +371,7 @@ export default {
       uploadPercentage: 0,
       animate: true,
       uploadPercentageFile: 0,
+      attached_file_id: 0,
       attached_name: null,
       file_path: null
     };
@@ -386,12 +389,14 @@ export default {
         .then(response => {
           this.form = response.data;
           this.image_path = response.data.image_path;
-          this.attached_name = response.data.attached_name;
+          this.attached_name = response.data.attached_file_name;
 
           if (this.attached_name != null) {
-            this.file_path = response.data.file_path;
+            this.file_path = response.data.attached_file_path;
+            this.attached_file_id = response.data.attached_file_id;
           }
 
+          console.log(response.data)
         })
         .catch(e => console.log(e));
     },
@@ -464,6 +469,7 @@ export default {
 
     onSubmitAttachedFile(renters_id) {
       let data = {
+        id: attached_file_id,
         renters_id: renters_id,
         attached_name: this.attached_name,
         status: "active"
