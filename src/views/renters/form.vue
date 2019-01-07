@@ -396,7 +396,6 @@ export default {
             this.attached_file_id = response.data.attached_file_id;
           }
 
-          console.log(response.data)
         })
         .catch(e => console.log(e));
     },
