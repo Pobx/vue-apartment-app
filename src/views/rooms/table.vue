@@ -50,7 +50,7 @@
               label-for="inline_name"
             >
               <b-col sm="8">
-                <b-form-input id="inline_name" required v-model="form.name"></b-form-input>
+                <b-form-input id="inline_name" v-model="form.name"></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -62,7 +62,7 @@
               label-for="inline_room_price"
             >
               <b-col sm="8">
-                <b-form-input id="inline_room_price" type="number" required v-model="form.price"></b-form-input>
+                <b-form-input id="inline_room_price" type="number" v-model="form.price"></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -91,7 +91,10 @@
               >
                 <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
                 <template slot="apartments_id" slot-scope="data">{{ data.item.apartments.name }}</template>
-                <template slot="room_categories_id" slot-scope="data">{{ data.item.room_categories.name }}</template>
+                <template
+                  slot="room_categories_id"
+                  slot-scope="data"
+                >{{ data.item.room_categories.name }}</template>
                 <template slot="edit" slot-scope="data">
                   <b-btn
                     size="sm"
@@ -193,7 +196,7 @@ export default {
         .then(response => {
           this.room_categories = response.data;
         })
-        .catch(e => console.log(e));
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     getApartments() {
@@ -201,7 +204,7 @@ export default {
         .then(response => {
           this.apartments = response.data;
         })
-        .catch(e => console.log(e));
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     getRooms() {
@@ -211,7 +214,7 @@ export default {
           this.totalRows = this.items.length;
           // console.log(this.items);
         })
-        .catch(e => console.log(e));
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     setDataToForm(data) {
@@ -223,14 +226,54 @@ export default {
     },
 
     onSubmit() {
+      if (this.form.apartments_id == null) {
+        this.showNotifications({
+          message: `เลือก ${this.inline_room_apartments} ด้วยค่ะ`,
+          type: "warn"
+        });
+
+        return false;
+      }
+
+      if (this.form.room_categories_id == null) {
+        this.showNotifications({
+          message: `เลือก ${this.inline_room_categories} ด้วยค่ะ`,
+          type: "warn"
+        });
+
+        return false;
+      }
+
+      if (this.form.name == null) {
+        this.showNotifications({
+          message: `พิมพ์ ${this.inline_name} ด้วยค่ะ`,
+          type: "warn"
+        });
+
+        return false;
+      }
+
+      if (this.form.price == null) {
+        this.showNotifications({
+          message: `พิมพ์ ${this.inline_room_price} ด้วยค่ะ`,
+          type: "warn"
+        });
+
+        return false;
+      }
+
       setRooms(this.form)
         .then(response => {
           this.getRooms();
           this.onReset();
+          this.showNotifications({
+            message: "บันทึกข้อมูลสำเร็จ",
+            type: "success"
+          });
         })
         .catch(e => {
           this.onReset();
-          console.log(e);
+          this.showNotifications({ message: e });
         });
     },
 
@@ -239,6 +282,13 @@ export default {
         id: 0,
         status: "active"
       };
+    }
+  },
+  notifications: {
+    showNotifications: {
+      title: "ระบบแจ้งเตือน",
+      message: "เกิดข้อผิดพลาด...โปรดติดต่อผู้ดูแลระบบ",
+      type: "error"
     }
   }
 };
