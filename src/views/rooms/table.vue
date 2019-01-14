@@ -212,7 +212,6 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
-          // console.log(this.items);
         })
         .catch(e => this.showNotifications({ message: e }));
     },

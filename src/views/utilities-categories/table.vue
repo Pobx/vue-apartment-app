@@ -28,7 +28,7 @@
               label-for="inline_utitilies_name"
             >
               <b-col sm="8">
-                <b-form-input id="inline_utitilies_name" required v-model="form.name"></b-form-input>
+                <b-form-input id="inline_utitilies_name" v-model="form.name"></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -42,7 +42,6 @@
               <b-col sm="8">
                 <b-form-input
                   id="inline_utitilies_price_per_unit_cost"
-                  required
                   v-model="form.price_per_unit_cost"
                 ></b-form-input>
               </b-col>
@@ -59,7 +58,6 @@
                 <b-form-input
                   id="inline_utitilies_price_per_unit"
                   type="number"
-                  required
                   v-model="form.price_per_unit"
                 ></b-form-input>
               </b-col>
@@ -76,7 +74,6 @@
                 <b-form-input
                   id="inline_utitilies_unit_min_rate"
                   type="number"
-                  required
                   v-model="form.unit_min_rate"
                 ></b-form-input>
               </b-col>
@@ -93,7 +90,6 @@
                 <b-form-input
                   id="inline_utitilies_unit_min_price"
                   type="number"
-                  required
                   v-model="form.unit_min_price"
                 ></b-form-input>
               </b-col>
@@ -162,13 +158,13 @@ export default {
         { id: "monthly", label: "รายเดือน" }
       ];
 
-      let results = '';
+      let results = "";
       units.filter(value => {
         if (value.id == unit) {
           results = value.label;
         }
       });
-      
+
       return results;
     }
   },
@@ -248,13 +244,11 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
-          // console.log(this.items);
         })
-        .catch(e => console.log(e));
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     setDataToForm(data) {
-      // console.log(data.item);
       this.form.id = data.item.id;
       this.form.name = data.item.name;
       this.form.type = data.item.type;
@@ -265,14 +259,66 @@ export default {
     },
 
     onSubmit() {
+      if (this.form.name == null || this.form.name == "") {
+        this.showNotifications({
+          message: `พิมพ์ ${this.inline_utitilies_name} ด้วยค่ะ`,
+          type: "warn"
+        });
+
+        return false;
+      }
+
+      if (
+        this.form.price_per_unit_cost == null ||
+        this.form.price_per_unit_cost == ""
+      ) {
+        this.showNotifications({
+          message: `พิมพ์ ${this.inline_utitilies_price_per_unit_cost} ด้วยค่ะ`,
+          type: "warn"
+        });
+
+        return false;
+      }
+
+      if (this.form.price_per_unit == null || this.form.price_per_unit == "") {
+        this.showNotifications({
+          message: `พิมพ์ ${this.inline_utitilies_price_per_unit} ด้วยค่ะ`,
+          type: "warn"
+        });
+
+        return false;
+      }
+
+      if (this.form.unit_min_rate == null || this.form.unit_min_rate == "") {
+        this.showNotifications({
+          message: `พิมพ์ ${this.inline_utitilies_unit_min_rate} ด้วยค่ะ`,
+          type: "warn"
+        });
+
+        return false;
+      }
+
+      if (this.form.unit_min_price == null || this.form.unit_min_price == "") {
+        this.showNotifications({
+          message: `พิมพ์ ${this.inline_utitilies_unit_min_price} ด้วยค่ะ`,
+          type: "warn"
+        });
+
+        return false;
+      }
+
       setUtilitiesCategories(this.form)
         .then(response => {
           this.getUtilitiesCategories();
           this.onReset();
+          this.showNotifications({
+            message: "บันทึกข้อมูลสำเร็จ",
+            type: "success"
+          });
         })
         .catch(e => {
           this.onReset();
-          console.log(e);
+          this.showNotifications({ message: e });
         });
     },
 
@@ -280,6 +326,13 @@ export default {
       this.form = {
         status: "active"
       };
+    }
+  },
+  notifications: {
+    showNotifications: {
+      title: "ระบบแจ้งเตือน",
+      message: "เกิดข้อผิดพลาด...โปรดติดต่อผู้ดูแลระบบ",
+      type: "error"
     }
   }
 };
