@@ -76,8 +76,13 @@
             <b-form-select
               id="inline_prefix_categories"
               v-model="form_utilities.utility_categories_id"
-              :options="utility_categories"
-            ></b-form-select>
+            >
+              <option
+                v-for="(utility, index) in utility_categories_options"
+                :key="index"
+                :value="utility.id"
+              >{{ utility.name }}</option>
+            </b-form-select>
           </b-col>
         </b-form-group>
 
@@ -101,6 +106,7 @@
 
 <script>
 import { getPackages, setPackages } from "@/shared/packages-services";
+import { getUtilitiesCategories } from "@/shared/utilities-categories-services";
 export default {
   data: () => {
     return {
@@ -136,11 +142,12 @@ export default {
       inline_utilities_name: "รายการ",
       button_modal_hide_label: "ปิด",
       submit_form_label: "บันทึก",
-      utility_categories: []
+      utility_categories_options: []
     };
   },
   created() {
     this.getPackages();
+    this.getUtilitiesCategories();
   },
   methods: {
     getPackages() {
@@ -148,6 +155,14 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
+        })
+        .catch(e => this.showNotifications({ message: e }));
+    },
+
+    getUtilitiesCategories() {
+      getUtilitiesCategories()
+        .then(response => {
+          this.utility_categories_options = response.data;
         })
         .catch(e => this.showNotifications({ message: e }));
     },
