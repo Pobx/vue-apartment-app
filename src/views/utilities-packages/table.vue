@@ -44,10 +44,10 @@
 
             <template slot="add-utilities" slot-scope="data">
               <b-btn
+                v-b-modal.modalUtilities
                 size="sm"
                 variant="primary"
-                v-on:click="setDataToModalForm(data)"
-              >{{ data.field.label }}</b-btn>
+              >{{ button_modal_utilities_label }}</b-btn>
             </template>
 
             <template slot="status" slot-scope="data">ON/OFF</template>
@@ -57,6 +57,45 @@
         </b-col>
       </b-row>
     </b-card>
+
+    <b-modal
+      id="modalUtilities"
+      ref="modalUtilities"
+      :title="header_modal_form_label"
+      :hide-footer="true"
+    >
+      <b-form v-on:submit.prevent="onSubmitUtilities" autocomplete="off">
+        <b-form-group
+          id="inline_utilities_name"
+          horizontal
+          :label-cols="2"
+          :label="inline_utilities_name"
+          label-for="inline_utilities_name"
+        >
+          <b-col sm="10">
+            <b-form-select
+              id="inline_prefix_categories"
+              v-model="form_utilities.utility_categories_id"
+              :options="utility_categories"
+            ></b-form-select>
+          </b-col>
+        </b-form-group>
+
+        <br>
+
+        <b-row>
+          <b-col md="12" class="text-right">
+            <input type="hidden" v-model="form_utilities.id">
+            <b-button
+              type="button"
+              @click="hideModal"
+              class="btn btn-danger mr-sm-2"
+            >{{ button_modal_hide_label }}</b-button>
+            <b-button type="submit" class="btn btn-success">{{ submit_form_label }}</b-button>
+          </b-col>
+        </b-row>
+      </b-form>
+    </b-modal>
   </div>
 </template>
 
@@ -69,6 +108,10 @@ export default {
         id: 0,
         name: null,
         status: "active"
+      },
+      form_utilities: {
+        id: 0,
+        utility_categories_id: null
       },
       fields: [
         // A column that needs custom formatting
@@ -87,7 +130,13 @@ export default {
       items: [],
       currentPage: 1,
       totalRows: 0,
-      perPage: 10
+      perPage: 10,
+      header_modal_form_label: "ข้อมูลสิ่งอำนวยความสะดวก",
+      button_modal_utilities_label: "เพิ่มข้อมูลสิ่งอำนวยความสะดวก",
+      inline_utilities_name: "รายการ",
+      button_modal_hide_label: "ปิด",
+      submit_form_label: "บันทึก",
+      utility_categories: []
     };
   },
   created() {
@@ -143,6 +192,14 @@ export default {
         name: null,
         status: "active"
       };
+    },
+
+    hideModal() {
+      this.$refs.modalUtilities.hide();
+    },
+
+    onSubmitUtilities() {
+      console.log(this.form_utilities);
     }
   },
   notifications: {
