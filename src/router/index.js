@@ -10,6 +10,7 @@ const ApartmentsTable = () => import('@/views/apartments/table')
 const RoomCategoriesTable = () => import('@/views/room-categories/table')
 const RoomsTable = () => import('@/views/rooms/table')
 const UtilitiesCategoriesTable = () => import('@/views/utilities-categories/table');
+const UtilitiesPackagesTable = () => import('@/views/utilities-packages/table');
 const RentersTable = () => import('@/views/renters/table');
 const RentersForm = () => import('@/views/renters/form');
 
@@ -58,6 +59,11 @@ export default new Router({
               path: 'utilities-categories',
               name: 'UtilitiesCategories',
               component: UtilitiesCategoriesTable
+            },
+            {
+              path: 'utilities-packages',
+              name: 'UtilitiesPackages',
+              component: UtilitiesPackagesTable
             },
             {
               path: 'renters',

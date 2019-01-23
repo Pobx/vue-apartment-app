@@ -44,6 +44,11 @@ export default {
           icon: "fa fa-building"
         },
         {
+          name: "ข้อมูล Packages",
+          url: "/setting/utilities-packages",
+          icon: "fa fa-book"
+        },
+        {
           name: "ข้อมูล ผู้เช่า",
           url: "/setting/renters",
           icon: "fa fa-building"
