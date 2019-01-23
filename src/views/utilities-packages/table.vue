@@ -13,6 +13,7 @@
               placeholder="พิมพ์ชื่อ Packages"
             />&nbsp;
             <input type="hidden" v-model="form.id">
+            <input type="hidden" v-model="form.status">
             <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button>
           </b-form>
         </b-col>
@@ -32,6 +33,7 @@
             :fields="fields"
           >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
+            <template slot="utilities" slot-scope="data">utilities</template>
             <template slot="edit" slot-scope="data">
               <b-btn
                 size="sm"
@@ -39,6 +41,16 @@
                 v-on:click="setDataToForm(data)"
               >{{ data.field.label }}</b-btn>
             </template>
+
+            <template slot="add-utilities" slot-scope="data">
+              <b-btn
+                size="sm"
+                variant="primary"
+                v-on:click="setDataToModalForm(data)"
+              >{{ data.field.label }}</b-btn>
+            </template>
+
+            <template slot="status" slot-scope="data">ON/OFF</template>
           </b-table>
 
           <b-pagination size="md" :total-rows="totalRows" v-model="currentPage" :per-page="perPage"></b-pagination>
@@ -55,18 +67,22 @@ export default {
     return {
       form: {
         id: 0,
-        name: null
+        name: null,
+        status: "active"
       },
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
         {
           key: "name",
-          label: "Apartments",
+          label: "Packages",
           sortable: true,
           class: "text-center"
         },
-        { key: "edit", label: "แก้ไข", class: "text-center" }
+        { key: "utilities", label: "รายการ", class: "text-center" },
+        { key: "edit", label: "แก้ไข", class: "text-center" },
+        { key: "add-utilities", label: "เพิ่มรายการ", class: "text-center" },
+        { key: "status", label: "สถานะ", class: "text-center" }
       ],
       items: [],
       currentPage: 1,
@@ -92,10 +108,14 @@ export default {
       this.form.name = data.item.name;
     },
 
+    setDataToModalForm(data) {
+      console.log(data);
+    },
+
     onSubmit() {
       if (this.form.name == null) {
         this.showNotifications({
-          message: "พิมพ์ชื่อ Apartment ด้วยค่ะ",
+          message: "พิมพ์ชื่อ Packages ด้วยค่ะ",
           type: "warn"
         });
 
@@ -120,7 +140,8 @@ export default {
     onReset() {
       this.form = {
         id: 0,
-        name: null
+        name: null,
+        status: "active"
       };
     }
   },
