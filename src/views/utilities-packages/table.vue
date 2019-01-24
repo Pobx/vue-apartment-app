@@ -99,7 +99,7 @@
               :fields="utilities_fields"
             >
               <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-              <template slot="utilities" slot-scope="data">{{ data.item.utilities_name }}</template>
+              <template slot="name" slot-scope="data">{{ data.item.utilities_items.name }}</template>
               <template slot="remove" slot-scope="data">
                 <b-btn
                   size="sm"
@@ -211,6 +211,7 @@ export default {
       getPackagesItemsByPackagesId(this.form_utilities.utilities_packages_id)
         .then(response => {
           this.utilities_items = response.data;
+          console.log(this.utilities_items)
         })
         .catch(e => this.showNotifications({ message: e }));
     },
