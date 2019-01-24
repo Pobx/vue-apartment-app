@@ -61,6 +61,7 @@
     <b-modal
       id="modalUtilities"
       ref="modalUtilities"
+      size="lg"
       :title="header_modal_form_label"
       :hide-footer="true"
     >
@@ -170,10 +171,6 @@ export default {
     setDataToForm(data) {
       this.form.id = data.item.id;
       this.form.name = data.item.name;
-    },
-
-    setDataToModalForm(data) {
-      console.log(data);
     },
 
     onSubmit() {
