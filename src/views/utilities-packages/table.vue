@@ -211,7 +211,7 @@ export default {
       getPackagesItemsByPackagesId(this.form_utilities.utilities_packages_id)
         .then(response => {
           this.utilities_items = response.data;
-          console.log(this.utilities_items)
+          console.log(this.utilities_items);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
