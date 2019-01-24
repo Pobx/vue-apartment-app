@@ -47,6 +47,7 @@
                 v-b-modal.modalUtilities
                 size="sm"
                 variant="primary"
+                v-on:click="setDataToFormPackagesItems(data)"
               >{{ button_modal_utilities_label }}</b-btn>
             </template>
 
@@ -222,6 +223,11 @@ export default {
 
     hideModal() {
       this.$refs.modalUtilities.hide();
+    },
+
+    setDataToFormPackagesItems(data)
+    {
+      this.form_utilities.utilities_packages_id = data.item.id || null;
     },
 
     onSubmitUtilities() {
