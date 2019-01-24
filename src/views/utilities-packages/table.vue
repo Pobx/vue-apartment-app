@@ -89,6 +89,28 @@
         </b-form-group>
 
         <br>
+        <b-row>
+          <b-col md="12">
+            <b-table
+              bordered
+              hover
+              responsive="true"
+              :items="utilities_items"
+              :fields="utilities_fields"
+            >
+              <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
+              <template slot="utilities" slot-scope="data">{{ data.item.utilities_name }}</template>
+              <template slot="remove" slot-scope="data">
+                <b-btn
+                  size="sm"
+                  variant="danger"
+                  v-on:click="onRemovePackagesItems(data)"
+                >{{ data.field.label }}</b-btn>
+              </template>
+            </b-table>
+          </b-col>
+        </b-row>
+        <br>
 
         <b-row>
           <b-col md="12" class="text-right">
@@ -142,6 +164,14 @@ export default {
         { key: "add-utilities", label: "เพิ่มรายการ", class: "text-center" },
         { key: "status", label: "สถานะ", class: "text-center" }
       ],
+      utilities_fields: [
+        { key: "index", label: "#", class: "text-center" },
+        {
+          key: "name",
+          label: "รายการ"
+        },
+        { key: "remove", label: "ลบ", class: "text-center" }
+      ],
       items: [],
       utilities_items: [],
       currentPage: 1,
@@ -181,11 +211,10 @@ export default {
       getPackagesItemsByPackagesId(this.form_utilities.utilities_packages_id)
         .then(response => {
           this.utilities_items = response.data;
-          console.log(this.utilities_items);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
-    
+
     setDataToForm(data) {
       this.form.id = data.item.id;
       this.form.name = data.item.name;
@@ -267,6 +296,10 @@ export default {
           this.onReset();
           this.showNotifications({ message: e });
         });
+    },
+
+    onRemovePackagesItems(data) {
+      console.log(data);
     }
   },
   notifications: {
