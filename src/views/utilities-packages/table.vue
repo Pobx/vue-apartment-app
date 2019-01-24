@@ -108,6 +108,11 @@
 <script>
 import { getPackages, setPackages } from "@/shared/packages-services";
 import { getUtilitiesCategories } from "@/shared/utilities-categories-services";
+import {
+  setPackagesItems,
+  getPackagesItemsByPackagesId
+} from "@/shared/packages-items-services";
+
 export default {
   data: () => {
     return {
