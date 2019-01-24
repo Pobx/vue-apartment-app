@@ -231,6 +231,16 @@ export default {
     },
 
     onSubmitUtilities() {
+
+      if (this.form_utilities.utilities_packages_id == null || this.form_utilities.utility_categories_id == null) {
+        this.showNotifications({
+          message: "ไม่สามารถทำรายการได้ กรุณาลองใหม่อีกครั้ง",
+          type: "warn"
+        });
+
+        return false;
+      }
+
       setPackagesItems(this.form_utilities)
         .then(response => {
           this.hideModal();
