@@ -143,6 +143,7 @@ export default {
         { key: "status", label: "สถานะ", class: "text-center" }
       ],
       items: [],
+      utilities_items: [],
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
@@ -176,6 +177,15 @@ export default {
         .catch(e => this.showNotifications({ message: e }));
     },
 
+    getPackagesItemsByPackagesId() {
+      getPackagesItemsByPackagesId(this.form_utilities.utilities_packages_id)
+        .then(response => {
+          this.utilities_items = response.data;
+          console.log(this.utilities_items);
+        })
+        .catch(e => this.showNotifications({ message: e }));
+    },
+    
     setDataToForm(data) {
       this.form.id = data.item.id;
       this.form.name = data.item.name;
@@ -225,14 +235,16 @@ export default {
       this.$refs.modalUtilities.hide();
     },
 
-    setDataToFormPackagesItems(data)
-    {
+    setDataToFormPackagesItems(data) {
       this.form_utilities.utilities_packages_id = data.item.id || null;
+      this.getPackagesItemsByPackagesId();
     },
 
     onSubmitUtilities() {
-
-      if (this.form_utilities.utilities_packages_id == null || this.form_utilities.utility_categories_id == null) {
+      if (
+        this.form_utilities.utilities_packages_id == null ||
+        this.form_utilities.utility_categories_id == null
+      ) {
         this.showNotifications({
           message: "ไม่สามารถทำรายการได้ กรุณาลองใหม่อีกครั้ง",
           type: "warn"
