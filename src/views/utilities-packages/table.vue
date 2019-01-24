@@ -123,7 +123,9 @@ export default {
       },
       form_utilities: {
         id: 0,
-        utility_categories_id: null
+        utilities_packages_id: null,
+        utility_categories_id: null,
+        status: "active"
       },
       fields: [
         // A column that needs custom formatting
@@ -209,6 +211,13 @@ export default {
         name: null,
         status: "active"
       };
+
+      this.form_utilities = {
+        id: 0,
+        utilities_packages_id: null,
+        utility_categories_id: null,
+        status: "active"
+      };
     },
 
     hideModal() {
@@ -216,7 +225,20 @@ export default {
     },
 
     onSubmitUtilities() {
-      console.log(this.form_utilities);
+      setPackagesItems(this.form_utilities)
+        .then(response => {
+          this.hideModal();
+          this.getPackages();
+          this.onReset();
+          this.showNotifications({
+            message: "บันทึกข้อมูลสำเร็จ",
+            type: "success"
+          });
+        })
+        .catch(e => {
+          this.onReset();
+          this.showNotifications({ message: e });
+        });
     }
   },
   notifications: {
