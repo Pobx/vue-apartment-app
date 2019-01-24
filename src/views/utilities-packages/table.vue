@@ -262,6 +262,7 @@ export default {
 
     hideModal() {
       this.$refs.modalUtilities.hide();
+      this.getPackages();
     },
 
     setDataToFormPackagesItems(data) {
@@ -284,8 +285,7 @@ export default {
 
       setPackagesItems(this.form_utilities)
         .then(response => {
-          this.hideModal();
-          this.getPackages();
+          this.getPackagesItemsByPackagesId();
           this.onReset();
           this.showNotifications({
             message: "บันทึกข้อมูลสำเร็จ",
