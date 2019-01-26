@@ -33,7 +33,14 @@
             :fields="fields"
           >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-            <template slot="utilities" slot-scope="data">utilities</template>
+            <template slot="utilities" slot-scope="data">
+              <b-badge
+                class="mr-1"
+                variant="primary"
+                v-for="(item, index) in data.item.utilities_package_items"
+                :key="index"
+              >{{ item.utilities_items.name }}</b-badge>
+            </template>
             <template slot="edit" slot-scope="data">
               <b-btn
                 size="sm"
@@ -195,6 +202,7 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
+          console.log(this.items);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
