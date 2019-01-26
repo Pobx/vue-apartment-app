@@ -211,7 +211,6 @@ export default {
       getPackagesItemsByPackagesId(this.form_utilities.utilities_packages_id)
         .then(response => {
           this.utilities_items = response.data;
-          console.log(this.utilities_items);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
@@ -300,7 +299,22 @@ export default {
     },
 
     onRemovePackagesItems(data) {
-      console.log(data);
+      let id = data.item.id || null;
+      let params = {
+        id,
+        status: "disabled"
+      };
+
+      setPackagesItems(params)
+        .then(response => {
+          this.getPackagesItemsByPackagesId();
+          this.showNotifications({
+            message: "ลบข้อมูลสำเร็จ"
+          });
+        })
+        .catch(e => {
+          this.showNotifications({ message: e });
+        });
     }
   },
   notifications: {
