@@ -58,7 +58,21 @@
               >{{ button_modal_utilities_label }}</b-btn>
             </template>
 
-            <template slot="status" slot-scope="data">ON/OFF</template>
+            <template slot="status" slot-scope="data">
+              <b-btn
+                v-if="data.item.status =='disabled'"
+                size="sm"
+                variant="success"
+                v-on:click="onUpdatePackageStatus(data.item.id, data.item.name, 'active')"
+              >ON</b-btn>
+
+              <b-btn
+                v-if="data.item.status =='active'"
+                size="sm"
+                variant="danger"
+                v-on:click="onUpdatePackageStatus(data.item.id, data.item.name, 'disabled')"
+              >OFF</b-btn>
+            </template>
           </b-table>
 
           <b-pagination size="md" :total-rows="totalRows" v-model="currentPage" :per-page="perPage"></b-pagination>
@@ -72,6 +86,8 @@
       size="lg"
       :title="header_modal_form_label"
       :hide-footer="true"
+      no-close-on-backdrop="true"
+      no-close-on-esc="true"
     >
       <b-form v-on:submit.prevent="onSubmitUtilities" autocomplete="off">
         <b-form-group
@@ -318,6 +334,26 @@ export default {
           this.getPackagesItemsByPackagesId();
           this.showNotifications({
             message: "ลบข้อมูลสำเร็จ"
+          });
+        })
+        .catch(e => {
+          this.showNotifications({ message: e });
+        });
+    },
+
+    onUpdatePackageStatus(id, name, status) {
+      let params = {
+        id,
+        name,
+        status
+      };
+
+      setPackages(params)
+        .then(response => {
+          this.getPackages();
+          this.showNotifications({
+            message: "บันทึกข้อมูลสำเร็จ",
+            type: "success"
           });
         })
         .catch(e => {
