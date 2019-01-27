@@ -122,6 +122,7 @@
 import { getRooms, setRooms } from "@/shared/rooms-services";
 import { getApartments } from "@/shared/apartments-services";
 import { getRoomCategories } from "@/shared/room-categories-services";
+import { getPackages } from "@/shared/packages-services";
 
 export default {
   data: () => {
@@ -174,6 +175,7 @@ export default {
         { key: "edit", label: "แก้ไข", class: "text-center" }
       ],
       items: [],
+      items_packages: [],
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
@@ -189,6 +191,7 @@ export default {
     this.getRooms();
     this.getApartments();
     this.getRoomCategories();
+    this.getPackages();
   },
   methods: {
     getRoomCategories() {
@@ -212,6 +215,18 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
+        })
+        .catch(e => this.showNotifications({ message: e }));
+    },
+
+    getPackages() {
+      getPackages()
+        .then(response => {
+          let results = response.data;
+          this.items_packages = results.filter(
+            value => value.status == "active"
+          );
+          console.log(this.items_packages);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
