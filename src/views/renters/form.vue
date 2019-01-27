@@ -438,6 +438,11 @@ export default {
     },
 
     onAddPartners() {
+      if (this.form_partners.id != null) {
+        this.onUpdatePartner();
+        return false;
+      }
+
       this.partners.push(this.form_partners);
       this.form_partners = {
         id: 0
@@ -451,7 +456,7 @@ export default {
         })
         .catch(e => this.showNotifications({ message: e }));
     },
-    
+
     hideModal() {
       this.form_partners = {};
       this.$refs.modalEmergencyContacts.hide();
@@ -480,6 +485,21 @@ export default {
         .then(response => {
           if (response.status == 201) {
             this.$router.go(-1);
+          }
+        })
+        .catch(e => this.showNotifications({ message: e }));
+    },
+
+    onUpdatePartner() {
+      setPartners(this.form_partners)
+        .then(response => {
+          if (response.status == 200) {
+            this.showNotifications({
+              message: "บันทึกข้อมูลสำเร็จ",
+              type: "success"
+            });
+            this.getPartnersByRentersId();
+            this.$refs.modalEmergencyContacts.hide();
           }
         })
         .catch(e => this.showNotifications({ message: e }));
@@ -551,8 +571,8 @@ export default {
     },
 
     setPartnersDataOnModalForm(data) {
-      console.log(data);
       this.$refs.modalEmergencyContacts.show();
+      this.form_partners.id = data.id;
       this.form_partners.mobile = data.mobile;
       this.form_partners.first_name = data.first_name;
       this.form_partners.last_name = data.last_name;
