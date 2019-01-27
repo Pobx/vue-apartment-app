@@ -207,6 +207,15 @@
                 slot="name"
                 slot-scope="data"
               >{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
+
+              <template slot="edit" slot-scope="data">
+                <b-btn
+                  size="sm"
+                  variant="warning"
+                  v-on:click="setPartnersDataOnModalForm(data.item)"
+                >{{ data.field.label }}</b-btn>
+              </template>
+
               <template slot="remove" slot-scope="data">
                 <b-btn
                   size="sm"
@@ -234,6 +243,8 @@
       ref="modalEmergencyContacts"
       :title="header_modal_form_label"
       :hide-footer="true"
+      :no-close-on-backdrop="true"
+      :no-close-on-esc="true"
     >
       <b-form v-on:submit.prevent="onAddPartners" autocomplete="off">
         <b-form-group
@@ -326,7 +337,8 @@ export default {
         id: 0,
         mobile: null,
         first_name: null,
-        last_name: null
+        last_name: null,
+        renters_id: null
       },
       prefix_categories_options: [
         { text: "นาย", value: "mister" },
@@ -343,6 +355,7 @@ export default {
           class: "text-center"
         },
         { key: "mobile", label: "เบอร์ติดต่อ", class: "text-center" },
+        { key: "edit", label: "แก้ไข", class: "text-center" },
         { key: "remove", label: "ลบ", class: "text-center" }
       ],
       partners: [],
@@ -438,7 +451,9 @@ export default {
         })
         .catch(e => this.showNotifications({ message: e }));
     },
+    
     hideModal() {
+      this.form_partners = {};
       this.$refs.modalEmergencyContacts.hide();
     },
 
@@ -533,6 +548,16 @@ export default {
           this.uploadPercentageFile = 0;
           this.image_path = "default_image/no-image.png";
         });
+    },
+
+    setPartnersDataOnModalForm(data) {
+      console.log(data);
+      this.$refs.modalEmergencyContacts.show();
+      this.form_partners.mobile = data.mobile;
+      this.form_partners.first_name = data.first_name;
+      this.form_partners.last_name = data.last_name;
+      this.form_partners.renters_id = data.renters_id;
+      this.form_partners.status = "active";
     }
   },
   notifications: {

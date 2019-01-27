@@ -11,5 +11,9 @@ export function removePartnersById(id) {
 }
 
 export function setPartners(data) {
-  return axios.post(`${API}/renters-partners/create`, data);
+  if (data.id == 0) {
+    return axios.post(`${API}/renters-partners/create`, data);
+  } else {
+    return axios.put(`${API}/renters-partners/update`, data);
+  }
 }
