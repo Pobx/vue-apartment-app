@@ -85,6 +85,25 @@
               </b-col>
             </b-form-group>
 
+            <b-form-group
+              id="inline_room_categories"
+              horizontal
+              :label-cols="4"
+              :label="inline_renters"
+              label-for="inline_renters"
+            >
+              <b-col sm="8">
+                <b-form-select id="inline_renters" v-model="form.renters_id">
+                  <option :value="null">{{ inline_selectbox_is_null }}</option>
+                  <option
+                    v-for="item in items_renters"
+                    :key="item.index"
+                    :value="item.id"
+                  >{{ item.first_name }}&nbsp;{{ item.last_name }}</option>
+                </b-form-select>
+              </b-col>
+            </b-form-group>
+
             <b-row>
               <b-col sm="12" class="text-right">
                 <input type="hidden" v-model="form.id">
@@ -154,6 +173,7 @@ import { getRooms, setRooms } from "@/shared/rooms-services";
 import { getApartments } from "@/shared/apartments-services";
 import { getRoomCategories } from "@/shared/room-categories-services";
 import { getPackages } from "@/shared/packages-services";
+import { getRenters } from "@/shared/renters-services";
 
 export default {
   data: () => {
@@ -218,6 +238,7 @@ export default {
       ],
       items: [],
       items_packages: [],
+      items_renters: [],
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
@@ -228,6 +249,7 @@ export default {
       inline_utilities_packages: "Packages",
       inline_room_price: "ราคา",
       inline_room_apartments: "Apartments",
+      inline_renters: "ผู้เช่า",
       inline_selectbox_is_null: "เลือกรายการ"
     };
   },
@@ -236,6 +258,7 @@ export default {
     this.getApartments();
     this.getRoomCategories();
     this.getPackages();
+    this.getRenters();
   },
   methods: {
     getRoomCategories() {
@@ -268,6 +291,17 @@ export default {
         .then(response => {
           let results = response.data;
           this.items_packages = results.filter(
+            value => value.status == "active"
+          );
+        })
+        .catch(e => this.showNotifications({ message: e }));
+    },
+
+    getRenters() {
+      getRenters()
+        .then(response => {
+          let results = response.data;
+          this.items_renters = results.filter(
             value => value.status == "active"
           );
         })
