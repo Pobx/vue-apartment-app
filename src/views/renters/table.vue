@@ -334,8 +334,7 @@ export default {
 
       removePartnersById(params)
         .then(response => {
-          if (response.status) {
-            console.log(response);
+          if (response.status == 200) {
 
             let renters_id = response.data.renters_id || null;
             this.getPartnersByRentersId(renters_id);

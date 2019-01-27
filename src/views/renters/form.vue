@@ -187,135 +187,13 @@
         </b-row>
       </b-card>
 
-      <b-card header="ข้อมูลติดต่อฉุกเฉิน">
-        <b-row>
-          <b-col md="12" class="text-right">
-            <b-btn
-              v-b-modal.modalEmergencyContacts
-              variant="primary"
-            >{{ button_modal_partners_label }}</b-btn>
-          </b-col>
-        </b-row>
-
-        <br>
-
-        <b-row>
-          <b-col md="12">
-            <b-table bordered hover responsive="true" :items="partners" :fields="fields">
-              <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-              <template
-                slot="name"
-                slot-scope="data"
-              >{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
-
-              <template slot="edit" slot-scope="data">
-                <b-btn
-                  size="sm"
-                  variant="warning"
-                  v-on:click="setPartnersDataOnModalForm(data.item)"
-                >{{ data.field.label }}</b-btn>
-              </template>
-
-              <template slot="remove" slot-scope="data">
-                <b-btn
-                  size="sm"
-                  variant="danger"
-                  v-on:click="removeContact(data.item, data.index)"
-                >{{ data.field.label }}</b-btn>
-              </template>
-            </b-table>
-          </b-col>
-        </b-row>
-
-        <br>
-
-        <b-row>
-          <b-col md="12" class="text-right">
-            <b-link :to="link_to_table" class="btn btn-danger mr-sm-2">{{ link_to_table_label }}</b-link>
-            <b-button type="submit" class="btn btn-success">{{ submit_form_label }}</b-button>
-          </b-col>
-        </b-row>
-      </b-card>
     </b-form>
-
-    <b-modal
-      id="modalEmergencyContacts"
-      ref="modalEmergencyContacts"
-      :title="header_modal_form_label"
-      :hide-footer="true"
-      :no-close-on-backdrop="true"
-      :no-close-on-esc="true"
-    >
-      <b-form v-on:submit.prevent="onAddPartners" autocomplete="off">
-        <b-form-group
-          id="inline_first_name"
-          horizontal
-          :label-cols="2"
-          :label="inline_first_name"
-          label-for="inline_first_name"
-        >
-          <b-col sm="10">
-            <b-form-input id="inline_first_name" required v-model="form_partners.first_name"></b-form-input>
-          </b-col>
-        </b-form-group>
-
-        <b-form-group
-          id="inline_last_name"
-          horizontal
-          :label-cols="2"
-          :label="inline_last_name"
-          label-for="inline_last_name"
-        >
-          <b-col sm="10">
-            <b-form-input id="inline_last_name" required v-model="form_partners.last_name"></b-form-input>
-          </b-col>
-        </b-form-group>
-
-        <b-form-group
-          id="inline_mobile"
-          horizontal
-          :label-cols="2"
-          :label="inline_mobile"
-          label-for="inline_mobile"
-        >
-          <b-col sm="10">
-            <masked-input
-              required
-              type="text"
-              class="form-control"
-              v-model="form_partners.mobile"
-              :mask="[/\d/, /\d/,/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]"
-              :guide="false"
-            ></masked-input>
-          </b-col>
-        </b-form-group>
-
-        <br>
-
-        <b-row>
-          <b-col md="12" class="text-right">
-            <input type="hidden" v-model="form_partners.id">
-            <b-button
-              type="button"
-              @click="hideModal"
-              class="btn btn-danger mr-sm-2"
-            >{{ button_modal_hide_label }}</b-button>
-            <b-button type="submit" class="btn btn-success">{{ submit_form_label }}</b-button>
-          </b-col>
-        </b-row>
-      </b-form>
-    </b-modal>
   </div>
 </template>
 
 <script>
 import { getRenterProfileById, setRenters } from "@/shared/renters-services";
 import { uploadImages, uploadFiles } from "@/shared/uploads-services";
-import {
-  getPartnersByRentersId,
-  removePartnersById,
-  setPartners
-} from "@/shared/partners-services";
 import { setAttachedFile } from "@/shared/attached-files-services";
 
 export default {
@@ -375,12 +253,6 @@ export default {
       inline_address: "ที่อยู่",
       inline_mobile: "เบอร์มือถือ",
       inline_email: "อีเมล์",
-      inline_contact_mobile: "เบอร์มือถือ",
-      inline_contact_fullname: "ชื่อ - สกุล",
-      button_add_new_contact_label: "เพิ่มข้อมูล",
-      button_modal_partners_label: "เพิ่มข้อมูล",
-      header_modal_form_label: "ข้อมูลติดต่อฉุกเฉิน",
-      button_modal_hide_label: "ปิด",
       image_path: "default_image/no-image.png",
       uploadPercentage: 0,
       animate: true,
@@ -394,7 +266,6 @@ export default {
     this.form.id = this.$route.params.id || 0;
     if (this.form.id != 0) {
       this.getRenterProfileById();
-      this.getPartnersByRentersId();
     }
   },
   methods: {
@@ -418,12 +289,12 @@ export default {
         .then(response => {
           let renters_id = response.data.id;
           this.onSubmitAttachedFile(renters_id);
-          this.onSubmitPartners(renters_id);
           this.onReset();
           this.showNotifications({
             message: "บันทึกข้อมูลสำเร็จ",
             type: "success"
           });
+          this.$router.go(-1);
         })
         .catch(e => {
           this.onReset();
@@ -436,79 +307,6 @@ export default {
         id: 0,
         status: "active"
       };
-    },
-
-    onAddPartners() {
-      if (this.form_partners.id != 0) {
-        this.onUpdatePartner();
-        return false;
-      }
-
-      this.partners.push(this.form_partners);
-      this.form_partners = {
-        id: 0
-      };
-    },
-
-    getPartnersByRentersId() {
-      getPartnersByRentersId(this.form.id)
-        .then(response => {
-          this.partners = response.data;
-        })
-        .catch(e => this.showNotifications({ message: e }));
-    },
-
-    hideModal() {
-      this.form_partners = {
-        id: 0
-      };
-      this.$refs.modalEmergencyContacts.hide();
-    },
-
-    removeContact(data, index) {
-      if (data.id == 0) {
-        this.partners.splice(index, 1);
-      } else {
-        removePartnersById(data.id)
-          .then(response => {
-            if (response.status) {
-              this.getPartnersByRentersId();
-            }
-          })
-          .catch(e => this.showNotifications({ message: e }));
-      }
-    },
-
-    onSubmitPartners(renters_id) {
-      this.partners.map(value => {
-        (value.renters_id = renters_id), (value.status = "active");
-      });
-
-      setPartners(this.partners)
-        .then(response => {
-          if (response.status == 201) {
-            this.$router.go(-1);
-          }
-        })
-        .catch(e => this.showNotifications({ message: e }));
-    },
-
-    onUpdatePartner() {
-      setPartners(this.form_partners)
-        .then(response => {
-          if (response.status == 200) {
-            this.showNotifications({
-              message: "บันทึกข้อมูลสำเร็จ",
-              type: "success"
-            });
-            this.getPartnersByRentersId();
-            this.$refs.modalEmergencyContacts.hide();
-            this.form_partners = {
-              id: 0
-            };
-          }
-        })
-        .catch(e => this.showNotifications({ message: e }));
     },
 
     onSubmitAttachedFile(renters_id) {
@@ -576,15 +374,6 @@ export default {
         });
     },
 
-    setPartnersDataOnModalForm(data) {
-      this.$refs.modalEmergencyContacts.show();
-      this.form_partners.id = data.id;
-      this.form_partners.mobile = data.mobile;
-      this.form_partners.first_name = data.first_name;
-      this.form_partners.last_name = data.last_name;
-      this.form_partners.renters_id = data.renters_id;
-      this.form_partners.status = "active";
-    }
   },
   notifications: {
     showNotifications: {
