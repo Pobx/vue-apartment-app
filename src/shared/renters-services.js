@@ -16,3 +16,7 @@ export function setRenters(data) {
     return axios.put(`${API}/renters/update`, data);
   }
 }
+
+export function updateRentersStatus(data) {
+  return axios.put(`${API}/renters/update-status`, data);
+}

@@ -185,7 +185,7 @@ export default {
         { key: "utilities", label: "รายการ", class: "text-center" },
         { key: "edit", label: "แก้ไข", class: "text-center" },
         { key: "add-utilities", label: "เพิ่มรายการ", class: "text-center" },
-        { key: "status", label: "สถานะ", class: "text-center" }
+        { key: "status", label: "", class: "text-center" }
       ],
       utilities_fields: [
         { key: "index", label: "#", class: "text-center" },

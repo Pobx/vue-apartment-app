@@ -22,8 +22,10 @@
           >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
             <template slot="rooms" slot-scope="data">
-
-              <span v-for="(room, index) in data.item.rooms" :key="index"><span v-if="index > 0">,</span>{{ room.name }}</span>
+              <span v-for="(room, index) in data.item.rooms" :key="index">
+                <span v-if="index > 0">,</span>
+                {{ room.name }}
+              </span>
             </template>
             <template slot="id_card" slot-scope="data">{{ data.item.id_card }}</template>
             <template
@@ -39,6 +41,22 @@
                 class="btn btn-warning btn-sm"
               >{{ data.field.label }}</router-link>
             </template>
+
+            <template slot="status" slot-scope="data">
+              <b-btn
+                v-if="data.item.status =='disabled'"
+                size="sm"
+                variant="success"
+                v-on:click="onUpdateRentersStatus(data.item.id, 'active')"
+              >ON</b-btn>
+
+              <b-btn
+                v-if="data.item.status =='active'"
+                size="sm"
+                variant="danger"
+                v-on:click="onUpdateRentersStatus(data.item.id, 'disabled')"
+              >OFF</b-btn>
+            </template>
           </b-table>
 
           <b-pagination size="md" :total-rows="totalRows" v-model="currentPage" :per-page="perPage"></b-pagination>
@@ -49,7 +67,11 @@
 </template>
 
 <script>
-import { getRenters, setRenters } from "@/shared/renters-services";
+import {
+  getRenters,
+  setRenters,
+  updateRentersStatus
+} from "@/shared/renters-services";
 export default {
   data: () => {
     return {
@@ -70,7 +92,8 @@ export default {
         },
         { key: "mobile", label: "เบอร์มือถือ", class: "text-center" },
         { key: "email", label: "อีเมล์", class: "text-center" },
-        { key: "edit", label: "แก้ไข", class: "text-center" }
+        { key: "edit", label: "แก้ไข", class: "text-center" },
+        { key: "status", label: "", class: "text-center" }
       ],
       items: [],
       currentPage: 1,
@@ -93,17 +116,20 @@ export default {
         .catch(e => console.log(e));
     },
 
-    onSubmit() {
-      if (this.form.name == null) {
-        alert("พิมพ์ชื่อ Apartment ด้วยค่ะ");
-        return false;
-      }
+    onUpdateRentersStatus(id, status) {
+      let params = {
+        id,
+        status
+      };
 
-      setRenters(this.form)
+      updateRentersStatus(params)
         .then(response => {
-          // console.log(response);
           this.getRenters();
           this.onReset();
+          this.showNotifications({
+            message: "บันทึกข้อมูลสำเร็จ",
+            type: "success"
+          });
         })
         .catch(e => {
           this.onReset();
@@ -116,6 +142,13 @@ export default {
         id: 0,
         name: null
       };
+    }
+  },
+  notifications: {
+    showNotifications: {
+      title: "ระบบแจ้งเตือน",
+      message: "เกิดข้อผิดพลาด...โปรดติดต่อผู้ดูแลระบบ",
+      type: "error"
     }
   }
 };
