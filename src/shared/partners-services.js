@@ -5,8 +5,7 @@ export function getPartnersByRentersId(id) {
   return axios.get(`${API}/renters-partners-by-renter-id/${id}`);
 }
 
-export function removePartnersById(id) {
-  let data = { id: id, status: "disabled" };
+export function removePartnersById(data) {
   return axios.put(`${API}/renters-partners/remove-partner`, data);
 }
 
