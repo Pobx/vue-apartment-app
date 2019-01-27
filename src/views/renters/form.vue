@@ -280,6 +280,7 @@
         >
           <b-col sm="10">
             <masked-input
+              required
               type="text"
               class="form-control"
               v-model="form_partners.mobile"
@@ -438,7 +439,7 @@ export default {
     },
 
     onAddPartners() {
-      if (this.form_partners.id != null) {
+      if (this.form_partners.id != 0) {
         this.onUpdatePartner();
         return false;
       }
@@ -458,7 +459,9 @@ export default {
     },
 
     hideModal() {
-      this.form_partners = {};
+      this.form_partners = {
+        id: 0
+      };
       this.$refs.modalEmergencyContacts.hide();
     },
 
@@ -500,6 +503,9 @@ export default {
             });
             this.getPartnersByRentersId();
             this.$refs.modalEmergencyContacts.hide();
+            this.form_partners = {
+              id: 0
+            };
           }
         })
         .catch(e => this.showNotifications({ message: e }));
