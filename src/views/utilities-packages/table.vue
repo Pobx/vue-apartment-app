@@ -86,8 +86,8 @@
       size="lg"
       :title="header_modal_form_label"
       :hide-footer="true"
-      no-close-on-backdrop="true"
-      no-close-on-esc="true"
+      :no-close-on-backdrop="true"
+      :no-close-on-esc="true"
     >
       <b-form v-on:submit.prevent="onSubmitUtilities" autocomplete="off">
         <b-form-group
@@ -218,7 +218,6 @@ export default {
         .then(response => {
           this.items = response.data;
           this.totalRows = this.items.length;
-          console.log(this.items);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
