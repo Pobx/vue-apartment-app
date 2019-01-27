@@ -32,7 +32,7 @@
             >
               <b-col sm="8">
                 <b-form-select id="inline_room_categories" v-model="form.room_categories_id">
-                  <option :value="null">{{ inline_room_categories }}</option>
+                  <option :value="null">{{ inline_selectbox_is_null }}</option>
                   <option
                     v-for="item in room_categories"
                     :key="item.index"
@@ -41,6 +41,26 @@
                 </b-form-select>
               </b-col>
             </b-form-group>
+
+            <b-form-group
+              id="inline_room_categories"
+              horizontal
+              :label-cols="4"
+              :label="inline_room_categories"
+              label-for="inline_utilities_packages"
+            >
+              <b-col sm="8">
+                <b-form-select id="inline_utilities_packages" v-model="form.utilities_packages_id">
+                  <option :value="null">{{ inline_selectbox_is_null }}</option>
+                  <option
+                    v-for="item in items_packages"
+                    :key="item.index"
+                    :value="item.id"
+                  >{{ item.name }}</option>
+                </b-form-select>
+              </b-col>
+            </b-form-group>
+
 
             <b-form-group
               id="inline_name"
@@ -183,8 +203,10 @@ export default {
       header_table: "รายการ ห้องพัก",
       inline_name: "หมายเลขห้อง",
       inline_room_categories: "ประเภท",
+      inline_utilities_packages: 'Packages',
       inline_room_price: "ราคา",
-      inline_room_apartments: "Apartments"
+      inline_room_apartments: "Apartments",
+      inline_selectbox_is_null: 'เลือกรายการ'
     };
   },
   created() {
@@ -226,7 +248,6 @@ export default {
           this.items_packages = results.filter(
             value => value.status == "active"
           );
-          console.log(this.items_packages);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
@@ -236,6 +257,8 @@ export default {
       this.form.name = data.item.name;
       this.form.apartments_id = data.item.apartments_id;
       this.form.room_categories_id = data.item.room_categories_id;
+      this.form.utilities_packages_id = data.item.utilities_packages_id;
+      this.form.renters_id = data.item.renters_id;
       this.form.price = data.item.price;
     },
 
