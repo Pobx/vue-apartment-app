@@ -46,7 +46,7 @@
               id="inline_room_categories"
               horizontal
               :label-cols="4"
-              :label="inline_room_categories"
+              :label="inline_utilities_packages"
               label-for="inline_utilities_packages"
             >
               <b-col sm="8">
@@ -60,7 +60,6 @@
                 </b-form-select>
               </b-col>
             </b-form-group>
-
 
             <b-form-group
               id="inline_name"
@@ -115,6 +114,18 @@
                   slot="room_categories_id"
                   slot-scope="data"
                 >{{ data.item.room_categories.name }}</template>
+                <template slot="utilities_packages" slot-scope="data">
+                  <span
+                    v-if="data.item.utilities_packages !=null"
+                  >{{ data.item.utilities_packages.name }}</span>
+                </template>
+
+                <template slot="renters" slot-scope="data">
+                  <span
+                    v-if="data.item.renters !=null"
+                  >{{ data.item.renters.first_name }}&nbsp;{{ data.item.renters.last_name }}</span>
+                </template>
+
                 <template slot="edit" slot-scope="data">
                   <b-btn
                     size="sm"
@@ -181,6 +192,17 @@ export default {
           class: "text-center"
         },
         {
+          key: "utilities_packages",
+          label: "Packages",
+          class: "text-center"
+        },
+        {
+          key: "renters",
+          label: "ผู้เช่า",
+          class: "text-left"
+        },
+
+        {
           key: "price",
           label: "ราคา",
           sortable: true,
@@ -203,10 +225,10 @@ export default {
       header_table: "รายการ ห้องพัก",
       inline_name: "หมายเลขห้อง",
       inline_room_categories: "ประเภท",
-      inline_utilities_packages: 'Packages',
+      inline_utilities_packages: "Packages",
       inline_room_price: "ราคา",
       inline_room_apartments: "Apartments",
-      inline_selectbox_is_null: 'เลือกรายการ'
+      inline_selectbox_is_null: "เลือกรายการ"
     };
   },
   created() {
