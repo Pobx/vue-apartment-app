@@ -220,7 +220,7 @@
               <b-btn
                 size="sm"
                 variant="danger"
-                v-on:click="removeAttachedFilesById(data.item)"
+                v-on:click="removeAttachedFiles(data.item)"
               >{{ data.field.label }}</b-btn>
             </template>
           </b-table>
@@ -252,7 +252,8 @@ import {
 } from "@/shared/partners-services";
 
 import {
-  getAttachedFilesByRentersId
+  getAttachedFilesByRentersId,
+  removeAttachedFiles
 } from "@/shared/attached-files-services";
 
 export default {
@@ -449,21 +450,22 @@ export default {
         .catch(e => this.showNotifications({ message: e }));
     },
 
-    removeAttachedFilesById(data) {
+    removeAttachedFiles(data) {
       let params = {
         id: data.id,
+        attached_name: data.attached_name,
         status: "disabled",
         renters_id: data.renters_id
       };
 
-      // removePartnersById(params)
-      //   .then(response => {
-      //     if (response.status == 200) {
-      //       let renters_id = response.data.renters_id || null;
-      //       this.getPartnersByRentersId(renters_id);
-      //     }
-      //   })
-      //   .catch(e => this.showNotifications({ message: e }));
+      removeAttachedFiles(params)
+        .then(response => {
+          if (response.status == 200) {
+            let renters_id = response.data.renters_id || null;
+            this.getAttachedFilesByRentersId(renters_id);
+          }
+        })
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     resetPartnersFormModal() {
@@ -474,7 +476,7 @@ export default {
       this.form_partners.status = "active";
     },
 
-  getAttachedFilesByRentersId(id = null) {
+    getAttachedFilesByRentersId(id = null) {
       getAttachedFilesByRentersId(id)
         .then(response => {
           this.attached_files = response.data;
