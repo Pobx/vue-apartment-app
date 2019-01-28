@@ -15,3 +15,10 @@ export function setAttachedFile(params) {
 export function getAttachedFilesByRentersId(id) {
   return axios.get(`${API}/renters-attached-files-by-renters-id/${id}`);
 }
+
+export function removeAttachedFiles(params) {
+  return axios.put(
+    `${API}/renters-attached-files/remove-attached-file`,
+    params
+  );
+}
