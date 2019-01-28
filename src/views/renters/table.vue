@@ -256,6 +256,8 @@ import {
   removeAttachedFiles
 } from "@/shared/attached-files-services";
 
+import { uploadFiles } from "@/shared/uploads-services";
+
 export default {
   data: () => {
     return {
@@ -273,7 +275,6 @@ export default {
         attached_name: null,
         status: "active"
       },
-      attached_file: null,
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
@@ -486,18 +487,25 @@ export default {
     },
 
     onSelectedFile(event) {
-      this.attached_file = event.target.files[0];
+      let config = {};
+      let file = event.target.files[0];
+      let fd = new FormData();
+      fd.append("file", file, file.name);
+
+      uploadFiles(fd, config)
+        .then(response => {
+          if (response.status == 200) {
+            console.log(response.data);
+            this.form_attached_files.attached_name = response.data.link_name;
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
 
     onSubmitAttachedFiles() {
-      let file = this.attached_file;
-      let fd = new FormData();
-      fd.append("id", 0);
-      fd.append("file", file, file.name);
-      fd.append("renters_id", this.form_attached_files.renters_id);
-      fd.append("status", "active");
-      
-      setAttachedFile(fd)
+      setAttachedFile(this.form_attached_files)
         .then(response => {
           if (response.status == 201) {
             let renters_id = response.data.renters_id || null;
