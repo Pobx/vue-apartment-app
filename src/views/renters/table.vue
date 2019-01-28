@@ -49,6 +49,13 @@
               >{{ button_modal_partners_label }}</b-btn>
             </template>
 
+            <template slot="attached_files" slot-scope="data">
+              <b-btn
+                @click="showAttachedFilesModal(data.item.id)"
+                variant="primary"
+              >{{ button_modal_attached_files_label }}</b-btn>
+            </template>
+
             <template slot="status" slot-scope="data">
               <b-btn
                 v-if="data.item.status =='disabled'"
@@ -167,7 +174,63 @@
       <div slot="modal-footer">
         <b-button
           type="button"
-          @click="hideModal"
+          @click="hidePartnersModal"
+          class="btn btn-danger mr-sm-2"
+        >{{ button_modal_hide_label }}</b-button>
+      </div>
+    </b-modal>
+
+    <b-modal
+      id="modalAttachedFiles"
+      ref="modalAttachedFiles"
+      size="lg"
+      :title="header_modal_form_attached_files_label"
+      :no-close-on-backdrop="true"
+      :no-close-on-esc="true"
+    >
+      <b-form v-on:submit.prevent="onSubmitAttachedFiles" autocomplete="off">
+        <b-form-file placeholder="เลือกไฟล์..." ref="file"></b-form-file>
+
+        <br>
+
+        <b-row>
+          <b-col md="12" class="text-right">
+            <input type="hidden" v-model="form_partners.id">
+
+            <b-button type="submit" class="btn btn-success">{{ submit_form_label }}</b-button>
+          </b-col>
+        </b-row>
+      </b-form>
+
+      <br>
+
+      <b-row>
+        <b-col md="12">
+          <b-table
+            bordered
+            hover
+            responsive="true"
+            :items="attached_files"
+            :fields="attached_fields"
+          >
+            <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
+            <template slot="attached_name" slot-scope="data">{{ data.item.attached_name }}</template>
+
+            <template slot="remove" slot-scope="data">
+              <b-btn
+                size="sm"
+                variant="danger"
+                v-on:click="removeAttachedFilesById(data.item)"
+              >{{ data.field.label }}</b-btn>
+            </template>
+          </b-table>
+        </b-col>
+      </b-row>
+
+      <div slot="modal-footer">
+        <b-button
+          type="button"
+          @click="hideAttachedFilesModal"
           class="btn btn-danger mr-sm-2"
         >{{ button_modal_hide_label }}</b-button>
       </div>
@@ -199,6 +262,12 @@ export default {
         renters_id: null,
         status: "active"
       },
+      form_attached_files: {
+        id: 0,
+        renters_id: null,
+        attached_name: null,
+        status: "active"
+      },
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
@@ -213,6 +282,7 @@ export default {
         { key: "mobile", label: "เบอร์มือถือ", class: "text-center" },
         { key: "email", label: "อีเมล์", class: "text-center" },
         { key: "partners", label: "ติดต่อฉุกเฉิน", class: "text-center" },
+        { key: "attached_files", label: "ไฟล์เอกสาร", class: "text-center" },
         { key: "edit", label: "แก้ไข", class: "text-center" },
         { key: "status", label: "", class: "text-center" }
       ],
@@ -229,8 +299,19 @@ export default {
         { key: "edit", label: "แก้ไข", class: "text-center" },
         { key: "remove", label: "ลบ", class: "text-center" }
       ],
+      attached_fields: [
+        // A column that needs custom formatting
+        { key: "index", label: "#", class: "text-center" },
+        {
+          key: "attached_name",
+          label: "ชื่อไฟล์",
+          class: "text-center"
+        },
+        { key: "remove", label: "ลบ", class: "text-center" }
+      ],
       items: [],
       partners: [],
+      attached_files: [],
       currentPage: 1,
       totalRows: 0,
       perPage: 10,
@@ -242,6 +323,8 @@ export default {
       submit_form_label: "บันทึก",
       button_modal_partners_label: "ข้อมูลติดต่อฉุกเฉิน",
       header_modal_form_label: "ข้อมูลติดต่อฉุกเฉิน",
+      header_modal_form_attached_files_label: "ข้อมูลเอกสาร",
+      button_modal_attached_files_label: "ข้อมูลเอกสาร",
       button_modal_hide_label: "ปิด"
     };
   },
@@ -279,7 +362,7 @@ export default {
         });
     },
 
-    hideModal() {
+    hidePartnersModal() {
       this.form_partners = {
         id: 0
       };
@@ -319,6 +402,23 @@ export default {
       this.$refs.modalPartners.show();
     },
 
+    showAttachedFilesModal(id) {
+      // this.getPartnersByRentersId(id);
+      this.form_attached_files.renters_id = id;
+      this.$refs.modalAttachedFiles.show();
+    },
+
+    hideAttachedFilesModal() {
+      this.form_attached_files = {
+        id: 0,
+        renters_id: null,
+        attached_name: null,
+        status: "active"
+      };
+
+      this.$refs.modalAttachedFiles.hide();
+    },
+
     setPartnersDataOnModalForm(data) {
       this.form_partners.id = data.id;
       this.form_partners.mobile = data.mobile;
@@ -345,12 +445,34 @@ export default {
         .catch(e => this.showNotifications({ message: e }));
     },
 
+    removeAttachedFilesById(data) {
+      let params = {
+        id: data.id,
+        status: "disabled",
+        renters_id: data.renters_id
+      };
+
+      // removePartnersById(params)
+      //   .then(response => {
+      //     if (response.status == 200) {
+      //       let renters_id = response.data.renters_id || null;
+      //       this.getPartnersByRentersId(renters_id);
+      //     }
+      //   })
+      //   .catch(e => this.showNotifications({ message: e }));
+    },
+
     resetPartnersFormModal() {
       this.form_partners.id = 0;
       this.form_partners.mobile = null;
       this.form_partners.first_name = null;
       this.form_partners.last_name = null;
       this.form_partners.status = "active";
+    },
+
+    onSubmitAttachedFiles() {
+      let file = this.$refs.file.files[0];
+      console.log(file);
     }
   },
   notifications: {
