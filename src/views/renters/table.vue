@@ -251,6 +251,10 @@ import {
   setPartners
 } from "@/shared/partners-services";
 
+import {
+  getAttachedFilesByRentersId
+} from "@/shared/attached-files-services";
+
 export default {
   data: () => {
     return {
@@ -403,7 +407,7 @@ export default {
     },
 
     showAttachedFilesModal(id) {
-      // this.getPartnersByRentersId(id);
+      this.getAttachedFilesByRentersId(id);
       this.form_attached_files.renters_id = id;
       this.$refs.modalAttachedFiles.show();
     },
@@ -468,6 +472,14 @@ export default {
       this.form_partners.first_name = null;
       this.form_partners.last_name = null;
       this.form_partners.status = "active";
+    },
+
+  getAttachedFilesByRentersId(id = null) {
+      getAttachedFilesByRentersId(id)
+        .then(response => {
+          this.attached_files = response.data;
+        })
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     onSubmitAttachedFiles() {
