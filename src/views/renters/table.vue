@@ -76,7 +76,6 @@
       ref="modalPartners"
       size="lg"
       :title="header_modal_form_label"
-      :hide-footer="true"
       :no-close-on-backdrop="true"
       :no-close-on-esc="true"
     >
@@ -129,11 +128,7 @@
         <b-row>
           <b-col md="12" class="text-right">
             <input type="hidden" v-model="form_partners.id">
-            <b-button
-              type="button"
-              @click="hideModal"
-              class="btn btn-danger mr-sm-2"
-            >{{ button_modal_hide_label }}</b-button>
+
             <b-button type="submit" class="btn btn-success">{{ submit_form_label }}</b-button>
           </b-col>
         </b-row>
@@ -168,6 +163,14 @@
           </b-table>
         </b-col>
       </b-row>
+
+      <div slot="modal-footer">
+        <b-button
+          type="button"
+          @click="hideModal"
+          class="btn btn-danger mr-sm-2"
+        >{{ button_modal_hide_label }}</b-button>
+      </div>
     </b-modal>
   </div>
 </template>
@@ -328,14 +331,13 @@ export default {
     removePartnersById(data) {
       let params = {
         id: data.id,
-        status: 'disabled',
+        status: "disabled",
         renters_id: data.renters_id
       };
 
       removePartnersById(params)
         .then(response => {
           if (response.status == 200) {
-
             let renters_id = response.data.renters_id || null;
             this.getPartnersByRentersId(renters_id);
           }
