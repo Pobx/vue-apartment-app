@@ -110,39 +110,6 @@
             </b-form-group>
 
             <b-form-group
-              id="inline_document_file"
-              horizontal
-              :label-cols="1"
-              :label="inline_document_file"
-              label-for="inline_document_file"
-            >
-              <b-col sm="4">
-                <b-form-file
-                  @change="onSelectedFile"
-                  placeholder="เลือกไฟล์..."
-                  v-show="uploadPercentageFile == 0"
-                ></b-form-file>
-                <input type="hidden" v-model="attached_name">
-                <input type="hidden" v-model="attached_file_id">
-
-                <b-progress
-                  :value="uploadPercentageFile"
-                  variant="success"
-                  striped
-                  :animated="animate"
-                  class="mt-1"
-                  v-show="uploadPercentageFile != 0"
-                ></b-progress>
-              </b-col>
-
-              <b-col sm="2" v-if="file_path !=null">
-                <a :href="file_path" target="_blank">
-                  <i class="fa fa-file fa-2x" aria-hidden="true"></i>
-                </a>
-              </b-col>
-            </b-form-group>
-
-            <b-form-group
               id="inline_address"
               horizontal
               :label-cols="1"
@@ -193,8 +160,7 @@
 
 <script>
 import { getRenterProfileById, setRenters } from "@/shared/renters-services";
-import { uploadImages, uploadFiles } from "@/shared/uploads-services";
-import { setAttachedFile } from "@/shared/attached-files-services";
+import { uploadImages } from "@/shared/uploads-services";
 
 export default {
   data: () => {
@@ -211,13 +177,6 @@ export default {
         mobile: null,
         email: null,
         status: "active"
-      },
-      form_partners: {
-        id: 0,
-        mobile: null,
-        first_name: null,
-        last_name: null,
-        renters_id: null
       },
       prefix_categories_options: [
         { text: "นาย", value: "mister" },
@@ -249,16 +208,12 @@ export default {
       inline_first_name: "ชื่อ",
       inline_last_name: "สกุล",
       inline_date_of_birth: "วันเกิด",
-      inline_document_file: "ไฟล์เอกสาร",
       inline_address: "ที่อยู่",
       inline_mobile: "เบอร์มือถือ",
       inline_email: "อีเมล์",
       image_path: "default_image/no-image.png",
       uploadPercentage: 0,
       animate: true,
-      uploadPercentageFile: 0,
-      attached_file_id: 0,
-      attached_name: null,
       file_path: null
     };
   },
@@ -287,8 +242,6 @@ export default {
     onSubmit() {
       setRenters(this.form)
         .then(response => {
-          let renters_id = response.data.id;
-          this.onSubmitAttachedFile(renters_id);
           this.onReset();
           this.showNotifications({
             message: "บันทึกข้อมูลสำเร็จ",
@@ -307,19 +260,6 @@ export default {
         id: 0,
         status: "active"
       };
-    },
-
-    onSubmitAttachedFile(renters_id) {
-      let data = {
-        id: this.attached_file_id,
-        renters_id: renters_id,
-        attached_name: this.attached_name,
-        status: "active"
-      };
-
-      if (this.attached_name != null) {
-        setAttachedFile(data);
-      }
     },
 
     onSelectedImage(event) {
@@ -346,33 +286,7 @@ export default {
           this.uploadPercentage = 0;
           this.image_path = "default_image/no-image.png";
         });
-    },
-
-    onSelectedFile(event) {
-      const config = {
-        onUploadProgress: progressEvent =>
-          (this.uploadPercentageFile =
-            Math.round(progressEvent.loaded / progressEvent.total) * 100)
-      };
-
-      let file = event.target.files[0];
-      let fd = new FormData();
-      fd.append("file", file, file.name);
-
-      uploadFiles(fd, config)
-        .then(response => {
-          if (response.status == 200) {
-            this.attached_name = response.data.link_name;
-            this.file_path = response.data.link_path;
-            this.uploadPercentageFile = 0;
-          }
-        })
-        .catch(e => {
-          console.log(e);
-          this.uploadPercentageFile = 0;
-          this.image_path = "default_image/no-image.png";
-        });
-    },
+    }
 
   },
   notifications: {
