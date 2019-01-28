@@ -188,18 +188,9 @@
       :no-close-on-backdrop="true"
       :no-close-on-esc="true"
     >
-      <b-form v-on:submit.prevent="onSubmitAttachedFiles" autocomplete="off">
-        <b-form-file placeholder="เลือกไฟล์..." @change="onSelectedFile"></b-form-file>
-
-        <br>
-
-        <b-row>
-          <b-col md="12" class="text-right">
-            <input type="hidden" v-model="form_partners.id">
-
-            <b-button type="submit" class="btn btn-success">{{ submit_form_label }}</b-button>
-          </b-col>
-        </b-row>
+      <b-form inline v-on:submit.prevent="onSubmitAttachedFiles" autocomplete="off">
+        <b-form-file placeholder="เลือกไฟล์..." @change="onSelectedFile" class="col-md-10"></b-form-file>
+        <b-button type="submit" class="btn btn-success ml-sm-2">{{ submit_form_label }}</b-button>
       </b-form>
 
       <br>
@@ -496,7 +487,6 @@ export default {
       uploadFiles(fd, config)
         .then(response => {
           if (response.status == 200) {
-            console.log(response.data);
             this.form_attached_files.attached_name = response.data.link_name;
           }
         })
