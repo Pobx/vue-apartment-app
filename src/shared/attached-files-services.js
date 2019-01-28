@@ -5,10 +5,10 @@ export function setAttachedFile(params) {
   if (params.id == 0) {
     return axios.post(`${API}/renters-attached-files/create`, params);
   } else {
-    return axios.put(
-      `${API}/renters-attached-files/update-attached-file-by-renters-id`,
-      params
-    );
+    // return axios.put(
+    //   `${API}/renters-attached-files/update-attached-file-by-renters-id`,
+    //   params
+    // );
   }
 }
 

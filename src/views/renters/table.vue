@@ -189,7 +189,7 @@
       :no-close-on-esc="true"
     >
       <b-form v-on:submit.prevent="onSubmitAttachedFiles" autocomplete="off">
-        <b-form-file placeholder="เลือกไฟล์..." ref="file"></b-form-file>
+        <b-form-file placeholder="เลือกไฟล์..." @change="onSelectedFile"></b-form-file>
 
         <br>
 
@@ -273,6 +273,7 @@ export default {
         attached_name: null,
         status: "active"
       },
+      attached_file: null,
       fields: [
         // A column that needs custom formatting
         { key: "index", label: "#", class: "text-center" },
@@ -484,9 +485,26 @@ export default {
         .catch(e => this.showNotifications({ message: e }));
     },
 
+    onSelectedFile(event) {
+      this.attached_file = event.target.files[0];
+    },
+
     onSubmitAttachedFiles() {
-      let file = this.$refs.file.files[0];
-      console.log(file);
+      let file = this.attached_file;
+      let fd = new FormData();
+      fd.append("id", 0);
+      fd.append("file", file, file.name);
+      fd.append("renters_id", this.form_attached_files.renters_id);
+      fd.append("status", "active");
+      
+      setAttachedFile(fd)
+        .then(response => {
+          if (response.status == 201) {
+            let renters_id = response.data.renters_id || null;
+            this.getAttachedFilesByRentersId(renters_id);
+          }
+        })
+        .catch(e => this.showNotifications({ message: e }));
     }
   },
   notifications: {
