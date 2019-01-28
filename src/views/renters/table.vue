@@ -257,6 +257,7 @@ import {
 } from "@/shared/attached-files-services";
 
 import { uploadFiles } from "@/shared/uploads-services";
+import { setAttachedFile } from "@/shared/attached-files-services";
 
 export default {
   data: () => {
