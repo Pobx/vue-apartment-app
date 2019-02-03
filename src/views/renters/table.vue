@@ -498,6 +498,14 @@ export default {
     },
 
     onSubmitAttachedFiles() {
+      if (this.form_attached_files.attached_name == null) {
+        this.showNotifications({
+          message: "กรุณาเลือกไฟล์",
+          type: "warn"
+        });
+        return false;
+      }
+
       setAttachedFile(this.form_attached_files)
         .then(response => {
           if (response.status == 201) {
