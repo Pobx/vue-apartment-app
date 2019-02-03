@@ -102,6 +102,7 @@
               id="inline_prefix_categories"
               v-model="form_utilities.utility_categories_id"
             >
+              <option value="null">{{ inline_selectbox_is_null }}</option>
               <option
                 v-for="(utility, index) in utility_categories_options"
                 :key="index"
@@ -205,6 +206,7 @@ export default {
       inline_utilities_name: "รายการ",
       button_modal_hide_label: "ปิด",
       submit_form_label: "บันทึก",
+      inline_selectbox_is_null: "เลือกรายการ",
       utility_categories_options: []
     };
   },
@@ -246,7 +248,7 @@ export default {
     onSubmit() {
       if (this.form.name == null) {
         this.showNotifications({
-          message: "พิมพ์ชื่อ Packages ด้วยค่ะ",
+          message: "พิมพ์ชื่อ Packages",
           type: "warn"
         });
 
@@ -299,7 +301,7 @@ export default {
         this.form_utilities.utility_categories_id == null
       ) {
         this.showNotifications({
-          message: "ไม่สามารถทำรายการได้ กรุณาลองใหม่อีกครั้ง",
+          message: "กรุณาเลือกรายการ",
           type: "warn"
         });
 

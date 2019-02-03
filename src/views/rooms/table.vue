@@ -13,7 +13,7 @@
             >
               <b-col sm="8">
                 <b-form-select id="inline_room_apartments" v-model="form.apartments_id">
-                  <option :value="null">{{ inline_room_apartments }}</option>
+                  <option :value="null">{{ inline_selectbox_is_null }}</option>
                   <option
                     v-for="item in apartments"
                     :key="item.index"
