@@ -95,7 +95,7 @@ export default {
     onSubmit() {
       if (this.form.name == null) {
         this.showNotifications({
-          message: "พิมพ์ชื่อ Apartment ด้วยค่ะ",
+          message: "พิมพ์ชื่อ Apartment",
           type: "warn"
         });
 
