@@ -321,7 +321,7 @@ export default {
     onSubmit() {
       if (this.form.apartments_id == null) {
         this.showNotifications({
-          message: `เลือก ${this.inline_room_apartments} ด้วยค่ะ`,
+          message: `เลือก ${this.inline_room_apartments}`,
           type: "warn"
         });
 
@@ -330,7 +330,7 @@ export default {
 
       if (this.form.room_categories_id == null) {
         this.showNotifications({
-          message: `เลือก ${this.inline_room_categories} ด้วยค่ะ`,
+          message: `เลือก ${this.inline_room_categories}`,
           type: "warn"
         });
 
@@ -339,7 +339,7 @@ export default {
 
       if (this.form.name == null) {
         this.showNotifications({
-          message: `พิมพ์ ${this.inline_name} ด้วยค่ะ`,
+          message: `พิมพ์ ${this.inline_name}`,
           type: "warn"
         });
 
@@ -348,7 +348,7 @@ export default {
 
       if (this.form.price == null) {
         this.showNotifications({
-          message: `พิมพ์ ${this.inline_room_price} ด้วยค่ะ`,
+          message: `พิมพ์ ${this.inline_room_price}`,
           type: "warn"
         });
 
