@@ -42,6 +42,7 @@
               <b-col sm="8">
                 <b-form-input
                   id="inline_utitilies_price_per_unit_cost"
+                  type="number"
                   v-model="form.price_per_unit_cost"
                 ></b-form-input>
               </b-col>
@@ -261,7 +262,7 @@ export default {
     onSubmit() {
       if (this.form.name == null || this.form.name == "") {
         this.showNotifications({
-          message: `พิมพ์ ${this.inline_utitilies_name} ด้วยค่ะ`,
+          message: `พิมพ์ ${this.inline_utitilies_name}`,
           type: "warn"
         });
 
@@ -273,7 +274,7 @@ export default {
         this.form.price_per_unit_cost == ""
       ) {
         this.showNotifications({
-          message: `พิมพ์ ${this.inline_utitilies_price_per_unit_cost} ด้วยค่ะ`,
+          message: `พิมพ์ ${this.inline_utitilies_price_per_unit_cost}`,
           type: "warn"
         });
 
@@ -282,7 +283,7 @@ export default {
 
       if (this.form.price_per_unit == null || this.form.price_per_unit == "") {
         this.showNotifications({
-          message: `พิมพ์ ${this.inline_utitilies_price_per_unit} ด้วยค่ะ`,
+          message: `พิมพ์ ${this.inline_utitilies_price_per_unit}`,
           type: "warn"
         });
 
@@ -291,7 +292,7 @@ export default {
 
       if (this.form.unit_min_rate == null || this.form.unit_min_rate == "") {
         this.showNotifications({
-          message: `พิมพ์ ${this.inline_utitilies_unit_min_rate} ด้วยค่ะ`,
+          message: `พิมพ์ ${this.inline_utitilies_unit_min_rate}`,
           type: "warn"
         });
 
@@ -300,7 +301,7 @@ export default {
 
       if (this.form.unit_min_price == null || this.form.unit_min_price == "") {
         this.showNotifications({
-          message: `พิมพ์ ${this.inline_utitilies_unit_min_price} ด้วยค่ะ`,
+          message: `พิมพ์ ${this.inline_utitilies_unit_min_price}`,
           type: "warn"
         });
 
