@@ -205,7 +205,9 @@
             :fields="attached_fields"
           >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-            <template slot="attached_name" slot-scope="data">{{ data.item.attached_name }}</template>
+            <template slot="attached_name" slot-scope="data">
+              <b-link :href="data.item.attached_file_path" target="_blank">ไฟล์เอกสาร</b-link>
+            </template>
 
             <template slot="remove" slot-scope="data">
               <b-btn
