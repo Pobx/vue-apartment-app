@@ -179,6 +179,7 @@ export default {
         status: "active"
       },
       prefix_categories_options: [
+        { text: "เลือกรายการ", value: null },
         { text: "นาย", value: "mister" },
         { text: "นาง", value: "miss" },
         { text: "นางสาว", value: "mrs" }
