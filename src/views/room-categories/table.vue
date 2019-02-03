@@ -101,7 +101,7 @@ export default {
     onSubmit() {
       if (this.form.name == null) {
         this.showNotifications({
-          message: "พิมพ์ชื่อประเภทห้อง ด้วยค่ะ",
+          message: "พิมพ์ชื่อประเภทห้อง",
           type: "warn"
         });
 
