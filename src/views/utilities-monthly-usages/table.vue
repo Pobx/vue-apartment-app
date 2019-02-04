@@ -16,6 +16,10 @@
                   :to="link_to_form+'/'+room.id"
                   class="btn btn-primary btn-block"
                 >{{ btn_monthly_usages_label }}</b-link>
+                <b-link
+                  :to="link_to_form+'/'+room.id"
+                  class="btn btn-warning btn-block"
+                >{{ btn_monthly_usages_views_label }}</b-link>
               </b-card>
             </b-col>
           </b-row>
@@ -35,6 +39,7 @@ export default {
       apartments: [],
       rooms: [],
       btn_monthly_usages_label: "บันทึกข้อมูล",
+      btn_monthly_usages_views_label: "รายการบันทึก",
       room_label: "ห้อง",
       link_to_form: "utilities-monthly-usages-form"
     };
