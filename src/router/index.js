@@ -1,90 +1,101 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue";
+import Router from "vue-router";
 
 // Containers
-const DefaultContainer = () => import('@/containers/DefaultContainer')
+const DefaultContainer = () => import("@/containers/DefaultContainer");
 
 // Views
-const Dashboard = () => import('@/views/Dashboard')
-const ApartmentsTable = () => import('@/views/apartments/table')
-const RoomCategoriesTable = () => import('@/views/room-categories/table')
-const RoomsTable = () => import('@/views/rooms/table')
-const UtilitiesCategoriesTable = () => import('@/views/utilities-categories/table');
-const UtilitiesPackagesTable = () => import('@/views/utilities-packages/table');
-const RentersTable = () => import('@/views/renters/table');
-const RentersForm = () => import('@/views/renters/form');
-const UtiliesMonthlyUsages = () => import('@/views/utilities-monthly-usages/table');
+const Dashboard = () => import("@/views/Dashboard");
+const ApartmentsTable = () => import("@/views/apartments/table");
+const RoomCategoriesTable = () => import("@/views/room-categories/table");
+const RoomsTable = () => import("@/views/rooms/table");
+const UtilitiesCategoriesTable = () =>
+  import("@/views/utilities-categories/table");
+const UtilitiesPackagesTable = () => import("@/views/utilities-packages/table");
+const RentersTable = () => import("@/views/renters/table");
+const RentersForm = () => import("@/views/renters/form");
+const UtiliesMonthlyUsages = () =>
+  import("@/views/utilities-monthly-usages/table");
+const UtiliesMonthlyUsagesForm = () =>
+  import("@/views/utilities-monthly-usages/form");
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
-  mode: 'hash', // https://router.vuejs.org/api/#mode
-  linkActiveClass: 'open active',
+  mode: "hash", // https://router.vuejs.org/api/#mode
+  linkActiveClass: "open active",
   scrollBehavior: () => ({ y: 0 }),
   routes: [
     {
-      path: '/',
-      redirect: '/dashboard',
-      name: 'Home',
+      path: "/",
+      redirect: "/dashboard",
+      name: "Home",
       component: DefaultContainer,
       children: [
         {
-          path: 'dashboard',
-          name: 'Dashboard',
+          path: "dashboard",
+          name: "Dashboard",
           component: Dashboard
         },
         {
-          path: 'utilities-monthly-usages',
-          name: 'UtiliesMonthlyUsages',
+          path: "utilities-monthly-usages",
+          name: "UtiliesMonthlyUsages",
           component: UtiliesMonthlyUsages
         },
         {
-          path: 'setting',
-          redirect: '/setting/apartments',
-          name: 'Setting',
+          path: "utilities-monthly-usages-form/:id?",
+          name: "UtiliesMonthlyUsagesForm",
+          component: UtiliesMonthlyUsagesForm
+        },
+
+        {
+          path: "setting",
+          redirect: "/setting/apartments",
+          name: "Setting",
           component: {
-            render (c) { return c('router-view') }
+            render(c) {
+              return c("router-view");
+            }
           },
           children: [
             {
-              path: 'apartments',
-              name: 'Apartments',
+              path: "apartments",
+              name: "Apartments",
               component: ApartmentsTable
             },
             {
-              path: 'room-categories',
-              name: 'RoomCategories',
+              path: "room-categories",
+              name: "RoomCategories",
               component: RoomCategoriesTable
             },
             {
-              path: 'rooms',
-              name: 'Rooms',
+              path: "rooms",
+              name: "Rooms",
               component: RoomsTable
             },
             {
-              path: 'utilities-categories',
-              name: 'UtilitiesCategories',
+              path: "utilities-categories",
+              name: "UtilitiesCategories",
               component: UtilitiesCategoriesTable
             },
             {
-              path: 'utilities-packages',
-              name: 'UtilitiesPackages',
+              path: "utilities-packages",
+              name: "UtilitiesPackages",
               component: UtilitiesPackagesTable
             },
             {
-              path: 'renters',
-              name: 'Renters',
+              path: "renters",
+              name: "Renters",
               component: RentersTable
             },
             {
-              path: 'renters-form/:id?',
-              name: 'Renter Profile',
+              path: "renters-form/:id?",
+              name: "Renter Profile",
               component: RentersForm
             }
-
           ]
         }
       ]
     }
   ]
-})
+});

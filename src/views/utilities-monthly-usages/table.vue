@@ -12,7 +12,7 @@
             <b-col cols="12" sm="2" md="2" lg="2" v-for="(room, index) in rooms" :key="index">
               <b-card :title="room_label+ ' ' +room.name" style="max-width: 15rem;">
                 <!-- <p class="card-text">{{ room_label }}&nbsp;{{ room.name }}</p> -->
-                <b-button href="#" variant="primary" :block="true">{{ btn_monthly_usages_label }}</b-button>
+                <b-link :to="link_to_form" class="btn btn-primary btn-block">{{ btn_monthly_usages_label }}</b-link>
               </b-card>
             </b-col>
           </b-row>
@@ -32,7 +32,8 @@ export default {
       apartments: [],
       rooms: [],
       btn_monthly_usages_label: "บันทึกข้อมูล",
-      room_label: "ห้อง"
+      room_label: "ห้อง",
+      link_to_form: "utilities-monthly-usages-form",
     };
   },
   created() {
