@@ -13,6 +13,7 @@ const UtilitiesCategoriesTable = () => import('@/views/utilities-categories/tabl
 const UtilitiesPackagesTable = () => import('@/views/utilities-packages/table');
 const RentersTable = () => import('@/views/renters/table');
 const RentersForm = () => import('@/views/renters/form');
+const UtiliesMonthlyUsages = () => import('@/views/utilities-monthly-usages/table');
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ export default new Router({
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard
+        },
+        {
+          path: 'utilities-monthly-usages',
+          name: 'UtiliesMonthlyUsages',
+          component: UtiliesMonthlyUsages
         },
         {
           path: 'setting',

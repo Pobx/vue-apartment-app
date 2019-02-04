@@ -19,6 +19,11 @@ export default {
       }
     },
     {
+      name: "บันทึกค่าน้ำไฟ",
+      url: "/utilities-monthly-usages",
+      icon: "fa fa-calculator",
+    },
+    {
       name: "Setting",
       url: "/setting",
       icon: "fa fa-gears",
