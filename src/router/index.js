@@ -89,7 +89,7 @@ export default new Router({
               component: RentersTable
             },
             {
-              path: "renters-form/:id?",
+              path: "renters-form/:rooms_id?/:utilities_id?",
               name: "Renter Profile",
               component: RentersForm
             }

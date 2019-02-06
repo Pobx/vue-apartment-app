@@ -5,18 +5,6 @@
         <b-card :header="header_form">
           <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
             <b-form-group
-              id="inline_latest_amount"
-              horizontal
-              :label-cols="4"
-              :label="inline_latest_amount"
-              label-for="inline_latest_amount"
-            >
-              <b-col sm="8">
-                <b-form-input id="inline_latest_amount" v-model="form.latest_amount"></b-form-input>
-              </b-col>
-            </b-form-group>
-
-            <b-form-group
               id="inline_meter_numbers"
               horizontal
               :label-cols="4"
@@ -79,25 +67,34 @@ export default {
         total_price: null,
         status: "active"
       },
-      header_form: "xxxx",
-      inline_latest_amount: "เดือน",
+      utilities_packages_items: null,
+      header_form: null,
       inline_meter_numbers: "เลขมิเตอร์",
       inline_usage_amount: "ยอดการใช้งาน",
       inline_total_price: "คิดเป็นเงิน"
     };
   },
   created() {
-    this.form.id = this.$route.params.id || null;
-    if (this.form.id == null) {
-      this.$router.go(-1);
+    this.form.id = this.$route.params.rooms_id || 0;
+    if (this.form.id != 0) {
+      this.getRoomsById(this.form.id);
+      return false;
     }
-
-    this.getRoomsById(this.form.id);
+    this.$router.go(-1);
   },
   methods: {
     onSubmit() {},
     getRoomsById(id) {
-      console.log(id);
+      getRoomsById(id)
+        .then(response => {
+          let results = response.data;
+          let apartments_name = results.apartments.name || null;
+          let rooms_name = results.name || null;
+          this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
+          // this.utilities_packages_items = results.utilities_packages_items;
+          console.log(results);
+        })
+        .catch(e => this.showNotifications({ message: e }));
     }
   },
   notifications: {

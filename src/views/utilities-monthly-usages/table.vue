@@ -12,10 +12,14 @@
             <b-col cols="12" sm="2" md="2" lg="2" v-for="(room, index) in rooms" :key="index">
               <b-card :title="room_label+ ' ' +room.name" style="max-width: 15rem;">
                 <!-- <p class="card-text">{{ room_label }}&nbsp;{{ room.name }}</p> -->
+                <!-- {{room.utilities_packages_items}} -->
                 <b-link
-                  :to="link_to_form+'/'+room.id"
+                  v-for="(utilities, index) in room.utilities_packages_items"
+                  :key="index"
+                  :to="link_to_form+'/'+room.id+'/'+utilities.id"
                   class="btn btn-primary btn-block"
-                >{{ btn_monthly_usages_label }}</b-link>
+                >{{ utilities.name }}</b-link>
+
                 <b-link
                   :to="link_to_form+'/'+room.id"
                   class="btn btn-warning btn-block"
@@ -38,7 +42,6 @@ export default {
       tabIndex: 0,
       apartments: [],
       rooms: [],
-      btn_monthly_usages_label: "บันทึกข้อมูล",
       btn_monthly_usages_views_label: "รายการบันทึก",
       room_label: "ห้อง",
       link_to_form: "utilities-monthly-usages-form"
@@ -62,6 +65,7 @@ export default {
         .then(response => {
           let results = response.data;
           this.rooms = results.filter(value => value.room_categories_id == "2");
+          console.log(this.rooms);
         })
         .catch(e => this.showNotifications({ message: e }));
     }
