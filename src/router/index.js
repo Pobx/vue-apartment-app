@@ -43,7 +43,7 @@ export default new Router({
           component: UtiliesMonthlyUsages
         },
         {
-          path: "utilities-monthly-usages-form/:id?",
+          path: "utilities-monthly-usages-form/:rooms_id?/:utility_categories_id?",
           name: "UtiliesMonthlyUsagesForm",
           component: UtiliesMonthlyUsagesForm
         },
@@ -89,7 +89,7 @@ export default new Router({
               component: RentersTable
             },
             {
-              path: "renters-form/:rooms_id?/:utilities_id?",
+              path: "renters-form/:id?",
               name: "Renter Profile",
               component: RentersForm
             }

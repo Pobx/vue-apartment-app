@@ -55,12 +55,14 @@
 
 <script>
 import { getRoomsById } from "@/shared/rooms-services";
+import { getUtilitiesCategoriesById } from "@/shared/utilities-categories-services";
 
 export default {
   data: () => {
     return {
       form: {
         id: 0,
+        utility_categories_id: null,
         latest_amount: null,
         meter_numbers: null,
         usage_amount: null,
@@ -76,14 +78,18 @@ export default {
   },
   created() {
     this.form.id = this.$route.params.rooms_id || 0;
-    if (this.form.id != 0) {
+    this.form.utility_categories_id =
+      this.$route.params.utility_categories_id || 0;
+    if (this.form.id != 0 && this.form.utility_categories_id != 0) {
       this.getRoomsById(this.form.id);
       return false;
     }
     this.$router.go(-1);
   },
   methods: {
-    onSubmit() {},
+    onSubmit() {
+      console.log(this.form);
+    },
     getRoomsById(id) {
       getRoomsById(id)
         .then(response => {
@@ -91,8 +97,18 @@ export default {
           let apartments_name = results.apartments.name || null;
           let rooms_name = results.name || null;
           this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
-          // this.utilities_packages_items = results.utilities_packages_items;
-          console.log(results);
+          this.getUtilitiesCategoriesById(this.form.utility_categories_id);
+        })
+        .catch(e => this.showNotifications({ message: e }));
+    },
+
+    getUtilitiesCategoriesById(id) {
+      getUtilitiesCategoriesById(id)
+        .then(response => {
+          let results = response.data;
+          this.header_form = `${this.header_form} (<strong>${
+            results.name
+          }</strong>)`;
         })
         .catch(e => this.showNotifications({ message: e }));
     }
