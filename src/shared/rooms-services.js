@@ -7,7 +7,10 @@ export function getRooms() {
 
 export function getRoomsByApartmentsId(id = null) {
   return axios.get(`${API}/rooms-by-apartment-id/${id}`);
-  
+}
+
+export function getRoomsById(id =null) {
+  return axios.get(`${API}/rooms-by-id/${id}`);
 }
 
 export function setRooms(data) {
