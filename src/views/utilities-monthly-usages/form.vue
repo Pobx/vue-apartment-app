@@ -63,12 +63,17 @@ export default {
       form: {
         id: 0,
         utility_categories_id: null,
-        latest_amount: null,
         meter_numbers: null,
         usage_amount: null,
         total_price: null,
         status: "active"
       },
+      utilities_monthly_usage: [],
+      price_per_unit_cost: 1,
+      price_per_unit: 1,
+      unit_min_rate: 1,
+      unit_min_price: 1,
+      latest_amount: 0,
       utilities_packages_items: null,
       header_form: null,
       inline_meter_numbers: "เลขมิเตอร์",
@@ -97,6 +102,16 @@ export default {
           let apartments_name = results.apartments.name || null;
           let rooms_name = results.name || null;
           this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
+
+          this.price_per_unit_cost =
+            results.room_categories.price_per_unit_cost;
+          this.price_per_unit = results.room_categories.price_per_unit;
+          this.unit_min_rate = results.room_categories.unit_min_rate;
+          this.unit_min_price = results.room_categories.unit_min_price;
+          // this.latest_amount = results.utilities_monthly_usage.latest_amount || 0;
+
+          console.log(this.price_per_unit_cost);
+
           this.getUtilitiesCategoriesById(this.form.utility_categories_id);
         })
         .catch(e => this.showNotifications({ message: e }));
@@ -109,8 +124,30 @@ export default {
           this.header_form = `${this.header_form} (<strong>${
             results.name
           }</strong>)`;
+          // console.log(results);
         })
         .catch(e => this.showNotifications({ message: e }));
+    }
+  },
+  watch: {
+    "form.meter_numbers": function(newValue, oldValue) {
+      if (newValue == "") {
+        this.form.usage_amount = "";
+        this.form.total_price = "";
+      }
+
+      if (parseFloat(newValue) > parseFloat(this.latest_amount)) {
+        this.form.usage_amount =
+          parseFloat(newValue) - parseFloat(this.latest_amount);
+
+        if (this.form.usage_amount <= this.unit_min_rate) {
+          this.form.total_price = this.unit_min_price;
+        } else {
+          this.form.total_price = parseFloat(
+            this.form.usage_amount * parseFloat(this.price_per_unit_cost)
+          );
+        }
+      }
     }
   },
   notifications: {
