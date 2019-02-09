@@ -63,6 +63,7 @@ export default {
     return {
       form: {
         id: 0,
+        room_id: null,
         utility_categories_id: null,
         meter_numbers: "",
         unit_amount: "",
@@ -71,8 +72,6 @@ export default {
         status: "active"
       },
       utilities_monthly_usage: [],
-      // price_per_unit_cost: 1,
-      // price_per_unit: 1,
       unit_min_rate: 1,
       unit_min_price: 1,
       latest_amount: 0,
@@ -84,11 +83,11 @@ export default {
     };
   },
   created() {
-    this.form.id = this.$route.params.rooms_id || 0;
+    this.form.room_id = this.$route.params.rooms_id || 0;
     this.form.utility_categories_id =
       this.$route.params.utility_categories_id || 0;
-    if (this.form.id != 0 && this.form.utility_categories_id != 0) {
-      this.getRoomsById(this.form.id);
+    if (this.form.room_id != 0 && this.form.utility_categories_id != 0) {
+      this.getRoomsById(this.form.room_id);
       return false;
     }
     this.$router.go(-1);
@@ -108,7 +107,6 @@ export default {
         return false;
       }
 
-      console.log(this.form);
       setMonthlyUsage(this.form)
         .then(response => {
           let results = response.data;
@@ -141,7 +139,6 @@ export default {
           this.form.price_per_unit = results.price_per_unit;
           this.unit_min_rate = results.unit_min_rate;
           this.unit_min_price = results.unit_min_price;
-
         })
         .catch(e => this.showNotifications({ message: e }));
     }
