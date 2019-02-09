@@ -63,9 +63,9 @@ export default {
       form: {
         id: 0,
         utility_categories_id: null,
-        meter_numbers: null,
-        usage_amount: null,
-        total_price: null,
+        meter_numbers: "",
+        usage_amount: "",
+        total_price: "",
         status: "active"
       },
       utilities_monthly_usage: [],
@@ -93,6 +93,15 @@ export default {
   },
   methods: {
     onSubmit() {
+      if (this.form.meter_numbers == "" || this.form.usage_amount == "" || this.form.total_price == "") {
+        this.showNotifications({
+          message: "พิมพ์ เลขมิเตอร์",
+          type: "warn"
+        });
+
+        return false;
+      }
+
       console.log(this.form);
     },
     getRoomsById(id) {
