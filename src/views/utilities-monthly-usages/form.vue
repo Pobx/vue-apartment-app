@@ -110,8 +110,6 @@ export default {
           this.unit_min_price = results.room_categories.unit_min_price;
           // this.latest_amount = results.utilities_monthly_usage.latest_amount || 0;
 
-          console.log(this.price_per_unit_cost);
-
           this.getUtilitiesCategoriesById(this.form.utility_categories_id);
         })
         .catch(e => this.showNotifications({ message: e }));
