@@ -17,14 +17,14 @@
             </b-form-group>
 
             <b-form-group
-              id="inline_usage_amount"
+              id="inline_unit_amount"
               horizontal
               :label-cols="4"
-              :label="inline_usage_amount"
-              label-for="inline_usage_amount"
+              :label="inline_unit_amount"
+              label-for="inline_unit_amount"
             >
               <b-col sm="8">
-                <b-form-input id="inline_usage_amount" type="number" v-model="form.usage_amount"></b-form-input>
+                <b-form-input id="inline_unit_amount" type="number" v-model="form.unit_amount"></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -56,6 +56,7 @@
 <script>
 import { getRoomsById } from "@/shared/rooms-services";
 import { getUtilitiesCategoriesById } from "@/shared/utilities-categories-services";
+import { setMonthlyUsage } from "@/shared/utilities-monthly-usage-services";
 
 export default {
   data: () => {
@@ -64,20 +65,21 @@ export default {
         id: 0,
         utility_categories_id: null,
         meter_numbers: "",
-        usage_amount: "",
+        unit_amount: "",
         total_price: "",
+        price_per_unit: "",
         status: "active"
       },
       utilities_monthly_usage: [],
-      price_per_unit_cost: 1,
-      price_per_unit: 1,
+      // price_per_unit_cost: 1,
+      // price_per_unit: 1,
       unit_min_rate: 1,
       unit_min_price: 1,
       latest_amount: 0,
       utilities_packages_items: null,
       header_form: null,
       inline_meter_numbers: "เลขมิเตอร์",
-      inline_usage_amount: "ยอดการใช้งาน",
+      inline_unit_amount: "ยอดการใช้งาน",
       inline_total_price: "คิดเป็นเงิน"
     };
   },
@@ -93,7 +95,11 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (this.form.meter_numbers == "" || this.form.usage_amount == "" || this.form.total_price == "") {
+      if (
+        this.form.meter_numbers == "" ||
+        this.form.unit_amount == "" ||
+        this.form.total_price == ""
+      ) {
         this.showNotifications({
           message: "พิมพ์ เลขมิเตอร์",
           type: "warn"
@@ -103,6 +109,13 @@ export default {
       }
 
       console.log(this.form);
+      setMonthlyUsage(this.form)
+        .then(response => {
+          let results = response.data;
+
+          console.log(results);
+        })
+        .catch(e => this.showNotifications({ message: e }));
     },
     getRoomsById(id) {
       getRoomsById(id)
@@ -111,13 +124,6 @@ export default {
           let apartments_name = results.apartments.name || null;
           let rooms_name = results.name || null;
           this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
-
-          this.price_per_unit_cost =
-            results.room_categories.price_per_unit_cost;
-          this.price_per_unit = results.room_categories.price_per_unit;
-          this.unit_min_rate = results.room_categories.unit_min_rate;
-          this.unit_min_price = results.room_categories.unit_min_price;
-          // this.latest_amount = results.utilities_monthly_usage.latest_amount || 0;
 
           this.getUtilitiesCategoriesById(this.form.utility_categories_id);
         })
@@ -131,7 +137,11 @@ export default {
           this.header_form = `${this.header_form} (<strong>${
             results.name
           }</strong>)`;
-          // console.log(results);
+
+          this.form.price_per_unit = results.price_per_unit;
+          this.unit_min_rate = results.unit_min_rate;
+          this.unit_min_price = results.unit_min_price;
+
         })
         .catch(e => this.showNotifications({ message: e }));
     }
@@ -139,19 +149,19 @@ export default {
   watch: {
     "form.meter_numbers": function(newValue, oldValue) {
       if (newValue == "") {
-        this.form.usage_amount = "";
+        this.form.unit_amount = "";
         this.form.total_price = "";
       }
 
       if (parseFloat(newValue) > parseFloat(this.latest_amount)) {
-        this.form.usage_amount =
+        this.form.unit_amount =
           parseFloat(newValue) - parseFloat(this.latest_amount);
 
-        if (this.form.usage_amount <= this.unit_min_rate) {
+        if (this.form.unit_amount <= this.unit_min_rate) {
           this.form.total_price = this.unit_min_price;
         } else {
           this.form.total_price = parseFloat(
-            this.form.usage_amount * parseFloat(this.price_per_unit_cost)
+            this.form.unit_amount * parseFloat(this.form.price_per_unit)
           );
         }
       }
