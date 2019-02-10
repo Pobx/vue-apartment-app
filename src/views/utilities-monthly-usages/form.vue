@@ -5,6 +5,18 @@
         <b-card :header="header_form">
           <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
             <b-form-group
+              id="inline_latest_amount"
+              horizontal
+              :label-cols="4"
+              :label="inline_latest_amount"
+              label-for="inline_latest_amount"
+            >
+              <b-col sm="8">
+                <b-form-input id="inline_latest_amount" type="number" v-model="latest_amount" readonly></b-form-input>
+              </b-col>
+            </b-form-group>
+
+            <b-form-group
               id="inline_meter_numbers"
               horizontal
               :label-cols="4"
@@ -77,7 +89,8 @@ export default {
       latest_amount: 0,
       utilities_packages_items: null,
       header_form: null,
-      inline_meter_numbers: "เลขมิเตอร์",
+      inline_latest_amount: "เลขมิเตอร์ล่าสุด",
+      inline_meter_numbers: "เลขมิเตอร์ที่ใช้ไป",
       inline_unit_amount: "ยอดการใช้งาน",
       inline_total_price: "คิดเป็นเงิน"
     };
@@ -121,8 +134,22 @@ export default {
           let results = response.data;
           let apartments_name = results.apartments.name || null;
           let rooms_name = results.name || null;
-          this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
+          let utilities = results.utilities_monthly_usage;
+          let list_utilities_id = utilities.map(value => value.id);
+          let maxValue = Math.max(...list_utilities_id);
+          let lastest_utilities_usages = utilities.filter(
+            value => value.id == maxValue
+          );
 
+          let lastest_utilities_usages_object = Object.assign(
+            {},
+            ...lastest_utilities_usages
+          );
+
+          console.log(lastest_utilities_usages_object);
+          this.latest_amount = lastest_utilities_usages_object.unit_amount || 0;
+
+          this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
           this.getUtilitiesCategoriesById(this.form.utility_categories_id);
         })
         .catch(e => this.showNotifications({ message: e }));
