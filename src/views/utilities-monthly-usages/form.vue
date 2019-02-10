@@ -12,7 +12,12 @@
               label-for="inline_latest_amount"
             >
               <b-col sm="8">
-                <b-form-input id="inline_latest_amount" type="number" v-model="latest_amount" readonly></b-form-input>
+                <b-form-input
+                  id="inline_latest_amount"
+                  type="number"
+                  v-model="latest_amount"
+                  readonly
+                ></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -55,7 +60,8 @@
             <b-row>
               <b-col sm="12" class="text-right">
                 <input type="hidden" v-model="form.id">
-                <b-button type="submit" class="ml-sm-2" variant="success">บันทึก</b-button>
+                <b-link :to="link_to_table" class="btn btn-danger mr-sm-2">{{ link_to_table_label }}</b-link>
+                <b-button type="submit" class="ml-sm-2" variant="success">{{ submit_form_label }}</b-button>
               </b-col>
             </b-row>
           </b-form>
@@ -92,7 +98,10 @@ export default {
       inline_latest_amount: "เลขมิเตอร์ล่าสุด",
       inline_meter_numbers: "เลขมิเตอร์ที่ใช้ไป",
       inline_unit_amount: "ยอดการใช้งาน",
-      inline_total_price: "คิดเป็นเงิน"
+      inline_total_price: "คิดเป็นเงิน",
+      submit_form_label: "บันทึก",
+      link_to_table_label: "ยกเลิก",
+      link_to_table: "/utilities-monthly-usages"
     };
   },
   created() {
@@ -123,8 +132,6 @@ export default {
       setMonthlyUsage(this.form)
         .then(response => {
           let results = response.data;
-
-          console.log(results);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
@@ -135,7 +142,14 @@ export default {
           let apartments_name = results.apartments.name || null;
           let rooms_name = results.name || null;
           let utilities = results.utilities_monthly_usage;
-          let list_utilities_id = utilities.map(value => value.id);
+          let list_utilities_id = utilities.map(value => {
+            if (
+              value.utility_categories_id == this.form.utility_categories_id
+            ) {
+              return value.id;
+            }
+          });
+
           let maxValue = Math.max(...list_utilities_id);
           let lastest_utilities_usages = utilities.filter(
             value => value.id == maxValue
@@ -146,7 +160,6 @@ export default {
             ...lastest_utilities_usages
           );
 
-          console.log(lastest_utilities_usages_object);
           this.latest_amount = lastest_utilities_usages_object.unit_amount || 0;
 
           this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
