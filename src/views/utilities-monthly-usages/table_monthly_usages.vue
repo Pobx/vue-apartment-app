@@ -13,7 +13,10 @@
             :fields="fields"
           >
             <template slot="index" slot-scope="data">{{ data.index + 1 }}</template>
-            <template slot="utility_memo_date" slot-scope="data">{{ data.item.utility_memo_date}}</template>
+            <template
+              slot="utility_memo_date_th"
+              slot-scope="data"
+            >{{ data.item.utility_memo_date_th}}</template>
 
             <template
               slot="utilities_categories_name"
@@ -28,6 +31,8 @@
               >{{ data.field.label }}</b-btn>
             </template>
           </b-table>
+
+          <b-link :to="link_to_table" class="btn btn-warning float-right">{{ link_to_table_label }}</b-link>
         </b-card>
       </b-col>
     </b-row>
@@ -42,12 +47,19 @@ export default {
   data: () => {
     return {
       form: {
-        id: 0
+        id: 0,
+        room_id: null,
+        utility_categories_id: null,
+        meter_numbers: "",
+        unit_amount: "",
+        total_price: "",
+        price_per_unit: "",
+        status: "disabled"
       },
       fields: [
         { key: "index", label: "#", class: "text-center" },
         {
-          key: "utility_memo_date",
+          key: "utility_memo_date_th",
           label: "วันที่บันทึก",
           class: "text-center"
         },
@@ -63,7 +75,8 @@ export default {
       perPage: 10,
       utilities_monthly_usage: [],
       header_form: null,
-      link_to_table: "/utilities-monthly-usages"
+      link_to_table: "/utilities-monthly-usages",
+      link_to_table_label: "ย้อนกลับ"
     };
   },
   created() {
@@ -85,13 +98,29 @@ export default {
 
           this.utilities_monthly_usage = results.utilities_monthly_usage;
           this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
-          console.log(this.utilities_monthly_usage);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
 
     removeItems(data) {
-      console.log(data.item);
+      this.form.id = data.item.id;
+      this.form.price_per_unit = data.item.price_per_unit;
+      this.form.room_id = data.item.room_id;
+      this.form.total_price = data.item.total_price;
+      this.form.unit_amount = data.item.unit_amount;
+      this.form.utility_categories_id = data.item.utility_categories_id;
+      this.form.meter_numbers = data.item.meter_numbers;
+
+      setMonthlyUsage(this.form)
+        .then(response => {
+          this.showNotifications({
+            message: "บันทึกข้อมูลสำเร็จ",
+            type: "success"
+          });
+
+          this.getRoomsById(this.form.room_id);
+        })
+        .catch(e => this.showNotifications({ message: e }));
     }
   },
   notifications: {

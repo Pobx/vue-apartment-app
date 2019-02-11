@@ -131,7 +131,11 @@ export default {
 
       setMonthlyUsage(this.form)
         .then(response => {
-          let results = response.data;
+          this.showNotifications({
+            message: "บันทึกข้อมูลสำเร็จ",
+            type: "success"
+          });
+          this.$router.go(-1);
         })
         .catch(e => this.showNotifications({ message: e }));
     },
