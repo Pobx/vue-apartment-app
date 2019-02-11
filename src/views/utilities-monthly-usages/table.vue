@@ -21,7 +21,7 @@
                 >{{ utilities.name }}</b-link>
 
                 <b-link
-                  :to="link_to_form+'/'+room.id"
+                  :to="link_to_monthly_usages+'/'+room.id"
                   class="btn btn-warning btn-block"
                 >{{ btn_monthly_usages_views_label }}</b-link>
               </b-card>
@@ -44,7 +44,8 @@ export default {
       rooms: [],
       btn_monthly_usages_views_label: "รายการบันทึก",
       room_label: "ห้อง",
-      link_to_form: "utilities-monthly-usages-form"
+      link_to_form: "utilities-monthly-usages-form",
+      link_to_monthly_usages: "utilities-rooms-monthly-usages"
     };
   },
   created() {
