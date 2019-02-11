@@ -36,6 +36,7 @@
 <script>
 import { getApartments, setApartments } from "@/shared/apartments-services";
 import { getRoomsByApartmentsId } from "@/shared/rooms-services";
+
 export default {
   data: () => {
     return {
