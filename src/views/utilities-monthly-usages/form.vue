@@ -5,31 +5,35 @@
         <b-card :header="header_form">
           <b-form v-on:submit.prevent="onSubmit" autocomplete="off">
             <b-form-group
-              id="inline_latest_amount"
+              id="inline_latest_unit_amount"
               horizontal
               :label-cols="4"
-              :label="inline_latest_amount"
-              label-for="inline_latest_amount"
+              :label="inline_latest_unit_amount"
+              label-for="inline_latest_unit_amount"
             >
               <b-col sm="8">
                 <b-form-input
-                  id="inline_latest_amount"
+                  id="inline_latest_unit_amount"
                   type="number"
-                  v-model="latest_amount"
+                  v-model="form.latest_unit_amount"
                   readonly
                 ></b-form-input>
               </b-col>
             </b-form-group>
 
             <b-form-group
-              id="inline_last_unit_amount"
+              id="inline_current_unit_amount"
               horizontal
               :label-cols="4"
-              :label="inline_last_unit_amount"
-              label-for="inline_last_unit_amount"
+              :label="inline_current_unit_amount"
+              label-for="inline_current_unit_amount"
             >
               <b-col sm="8">
-                <b-form-input id="inline_last_unit_amount" type="number" v-model="form.last_unit_amount"></b-form-input>
+                <b-form-input
+                  id="inline_current_unit_amount"
+                  type="number"
+                  v-model="form.current_unit_amount"
+                ></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -83,7 +87,8 @@ export default {
         id: 0,
         room_id: null,
         utility_categories_id: null,
-        last_unit_amount: "",
+        latest_unit_amount: 0,
+        current_unit_amount: "",
         unit_amount: "",
         total_price: "",
         price_per_unit: "",
@@ -92,11 +97,10 @@ export default {
       utilities_monthly_usage: [],
       unit_min_rate: 1,
       unit_min_price: 1,
-      latest_amount: 0,
       utilities_packages_items: null,
       header_form: null,
-      inline_latest_amount: "เลขมิเตอร์ล่าสุด",
-      inline_last_unit_amount: "เลขมิเตอร์ที่ใช้ไป",
+      inline_latest_unit_amount: "เลขมิเตอร์ล่าสุด",
+      inline_current_unit_amount: "เลขมิเตอร์ที่ใช้ไป",
       inline_unit_amount: "ยอดการใช้งาน",
       inline_total_price: "คิดเป็นเงิน",
       submit_form_label: "บันทึก",
@@ -117,7 +121,7 @@ export default {
   methods: {
     onSubmit() {
       if (
-        this.form.last_unit_amount == "" ||
+        this.form.current_unit_amount == "" ||
         this.form.unit_amount == "" ||
         this.form.total_price == ""
       ) {
@@ -164,7 +168,8 @@ export default {
             ...lastest_utilities_usages
           );
 
-          this.latest_amount = lastest_utilities_usages_object.unit_amount || 0;
+          this.form.latest_unit_amount =
+            lastest_utilities_usages_object.current_unit_amount || 0;
 
           this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
           this.getUtilitiesCategoriesById(this.form.utility_categories_id);
@@ -188,15 +193,15 @@ export default {
     }
   },
   watch: {
-    "form.last_unit_amount": function(newValue, oldValue) {
+    "form.current_unit_amount": function(newValue, oldValue) {
       if (newValue == "") {
         this.form.unit_amount = "";
         this.form.total_price = "";
       }
 
-      if (parseFloat(newValue) > parseFloat(this.latest_amount)) {
+      if (parseFloat(newValue) > parseFloat(this.form.latest_unit_amount)) {
         this.form.unit_amount =
-          parseFloat(newValue) - parseFloat(this.latest_amount);
+          parseFloat(newValue) - parseFloat(this.form.latest_unit_amount);
 
         if (this.form.unit_amount <= this.unit_min_rate) {
           this.form.total_price = this.unit_min_price;

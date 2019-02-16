@@ -50,7 +50,8 @@ export default {
         id: 0,
         room_id: null,
         utility_categories_id: null,
-        meter_numbers: "",
+        latest_unit_amount: "",
+        current_unit_amount: "",
         unit_amount: "",
         total_price: "",
         price_per_unit: "",
@@ -109,7 +110,9 @@ export default {
       this.form.total_price = data.item.total_price;
       this.form.unit_amount = data.item.unit_amount;
       this.form.utility_categories_id = data.item.utility_categories_id;
-      this.form.meter_numbers = data.item.meter_numbers;
+      this.form.current_unit_amount = data.item.current_unit_amount;
+      this.form.latest_unit_amount = data.item.latest_unit_amount;
+      
 
       setMonthlyUsage(this.form)
         .then(response => {
