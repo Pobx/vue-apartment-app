@@ -22,14 +22,14 @@
             </b-form-group>
 
             <b-form-group
-              id="inline_meter_numbers"
+              id="inline_last_unit_amount"
               horizontal
               :label-cols="4"
-              :label="inline_meter_numbers"
-              label-for="inline_meter_numbers"
+              :label="inline_last_unit_amount"
+              label-for="inline_last_unit_amount"
             >
               <b-col sm="8">
-                <b-form-input id="inline_meter_numbers" type="number" v-model="form.meter_numbers"></b-form-input>
+                <b-form-input id="inline_last_unit_amount" type="number" v-model="form.last_unit_amount"></b-form-input>
               </b-col>
             </b-form-group>
 
@@ -83,7 +83,7 @@ export default {
         id: 0,
         room_id: null,
         utility_categories_id: null,
-        meter_numbers: "",
+        last_unit_amount: "",
         unit_amount: "",
         total_price: "",
         price_per_unit: "",
@@ -96,7 +96,7 @@ export default {
       utilities_packages_items: null,
       header_form: null,
       inline_latest_amount: "เลขมิเตอร์ล่าสุด",
-      inline_meter_numbers: "เลขมิเตอร์ที่ใช้ไป",
+      inline_last_unit_amount: "เลขมิเตอร์ที่ใช้ไป",
       inline_unit_amount: "ยอดการใช้งาน",
       inline_total_price: "คิดเป็นเงิน",
       submit_form_label: "บันทึก",
@@ -117,7 +117,7 @@ export default {
   methods: {
     onSubmit() {
       if (
-        this.form.meter_numbers == "" ||
+        this.form.last_unit_amount == "" ||
         this.form.unit_amount == "" ||
         this.form.total_price == ""
       ) {
@@ -188,7 +188,7 @@ export default {
     }
   },
   watch: {
-    "form.meter_numbers": function(newValue, oldValue) {
+    "form.last_unit_amount": function(newValue, oldValue) {
       if (newValue == "") {
         this.form.unit_amount = "";
         this.form.total_price = "";
