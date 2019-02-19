@@ -24,6 +24,11 @@
                   :to="link_to_monthly_usages+'/'+room.id"
                   class="btn btn-warning btn-block"
                 >{{ btn_monthly_usages_views_label }}</b-link>
+
+                <b-link
+                  :to="link_to_monthly_bills+'/'+room.id"
+                  class="btn btn-success btn-block"
+                >{{ btn_monthly_bill_views_label }}</b-link>
               </b-card>
             </b-col>
           </b-row>
@@ -43,10 +48,12 @@ export default {
       tabIndex: 0,
       apartments: [],
       rooms: [],
-      btn_monthly_usages_views_label: "รายการบันทึก",
+      btn_monthly_usages_views_label: "รายการบันทึกข้อมูล",
+      btn_monthly_bill_views_label: "รายการบิล",
       room_label: "ห้อง",
       link_to_form: "utilities-monthly-usages-form",
-      link_to_monthly_usages: "utilities-rooms-monthly-usages"
+      link_to_monthly_usages: "utilities-rooms-monthly-usages",
+      link_to_monthly_bills: "utilities-rooms-monthly-bills"
     };
   },
   created() {

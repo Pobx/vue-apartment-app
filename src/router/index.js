@@ -20,7 +20,9 @@ const UtiliesMonthlyUsagesForm = () =>
   import("@/views/utilities-monthly-usages/form");
   const UtiliesRoomsMonthlyUsages = () =>
   import("@/views/utilities-monthly-usages/table_monthly_usages");
-
+  const UtiliesRoomsMonthlyBills = () =>
+  import("@/views/utilities-monthly-usages/table_monthly_bills");
+  
 Vue.use(Router);
 
 export default new Router({
@@ -54,6 +56,12 @@ export default new Router({
           name: "UtiliesRoomsMonthlyUsages",
           component: UtiliesRoomsMonthlyUsages
         },
+        {
+          path: "utilities-rooms-monthly-bills/:rooms_id?",
+          name: "UtiliesRoomsMonthlyBills",
+          component: UtiliesRoomsMonthlyBills
+        },
+        
         {
           path: "setting",
           redirect: "/setting/apartments",
