@@ -16,19 +16,10 @@
             <template
               slot="utility_memo_date_th"
               slot-scope="data"
-            >{{ data.item.utility_memo_date_th}}</template>
-
-            <template
-              slot="utilities_categories_name"
-              slot-scope="data"
-            >{{ data.item.utilities_categories_name}}</template>
+            >{{ data.item.utility_memo_monthly_th}}</template>
 
             <template slot="download" slot-scope="data">
-              <b-btn
-                size="sm"
-                variant="danger"
-                v-on:click="removeItems(data)"
-              >{{ data.field.label }}</b-btn>
+              <b-btn size="sm" variant="success" v-on:click="Download(data)">{{ data.field.label }}</b-btn>
             </template>
           </b-table>
 
@@ -40,8 +31,7 @@
 </template>
 
 <script>
-import { getRoomsById } from "@/shared/rooms-services";
-import { setMonthlyUsage } from "@/shared/utilities-monthly-usage-services";
+import { getBillsByRoomsId } from "@/shared/bills-services";
 
 export default {
   data: () => {
@@ -61,12 +51,7 @@ export default {
         { key: "index", label: "#", class: "text-center" },
         {
           key: "utility_memo_date_th",
-          label: "วันที่บันทึก",
-          class: "text-center"
-        },
-        {
-          key: "utilities_categories_name",
-          label: "ชื่อรายการ",
+          label: "เดือน",
           class: "text-center"
         },
         { key: "download", label: "ดาวน์โหลด", class: "text-center" }
@@ -83,27 +68,14 @@ export default {
   created() {
     this.form.room_id = this.$route.params.rooms_id || 0;
     if (this.form.room_id != 0) {
-      this.getRoomsById(this.form.room_id);
+      this.getBillsByRoomsId(this.form.room_id);
       return false;
     }
 
     this.$router.go(-1);
   },
   methods: {
-    getRoomsById(id) {
-      getRoomsById(id)
-        .then(response => {
-          let results = response.data;
-          let apartments_name = results.apartments.name || null;
-          let rooms_name = results.name || null;
-
-          this.utilities_monthly_usage = results.utilities_monthly_usage;
-          this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
-        })
-        .catch(e => this.showNotifications({ message: e }));
-    },
-
-    removeItems(data) {
+    Download(data) {
       this.form.id = data.item.id;
       this.form.price_per_unit = data.item.price_per_unit;
       this.form.room_id = data.item.room_id;
@@ -112,16 +84,18 @@ export default {
       this.form.utility_categories_id = data.item.utility_categories_id;
       this.form.current_unit_amount = data.item.current_unit_amount;
       this.form.latest_unit_amount = data.item.latest_unit_amount;
-      
+    },
 
-      setMonthlyUsage(this.form)
+    getBillsByRoomsId(rooms_id) {
+      getBillsByRoomsId(rooms_id)
         .then(response => {
-          this.showNotifications({
-            message: "บันทึกข้อมูลสำเร็จ",
-            type: "success"
-          });
+          console.log(response);
+          let results = response.data;
+          let apartments_name = results.apartments.name || null;
+          let rooms_name = results.name || null;
 
-          this.getRoomsById(this.form.room_id);
+          this.utilities_monthly_usage = results.utilities_monthly_usage;
+          this.header_form = `${apartments_name} ห้อง ${rooms_name}`;
         })
         .catch(e => this.showNotifications({ message: e }));
     }
