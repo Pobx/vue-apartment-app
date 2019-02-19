@@ -27,26 +27,27 @@
         </b-card>
       </b-col>
     </b-row>
+
+    <b-modal ref="previews_bills" size="lg" :title="previews_bills_label">
+      <b-img :src="link_url" fluid alt="Responsive image"/>
+      <div slot="modal-footer" class="w-100">
+        <a :href="link_url" target="_blank" class="float-right btn btn-primary" download>ดาวน์โหลด</a>
+      </div>
+    </b-modal>
   </div>
 </template>
 
 <script>
-import { getBillsByRoomsId } from "@/shared/bills-services";
+import {
+  getBillsByRoomsId,
+  getBillsByRoomsIdAndMonth
+} from "@/shared/bills-services";
 
 export default {
   data: () => {
     return {
-      form: {
-        id: 0,
-        room_id: null,
-        utility_categories_id: null,
-        latest_unit_amount: "",
-        current_unit_amount: "",
-        unit_amount: "",
-        total_price: "",
-        price_per_unit: "",
-        status: "disabled"
-      },
+      rooms_id: null,
+      link_url: null,
       fields: [
         { key: "index", label: "#", class: "text-center" },
         {
@@ -62,13 +63,14 @@ export default {
       utilities_monthly_usage: [],
       header_form: null,
       link_to_table: "/utilities-monthly-usages",
-      link_to_table_label: "ย้อนกลับ"
+      link_to_table_label: "ย้อนกลับ",
+      previews_bills_label: 'ข้อมูลใบเสร็จ'
     };
   },
   created() {
-    this.form.room_id = this.$route.params.rooms_id || 0;
-    if (this.form.room_id != 0) {
-      this.getBillsByRoomsId(this.form.room_id);
+    this.rooms_id = this.$route.params.rooms_id || 0;
+    if (this.rooms_id != 0) {
+      this.getBillsByRoomsId(this.rooms_id);
       return false;
     }
 
@@ -76,20 +78,23 @@ export default {
   },
   methods: {
     Download(data) {
-      this.form.id = data.item.id;
-      this.form.price_per_unit = data.item.price_per_unit;
-      this.form.room_id = data.item.room_id;
-      this.form.total_price = data.item.total_price;
-      this.form.unit_amount = data.item.unit_amount;
-      this.form.utility_categories_id = data.item.utility_categories_id;
-      this.form.current_unit_amount = data.item.current_unit_amount;
-      this.form.latest_unit_amount = data.item.latest_unit_amount;
+      let rooms_id = data.item.room_id;
+      let month = data.item.utility_memo_monthly_en;
+
+      getBillsByRoomsIdAndMonth(rooms_id, month)
+        .then(response => {
+          let results = response.data;
+          this.link_url = results.link_url;
+          if (this.link_url != null) {
+            this.$refs.previews_bills.show();
+          }
+        })
+        .catch(e => this.showNotifications({ message: e }));
     },
 
     getBillsByRoomsId(rooms_id) {
       getBillsByRoomsId(rooms_id)
         .then(response => {
-          console.log(response);
           let results = response.data;
           let apartments_name = results.apartments.name || null;
           let rooms_name = results.name || null;
