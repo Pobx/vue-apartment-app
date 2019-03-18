@@ -32,7 +32,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/dashboard",
+      redirect: "/utilities-monthly-usages",
       name: "Home",
       component: DefaultContainer,
       children: [
