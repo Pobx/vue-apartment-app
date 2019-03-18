@@ -66,6 +66,7 @@ export default {
           sortable: true,
           class: "text-center"
         },
+        { key: "status", label: "สถานะ", class: "text-center" },
         { key: "edit", label: "แก้ไข", class: "text-center" }
       ],
       items: [],
