@@ -74,7 +74,6 @@ export default {
         .then(response => {
           let results = response.data;
           this.rooms = results.filter(value => value.room_categories_id == "2");
-          console.log(this.rooms);
         })
         .catch(e => this.showNotifications({ message: e }));
     }
