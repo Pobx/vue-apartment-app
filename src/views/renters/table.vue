@@ -34,7 +34,7 @@
             >{{ data.item.first_name }}&nbsp;{{ data.item.last_name }}</template>
             <template slot="mobile" slot-scope="data">{{ data.item.mobile }}</template>
             <template slot="email" slot-scope="data">{{ data.item.email }}</template>
-
+            <template slot="status" slot-scope="data">{{ data.item.status }}</template>
             <template slot="edit" slot-scope="data">
               <router-link
                 :to="{ path: 'renters-form/' + data.item.id}"
@@ -56,7 +56,7 @@
               >{{ button_modal_attached_files_label }}</b-btn>
             </template>
 
-            <template slot="status" slot-scope="data">
+            <template slot="switch" slot-scope="data">
               <b-btn
                 v-if="data.item.status =='disabled'"
                 size="sm"
@@ -282,10 +282,11 @@ export default {
         },
         { key: "mobile", label: "เบอร์มือถือ", class: "text-center" },
         { key: "email", label: "อีเมล์", class: "text-center" },
+        { key: "status", label: "สถานะ", class: "text-center" },
         { key: "partners", label: "ติดต่อฉุกเฉิน", class: "text-center" },
         { key: "attached_files", label: "ไฟล์เอกสาร", class: "text-center" },
         { key: "edit", label: "แก้ไข", class: "text-center" },
-        { key: "status", label: "", class: "text-center" }
+        { key: "switch", label: "", class: "text-center" }
       ],
       partners_fields: [
         // A column that needs custom formatting
@@ -351,14 +352,12 @@ export default {
       updateRentersStatus(params)
         .then(response => {
           this.getRenters();
-          this.onReset();
           this.showNotifications({
             message: "บันทึกข้อมูลสำเร็จ",
             type: "success"
           });
         })
         .catch(e => {
-          this.onReset();
           console.log(e);
         });
     },

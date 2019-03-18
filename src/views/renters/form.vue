@@ -229,6 +229,7 @@ export default {
       getRenterProfileById(this.form.id)
         .then(response => {
           this.form = response.data;
+          this.form.status = 'active';
           this.image_path = response.data.image_path;
           this.attached_name = response.data.attached_file_name;
 
