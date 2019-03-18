@@ -41,6 +41,7 @@
                 :key="index"
               >{{ item.utilities_items.name }}</b-badge>
             </template>
+            <template slot="status" slot-scope="data">{{ data.item.status }}</template>
             <template slot="edit" slot-scope="data">
               <b-btn
                 size="sm"
@@ -58,7 +59,7 @@
               >{{ button_modal_utilities_label }}</b-btn>
             </template>
 
-            <template slot="status" slot-scope="data">
+            <template slot="switch" slot-scope="data">
               <b-btn
                 v-if="data.item.status =='disabled'"
                 size="sm"
@@ -184,9 +185,10 @@ export default {
           class: "text-center"
         },
         { key: "utilities", label: "รายการ", class: "text-center" },
+        { key: "status", label: "สถานะ", class: "text-center" },
         { key: "edit", label: "แก้ไข", class: "text-center" },
         { key: "add-utilities", label: "เพิ่มรายการ", class: "text-center" },
-        { key: "status", label: "", class: "text-center" }
+        { key: "switch", label: "", class: "text-center" },
       ],
       utilities_fields: [
         { key: "index", label: "#", class: "text-center" },
