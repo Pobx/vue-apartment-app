@@ -31,12 +31,12 @@
     <TheFooter>
       <!--footer-->
       <div>
-        <a href="#">CoreUI</a>
-        <span class="ml-1">&copy; 2018 creativeLabs.</span>
+        <a href="#">Made&nbsp;By&nbsp;Pobx</a>
+        <span class="ml-1">&copy; 2018-2019</span>
       </div>
       <div class="ml-auto">
-        <span class="mr-1">Powered by</span>
-        <a href="https://coreui.io">CoreUI for Vue</a>
+        <span class="mr-1">Credit&nbsp;theme&nbsp;by</span>
+        <a href="https://coreui.io">CoreUI&nbsp;for&nbsp;Vue</a>
       </div>
     </TheFooter>
   </div>
