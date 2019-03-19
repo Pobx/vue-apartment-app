@@ -85,7 +85,10 @@ export default {
           this.items = response.data;
           this.totalRows = this.items.length;
         })
-        .catch(e => this.showNotifications({ message: e }));
+        .catch(e => {
+          this.showNotifications({ message: e });
+          console.log({message: e})
+        });
     },
 
     setDataToForm(data) {
