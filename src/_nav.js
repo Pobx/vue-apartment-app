@@ -59,6 +59,11 @@ export default {
           icon: "fa fa-building"
         }
       ]
-    }
+    },
+    {
+      name: "ออกจากระบบ",
+      url: "/login",
+      icon: "fa fa-arrow-circle-o-left",
+    },
   ]
 };
