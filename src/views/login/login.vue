@@ -20,7 +20,6 @@
                       class="form-control"
                       placeholder="Username"
                       v-model="form.username"
-                      autocomplete="username email"
                     />
                   </b-input-group>
 
@@ -35,7 +34,6 @@
                       class="form-control"
                       placeholder="Password"
                       v-model="form.password"
-                      autocomplete="current-password"
                     />
                   </b-input-group>
 
@@ -80,12 +78,32 @@ export default {
   created() {
     localStorage.removeItem("user");
 
-    // this.returnUrl = this.$route.query.returnUrl || '/';
+    this.returnUrl = this.$route.query.returnUrl || '/';
   },
 
   methods: {
     login() {
-      console.log(this.form);
+      // console.log(this.form);
+      if (this.form.username == "admin" && this.form.password == "admin") {
+        let user = {
+          id: 1,
+          token: "95hvjrni"
+        };
+
+        localStorage.setItem("user", JSON.stringify(user));
+        this.$router.push(this.returnUrl);
+      } else {
+        this.showNotifications({
+          message: "Username และ Password ไม่ถูกต้อง",
+        });
+      }
+    }
+  },
+  notifications: {
+    showNotifications: {
+      title: "ระบบแจ้งเตือน",
+      message: "เกิดข้อผิดพลาด...โปรดติดต่อผู้ดูแลระบบ",
+      type: "error"
     }
   }
 };
