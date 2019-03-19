@@ -10,7 +10,7 @@ import MaskedInput from "vue-text-mask";
 import VueNotifications from "vue-notifications";
 import miniToastr from "mini-toastr";
 import App from "./App";
-import router from "./router";
+import { router } from "./router";
 
 // todo
 // cssVars()

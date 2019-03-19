@@ -18,14 +18,15 @@ const UtiliesMonthlyUsages = () =>
   import("@/views/utilities-monthly-usages/table");
 const UtiliesMonthlyUsagesForm = () =>
   import("@/views/utilities-monthly-usages/form");
-  const UtiliesRoomsMonthlyUsages = () =>
+const UtiliesRoomsMonthlyUsages = () =>
   import("@/views/utilities-monthly-usages/table_monthly_usages");
-  const UtiliesRoomsMonthlyBills = () =>
+const UtiliesRoomsMonthlyBills = () =>
   import("@/views/utilities-monthly-usages/table_monthly_bills");
-  
+
+const LoginPage = () => import("@/views/login/login");
 Vue.use(Router);
 
-export default new Router({
+export const router = new Router({
   mode: "hash", // https://router.vuejs.org/api/#mode
   linkActiveClass: "open active",
   scrollBehavior: () => ({ y: 0 }),
@@ -47,7 +48,8 @@ export default new Router({
           component: UtiliesMonthlyUsages
         },
         {
-          path: "utilities-monthly-usages-form/:rooms_id?/:utility_categories_id?",
+          path:
+            "utilities-monthly-usages-form/:rooms_id?/:utility_categories_id?",
           name: "UtiliesMonthlyUsagesForm",
           component: UtiliesMonthlyUsagesForm
         },
@@ -61,7 +63,7 @@ export default new Router({
           name: "UtiliesRoomsMonthlyBills",
           component: UtiliesRoomsMonthlyBills
         },
-        
+
         {
           path: "setting",
           redirect: "/setting/apartments",
@@ -110,6 +112,23 @@ export default new Router({
           ]
         }
       ]
-    }
+    },
+    { path: "/login", component: LoginPage }
   ]
+});
+
+router.beforeEach((to, from, next) => {
+  // redirect to login page if not logged in and trying to access a restricted page
+  // const publicPages = ["/login"];
+  // const authRequired = !publicPages.includes(to.path);
+  // const loggedIn = localStorage.getItem("user");
+
+  // if (authRequired && !loggedIn) {
+  //   return next({
+  //     path: "/login",
+  //     query: { returnUrl: to.path }
+  //   });
+  // }
+
+  next();
 });
